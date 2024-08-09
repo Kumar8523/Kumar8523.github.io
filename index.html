@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>বিশেষ কোড যাচাইকরণ</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            text-align: center;
+            padding: 20px;
+            border-radius: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        input {
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Enter Your Code</h1>
+        <input type="text" id="code" placeholder="Enter Your Code">
+        <button onclick="checkCode()">Chack Your Code</button>
+        <p id="message"></p>
+    </div>
+
+    <script>
+        function checkCode() {
+            const codeInput = document.getElementById('code').value;
+            const correctCode = '2024';
+            const message = document.getElementById('message');
+
+            if (codeInput === correctCode) {
+                window.location.href = 'main.html';
+            } else {
+                message.textContent = 'Wrong Code! Please, Enter a Correct Code.';
+            }
+        }
+    </script>
+</body>
+
+</html>
