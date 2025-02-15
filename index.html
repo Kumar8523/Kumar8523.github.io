@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ডিজিটাল ডিটক্স গাইড | Digital Detox Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        [lang="en"] { display: none; }
+        .dark [lang="bn"] { display: none; }
+        .dark [lang="en"] { display: block; }
+        .language-switch .en-text { display: none; }
+        .language-switch.active .bn-text { display: none; }
+        .language-switch.active .en-text { display: inline; }
+    </style>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 transition-colors duration-300">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header Section -->
+        <header class="flex justify-between items-center mb-12">
+            <h1 class="text-3xl font-bold text-gray-800 dark:text-white">
+                <span lang="bn">ডিজিটাল ডিটক্স গাইড</span>
+                <span lang="en">Digital Detox Guide</span>
+            </h1>
+            <div class="flex gap-4">
+                <button onclick="toggleDarkMode()" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700">
+                    <span class="dark:hidden">🌙</span>
+                    <span class="hidden dark:inline">☀️</span>
+                </button>
+                <button onclick="toggleLanguage()" class="language-switch px-4 py-2 bg-blue-500 text-white rounded-lg">
+                    <span class="bn-text">English</span>
+                    <span class="en-text">বাংলা</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main>
+            <!-- Timer Section -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-8 mb-8 shadow-lg text-center">
+                <h2 class="text-2xl mb-4 text-gray-800 dark:text-white" lang="bn">ডিটক্স টাইমার</h2>
+                <h2 class="text-2xl mb-4 text-gray-800 dark:text-white" lang="en">Detox Timer</h2>
+                <div id="timer" class="text-6xl font-mono mb-4 text-blue-500">60:00</div>
+                <button onclick="startTimer()" class="bg-green-500 text-white px-8 py-3 rounded-lg hover:bg-green-600">
+                    <span lang="bn">শুরু করুন</span>
+                    <span lang="en">Start</span>
+                </button>
+            </div>
+
+            <!-- Tips Grid -->
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
+                    <h3 class="text-xl mb-3 text-blue-500" lang="bn">📵 নোটিফিকেশন বন্ধ করুন</h3>
+                    <h3 class="text-xl mb-3 text-blue-500" lang="en">📵 Disable Notifications</h3>
+                    <p lang="bn">জরুরি অ্যাপ ছাড়া সব নোটিফিকেশন বন্ধ করুন</p>
+                    <p lang="en">Turn off non-essential app notifications</p>
+                </div>
+                
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
+                    <h3 class="text-xl mb-3 text-blue-500" lang="bn">🌿 প্রকৃতির সাথে সময় কাটান</h3>
+                    <h3 class="text-xl mb-3 text-blue-500" lang="en">🌿 Connect with Nature</h3>
+                    <p lang="bn">প্রতিদিন কমপক্ষে ৩০ মিনিট প্রকৃতিতে কাটান</p>
+                    <p lang="en">Spend at least 30 minutes daily in nature</p>
+                </div>
+
+                <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-md">
+                    <h3 class="text-xl mb-3 text-blue-500" lang="bn">📚 বই পড়ুন</h3>
+                    <h3 class="text-xl mb-3 text-blue-500" lang="en">📚 Read Books</h3>
+                    <p lang="bn">দিনে ১ ঘন্টা ডিজিটাল ডিভাইস ছাড়া বই পড়ুন</p>
+                    <p lang="en">Read physical books 1 hour daily</p>
+                </div>
+            </div>
+
+            <!-- Statistics Section -->
+            <div class="mt-12 bg-blue-500 text-white p-8 rounded-xl text-center">
+                <h2 class="text-3xl mb-4" lang="bn">গুরুত্বপূর্ণ পরিসংখ্যান</h2>
+                <h2 class="text-3xl mb-4" lang="en">Key Statistics</h2>
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div>
+                        <div class="text-4xl font-bold">73%</div>
+                        <p lang="bn">মানুষ অতিরিক্ত স্ক্রিন টাইমে ভোগে</p>
+                        <p lang="en">People experience screen overload</p>
+                    </div>
+                    <div>
+                        <div class="text-4xl font-bold">2.5x</div>
+                        <p lang="bn">উৎপাদনশীলতা বৃদ্ধি</p>
+                        <p lang="en">Productivity increase</p>
+                    </div>
+                    <div>
+                        <div class="text-4xl font-bold">40%</div>
+                        <p lang="bn">চোখের চাপ কমে</p>
+                        <p lang="en">Reduced eye strain</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Dark Mode Toggle
+        function toggleDarkMode() {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
+        }
+
+        // Language Toggle
+        function toggleLanguage() {
+            document.querySelector('.language-switch').classList.toggle('active');
+            document.documentElement.lang = document.documentElement.lang === 'bn' ? 'en' : 'bn';
+            localStorage.setItem('language', document.documentElement.lang);
+        }
+
+        // Timer Functionality
+        let timeLeft = 3600;
+        let timerId = null;
+
+        function startTimer() {
+            if(timerId === null) {
+                timerId = setInterval(() => {
+                    timeLeft--;
+                    if(timeLeft <= 0) {
+                        clearInterval(timerId);
+                        alert(document.documentElement.lang === 'bn' ? 'সময় শেষ! 🎉' : 'Time\'s up! 🎉');
+                    }
+                    updateTimerDisplay();
+                }, 1000);
+            }
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            document.getElementById('timer').textContent = 
+                `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+
+        // Initialize from localStorage
+        if(localStorage.getItem('darkMode') === 'true') document.documentElement.classList.add('dark');
+        if(localStorage.getItem('language') === 'en') {
+            document.documentElement.lang = 'en';
+            document.querySelector('.language-switch').classList.add('active');
+        }
+    </script>
+</body>
+</html>
