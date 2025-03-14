@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>অনলাইন রেডিও</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>বর্তমান অনুষ্ঠান: <span id="currentShow">লাইভ সম্প্রচার</span></h1>
+        <div class="player">
+            <audio id="audioPlayer" autoplay></audio>
+            <div class="controls">
+                <label>আওয়াজ: </label>
+                <input type="range" id="volumeControl" min="0" max="1" step="0.1" value="1">
+            </div>
+        </div>
+    </div>
+    <script src="client.js"></script>
+</body>
+</html>
