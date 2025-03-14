@@ -1,0 +1,14 @@
+{
+  "name": "online-radio",
+  "version": "1.0.0",
+  "description": "Production-ready Online Radio Website with real-time broadcasting",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "helmet": "^7.0.0",
+    "socket.io": "^4.6.1"
+  }
+}
