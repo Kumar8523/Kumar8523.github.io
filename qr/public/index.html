@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collaborative Code Editor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/codemirror.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/mode/css/css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.63.0/mode/htmlmixed/htmlmixed.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 h-screen flex flex-col">
+        <header class="py-4 border-b border-gray-700">
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl font-bold">CollabEditor</h1>
+                <div class="flex items-center space-x-4">
+                    <span id="userCount" class="bg-gray-800 px-3 py-1 rounded">0 users online</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-4 py-4">
+            <div class="bg-gray-800 rounded-lg overflow-hidden">
+                <div id="editor" class="h-full"></div>
+            </div>
+            <div class="bg-gray-800 rounded-lg overflow-hidden">
+                <div id="preview" class="h-full w-full"></div>
+            </div>
+        </div>
+
+        <footer class="py-4 border-t border-gray-700">
+            <div class="flex justify-end space-x-4">
+                <input type="file" id="fileInput" class="hidden">
+                <button onclick="uploadFile()" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded">
+                    Upload File
+                </button>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        let editor = null;
+        let ws = null;
+        let currentMode = 'javascript';
+
+        function initEditor() {
+            editor = CodeMirror(document.getElementById('editor'), {
+                mode: currentMode,
+                lineNumbers: true,
+                theme: 'material',
+                value: '// Start coding...'
+            });
+
+            editor.on('change', () => {
+                const content = editor.getValue();
+                ws.send(JSON.stringify({
+                    type: 'content-update',
+                    data: content
+                }));
+            });
+        }
+
+        function detectFileType(file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const arrayBuffer = e.target.result;
+                const base64 = arrayBufferToBase64(arrayBuffer);
+                
+                fetch('/detect-file-type', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ data: base64 })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    setEditorMode(data.ext);
+                });
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function setEditorMode(ext) {
+            const modeMap = {
+                'js': 'javascript',
+                'py': 'python',
+                'css': 'css',
+                'html': 'htmlmixed',
+                'json': 'application/json'
+            };
+
+            currentMode = modeMap[ext] || 'javascript';
+            editor.setOption('mode', currentMode);
+        }
+
+        function arrayBufferToBase64(buffer) {
+            let binary = '';
+            const bytes = new Uint8Array(buffer);
+            for (let i = 0; i < bytes.byteLength; i++) {
+                binary += String.fromCharCode(bytes[i]);
+            }
+            return window.btoa(binary);
+        }
+
+        function uploadFile() {
+            document.getElementById('fileInput').click();
+        }
+
+        document.getElementById('fileInput').addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                detectFileType(file);
+            }
+        });
+
+        function initWebSocket() {
+            ws = new WebSocket(`ws://${window.location.host}`);
+
+            ws.onmessage = function(event) {
+                const message = JSON.parse(event.data);
+                
+                if (message.type === 'content-update') {
+                    editor.setValue(message.data);
+                } else if (message.type === 'user-count') {
+                    document.getElementById('userCount').textContent = `${message.count} users online`;
+                }
+            };
+
+            ws.onopen = function() {
+                ws.send(JSON.stringify({
+                    type: 'user-connected'
+                }));
+            };
+        }
+
+        initEditor();
+        initWebSocket();
+    </script>
+</body>
+</html>
