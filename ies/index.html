@@ -48,6 +48,25 @@
                 <div id="foldersContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
             </div>
 
+            <!-- Monthly Section -->
+            <div id="monthlySection" class="hidden mb-8">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Monthly Summary</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                    <div class="bg-green-100 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold">Total Income</h3>
+                        <p id="monthlyIncome" class="text-2xl font-bold text-green-700">₹0.00</p>
+                    </div>
+                    <div class="bg-red-100 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold">Total Expense</h3>
+                        <p id="monthlyExpense" class="text-2xl font-bold text-red-700">₹0.00</p>
+                    </div>
+                    <div class="bg-blue-100 p-4 rounded-lg">
+                        <h3 class="text-lg font-semibold">Balance</h3>
+                        <p id="monthlyBalance" class="text-2xl font-bold text-blue-700">₹0.00</p>
+                    </div>
+                </div>
+            </div>
+
             <!-- Transaction Section -->
             <div id="transactionSection" class="hidden">
                 <!-- Add Transaction Form -->
@@ -109,8 +128,8 @@
     </div>
 
     <!-- Edit Transaction Modal -->
-    <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
-        <div class="bg-white p-6 rounded-lg max-w-md w-full mx-4">
+    <div id="editModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4">
+        <div class="bg-white p-6 rounded-lg max-w-md w-full mx-4 shadow-lg">
             <h2 class="text-xl font-bold mb-4">Edit Transaction</h2>
             <input type="hidden" id="editId">
             <div class="space-y-4">
@@ -148,8 +167,8 @@
     </div>
 
     <!-- Delete Folder Modal -->
-    <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
-        <div class="bg-white p-6 rounded-lg max-w-md w-full mx-4">
+    <div id="deleteModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center p-4">
+        <div class="bg-white p-6 rounded-lg max-w-md w-full mx-4 shadow-lg">
             <h2 class="text-xl font-bold mb-4">Delete Folder</h2>
             <p class="mb-4">Are you sure you want to delete this folder and all its data?</p>
             <div class="flex gap-2">
@@ -168,7 +187,6 @@
             </div>
         </div>
     </div>
-
     
     <script>
         let db;
