@@ -1,51 +1,46 @@
-// Function to display notes
-function displayNotes() {
-  const notes = JSON.parse(localStorage.getItem("notes")) || [];
-  const notesContainer = document.getElementById("notes-container");
-  notesContainer.innerHTML = '';
-  notes.forEach((note, index) => {
-    const noteElement = document.createElement("div");
-    noteElement.classList.add("note-card");
-    noteElement.innerHTML = `<h3>Note ${index + 1}</h3><p>${note}</p>`;
-    notesContainer.appendChild(noteElement);
-  });
+let bluetoothDevice;
+let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+let mediaRecorder;
+let audioChunks = [];
+
+// 🔵 Bluetooth Connect
+async function connectBluetooth() {
+    try {
+        bluetoothDevice = await navigator.bluetooth.requestDevice({
+            acceptAllDevices: true
+        });
+        console.log("✅ Connected to:", bluetoothDevice.name);
+    } catch (error) {
+        console.error("❌ Connection Failed:", error);
+    }
 }
 
-// Function to display recipes
-function displayRecipes() {
-  const recipes = JSON.parse(localStorage.getItem("recipes")) || [];
-  const recipesContainer = document.getElementById("recipes-container");
-  recipesContainer.innerHTML = '';
-  recipes.forEach((recipe, index) => {
-    const recipeElement = document.createElement("div");
-    recipeElement.classList.add("recipe-card");
-    recipeElement.innerHTML = `<h3>Recipe ${index + 1}</h3><p>${recipe}</p>`;
-    recipesContainer.appendChild(recipeElement);
-  });
+// 🎤 Start Recording Voice
+function startRecording() {
+    navigator.mediaDevices.getUserMedia({ audio: true })
+        .then(stream => {
+            mediaRecorder = new MediaRecorder(stream);
+            mediaRecorder.ondataavailable = event => {
+                audioChunks.push(event.data);
+            };
+            mediaRecorder.start();
+            console.log("🎤 Recording Started...");
+        })
+        .catch(error => console.error("❌ Microphone Access Denied:", error));
 }
 
-// Add new note
-function addNote() {
-  const note = prompt("Enter your nutrition note:");
-  if (note) {
-    const notes = JSON.parse(localStorage.getItem("notes")) || [];
-    notes.push(note);
-    localStorage.setItem("notes", JSON.stringify(notes));
-    displayNotes();
-  }
+// ⏹️ Stop Recording & Play Voice
+function stopRecording() {
+    mediaRecorder.stop();
+    mediaRecorder.onstop = () => {
+        let audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+        let audioURL = URL.createObjectURL(audioBlob);
+        let audio = new Audio(audioURL);
+        audio.play();
+        console.log("🔊 Playing Recorded Audio...");
+    };
 }
 
-// Add new recipe
-function addRecipe() {
-  const recipe = prompt("Enter your healthy recipe:");
-  if (recipe) {
-    const recipes = JSON.parse(localStorage.getItem("recipes")) || [];
-    recipes.push(recipe);
-    localStorage.setItem("recipes", JSON.stringify(recipes));
-    displayRecipes();
-  }
-}
-
-// Initial load
-displayNotes();
-displayRecipes();
+document.getElementById("connectBtn").addEventListener("click", connectBluetooth);
+document.getElementById("startRecording").addEventListener("click", startRecording);
+document.getElementById("stopRecording").addEventListener("click", stopRecording);
