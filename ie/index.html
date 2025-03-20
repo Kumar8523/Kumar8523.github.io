@@ -1,48 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Healthy Eating & Nutrition</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offline Bluetooth Voice Chat</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>Healthy Eating & Nutrition</h1>
-    <p>Track your nutrition, save healthy recipes, and discover tips for better eating habits.</p>
-  </header>
-
-  <div class="container">
-    <div class="notes-section">
-      <h2>Your Saved Nutrition Notes</h2>
-      <div id="notes-container"></div>
-      <button class="btn" onclick="addNote()">Add New Note</button>
-    </div>
-
-    <div class="recipe-section">
-      <h2>Healthy Recipes</h2>
-      <div id="recipes-container"></div>
-      <button class="btn" onclick="addRecipe()">Add New Recipe</button>
-    </div>
-  </div>
-
-  <footer>
-    <p>© 2025 Healthy Eating & Nutrition. All Rights Reserved.</p>
-  </footer>
-
-  <script src="script.js"></script>
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js')
-          .then(registration => {
-            console.log('Service Worker registered with scope:', registration.scope);
-          })
-          .catch(error => {
-            console.log('Service Worker registration failed:', error);
-          });
-      });
-    }
-  </script>
+    <h1>Offline Bluetooth Voice Chat</h1>
+    <button id="connectBtn">🔵 Connect via Bluetooth</button>
+    <button id="startRecording">🎤 Start Talking</button>
+    <button id="stopRecording">⏹️ Stop</button>
+    <script src="script.js"></script>
 </body>
 </html>
