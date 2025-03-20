@@ -1,193 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Finance Manager</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        .card:hover {
-            transform: translateY(-2px);
-            transition: transform 0.2s ease;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Healthy Eating & Nutrition</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body class="bg-gray-100 min-h-screen">
-    <div class="container mx-auto px-4 py-8 max-w-4xl">
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <h1 class="text-3xl font-bold text-gray-800 mb-6">Personal Finance Manager</h1>
-            
-            <!-- Add Transaction Form -->
-            <div class="mb-6">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input type="text" id="transactionTitle" placeholder="Transaction Title" 
-                           class="p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <input type="number" id="transactionAmount" placeholder="Amount" 
-                           class="p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <select id="transactionType" 
-                            class="p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="income">Income</option>
-                        <option value="expense">Expense</option>
-                    </select>
-                    <button onclick="addTransaction()" 
-                            class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
-                        Add Transaction
-                    </button>
-                </div>
-            </div>
+<body>
+  <header>
+    <h1>Healthy Eating & Nutrition</h1>
+    <p>Track your nutrition, save healthy recipes, and discover tips for better eating habits.</p>
+  </header>
 
-            <!-- Summary Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                <div class="card bg-green-100 p-4 rounded-lg">
-                    <h3 class="text-lg font-semibold text-gray-800">Total Income</h3>
-                    <p id="totalIncome" class="text-2xl font-bold text-green-700">₹0</p>
-                </div>
-                <div class="card bg-red-100 p-4 rounded-lg">
-                    <h3 class="text-lg font-semibold text-gray-800">Total Expense</h3>
-                    <p id="totalExpense" class="text-2xl font-bold text-red-700">₹0</p>
-                </div>
-                <div class="card bg-blue-100 p-4 rounded-lg">
-                    <h3 class="text-lg font-semibold text-gray-800">Balance</h3>
-                    <p id="balance" class="text-2xl font-bold text-blue-700">₹0</p>
-                </div>
-            </div>
-
-            <!-- Chart -->
-            <div class="mb-6">
-                <canvas id="financeChart"></canvas>
-            </div>
-
-            <!-- Transaction List -->
-            <div id="transactionList" class="space-y-2"></div>
-        </div>
+  <div class="container">
+    <div class="notes-section">
+      <h2>Your Saved Nutrition Notes</h2>
+      <div id="notes-container"></div>
+      <button class="btn" onclick="addNote()">Add New Note</button>
     </div>
 
-    <script>
-        // Initialize transactions array
-        let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+    <div class="recipe-section">
+      <h2>Healthy Recipes</h2>
+      <div id="recipes-container"></div>
+      <button class="btn" onclick="addRecipe()">Add New Recipe</button>
+    </div>
+  </div>
 
-        // Chart initialization
-        const ctx = document.getElementById('financeChart').getContext('2d');
-        const financeChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Income', 'Expense'],
-                datasets: [{
-                    label: 'Amount',
-                    data: [0, 0],
-                    backgroundColor: ['rgba(75, 192, 192, 0.2)', 'rgba(255, 99, 132, 0.2)'],
-                    borderColor: ['rgba(75, 192, 192, 1)', 'rgba(255, 99, 132, 1)'],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
+  <footer>
+    <p>© 2025 Healthy Eating & Nutrition. All Rights Reserved.</p>
+  </footer>
 
-        // Add transaction
-        function addTransaction() {
-            const title = document.getElementById('transactionTitle').value.trim();
-            const amount = parseFloat(document.getElementById('transactionAmount').value);
-            const type = document.getElementById('transactionType').value;
-
-            if (title && !isNaN(amount)) {
-                const transaction = {
-                    id: Date.now().toString(),
-                    title,
-                    amount,
-                    type,
-                    date: new Date().toISOString()
-                };
-
-                transactions.push(transaction);
-                saveTransactions();
-                renderTransactions();
-                updateSummary();
-                updateChart();
-                document.getElementById('transactionTitle').value = '';
-                document.getElementById('transactionAmount').value = '';
-            }
-        }
-
-        // Delete transaction
-        function deleteTransaction(id) {
-            transactions = transactions.filter(t => t.id !== id);
-            saveTransactions();
-            renderTransactions();
-            updateSummary();
-            updateChart();
-        }
-
-        // Save transactions to localStorage
-        function saveTransactions() {
-            localStorage.setItem('transactions', JSON.stringify(transactions));
-        }
-
-        // Render transactions
-        function renderTransactions() {
-            const transactionList = document.getElementById('transactionList');
-            transactionList.innerHTML = transactions.map(transaction => `
-                <div class="card border rounded-lg p-3 hover:shadow-md transition-shadow">
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <h3 class="font-semibold">${transaction.title}</h3>
-                            <p class="text-sm text-gray-600">${new Date(transaction.date).toLocaleDateString()}</p>
-                        </div>
-                        <div class="flex items-center gap-2">
-                            <p class="${transaction.type === 'income' ? 'text-green-700' : 'text-red-700'} font-semibold">
-                                ₹${transaction.amount}
-                            </p>
-                            <button onclick="deleteTransaction('${transaction.id}')" 
-                                    class="text-red-500 hover:text-red-700">
-                                Delete
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Update summary
-        function updateSummary() {
-            const totalIncome = transactions
-                .filter(t => t.type === 'income')
-                .reduce((sum, t) => sum + t.amount, 0);
-
-            const totalExpense = transactions
-                .filter(t => t.type === 'expense')
-                .reduce((sum, t) => sum + t.amount, 0);
-
-            const balance = totalIncome - totalExpense;
-
-            document.getElementById('totalIncome').textContent = `₹${totalIncome}`;
-            document.getElementById('totalExpense').textContent = `₹${totalExpense}`;
-            document.getElementById('balance').textContent = `₹${balance}`;
-        }
-
-        // Update chart
-        function updateChart() {
-            const totalIncome = transactions
-                .filter(t => t.type === 'income')
-                .reduce((sum, t) => sum + t.amount, 0);
-
-            const totalExpense = transactions
-                .filter(t => t.type === 'expense')
-                .reduce((sum, t) => sum + t.amount, 0);
-
-            financeChart.data.datasets[0].data = [totalIncome, totalExpense];
-            financeChart.update();
-        }
-
-        // Initial render
-        renderTransactions();
-        updateSummary();
-        updateChart();
-    </script>
+  <script src="script.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then(registration => {
+            console.log('Service Worker registered with scope:', registration.scope);
+          })
+          .catch(error => {
+            console.log('Service Worker registration failed:', error);
+          });
+      });
+    }
+  </script>
 </body>
 </html>
