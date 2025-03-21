@@ -1,46 +1,55 @@
-let bluetoothDevice;
-let audioContext = new (window.AudioContext || window.webkitAudioContext)();
-let mediaRecorder;
-let audioChunks = [];
+const connectBtn = document.getElementById('connectBtn');
+const audioPlayer = document.getElementById('audioPlayer');
 
-// 🔵 Bluetooth Connect
-async function connectBluetooth() {
+let peerConnection;
+let mediaStream;
+
+const servers = {
+    iceServers: [{ urls: 'stun:stun.l.google.com:19302' }]
+};
+
+// ✅ মাইক্রোফোন পারমিশন ও ডিভাইস চেক করা
+async function checkMicrophone() {
     try {
-        bluetoothDevice = await navigator.bluetooth.requestDevice({
-            acceptAllDevices: true
-        });
-        console.log("✅ Connected to:", bluetoothDevice.name);
+        const devices = await navigator.mediaDevices.enumerateDevices();
+        const audioDevices = devices.filter(device => device.kind === 'audioinput');
+        if (audioDevices.length === 0) {
+            alert("⚠️ No microphone found! Please connect a microphone.");
+            return false;
+        }
+        return true;
     } catch (error) {
-        console.error("❌ Connection Failed:", error);
+        console.error("Error checking devices:", error);
+        return false;
     }
 }
 
-// 🎤 Start Recording Voice
-function startRecording() {
-    navigator.mediaDevices.getUserMedia({ audio: true })
-        .then(stream => {
-            mediaRecorder = new MediaRecorder(stream);
-            mediaRecorder.ondataavailable = event => {
-                audioChunks.push(event.data);
-            };
-            mediaRecorder.start();
-            console.log("🎤 Recording Started...");
-        })
-        .catch(error => console.error("❌ Microphone Access Denied:", error));
+// ✅ সিগন্যাল অফার নেওয়া ও অডিও স্ট্রিম শুরু করা
+async function startReceiving() {
+    try {
+        const micAvailable = await checkMicrophone();
+        if (!micAvailable) return;
+
+        const offer = await fetchSignalOffer();
+        if (!offer) return alert("No signal offer received!");
+
+        peerConnection = new RTCPeerConnection(servers);
+
+        peerConnection.ontrack = event => {
+            const [stream] = event.streams;
+            audioPlayer.srcObject = stream;
+        };
+
+        const desc = new RTCSessionDescription(offer);
+        await peerConnection.setRemoteDescription(desc);
+
+        const answer = await peerConnection.createAnswer();
+        await peerConnection.setLocalDescription(answer);
+
+        sendSignalAnswer(answer);
+    } catch (error) {
+        console.error("Error in receiving signal: ", error);
+    }
 }
 
-// ⏹️ Stop Recording & Play Voice
-function stopRecording() {
-    mediaRecorder.stop();
-    mediaRecorder.onstop = () => {
-        let audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
-        let audioURL = URL.createObjectURL(audioBlob);
-        let audio = new Audio(audioURL);
-        audio.play();
-        console.log("🔊 Playing Recorded Audio...");
-    };
-}
-
-document.getElementById("connectBtn").addEventListener("click", connectBluetooth);
-document.getElementById("startRecording").addEventListener("click", startRecording);
-document.getElementById("stopRecording").addEventListener("click", stopRecording);
+connectBtn.addEventListener('click', startReceiving);
