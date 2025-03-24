@@ -3,95 +3,828 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bulk File Downloader</title>
+    <title>Pro Screen Recorder</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center">
-    <div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
-        <h1 class="text-2xl font-bold mb-6 text-center text-gray-800">Bulk File Downloader</h1>
-        
-        <div class="mb-4">
-            <input 
-                type="url" 
-                id="urlInput" 
-                placeholder="Enter URL (e.g., http://example.com/files)" 
-                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-        </div>
-        
-        <button 
-            onclick="startDownload()" 
-            class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition duration-200"
-        >
-            Download All Files
-        </button>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Header -->
+        <header class="mb-10 text-center">
+            <h1 class="text-4xl font-bold text-indigo-700 mb-2">Pro Screen Recorder</h1>
+            <p class="text-gray-600">Record, edit and share your screen with professional tools</p>
+        </header>
 
-        <div id="status" class="mt-4 text-center text-gray-600"></div>
+        <!-- Main App -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Panel - Controls -->
+            <div class="lg:col-span-1 bg-white rounded-xl shadow-lg p-6">
+                <h2 class="text-xl font-semibold mb-4 flex items-center gap-2">
+                    <i class="fas fa-sliders-h text-indigo-500"></i> Controls
+                </h2>
+                
+                <!-- Source Selection -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Source</label>
+                    <div class="grid grid-cols-2 gap-2">
+                        <button id="screenBtn" class="bg-indigo-100 text-indigo-700 px-4 py-2 rounded-lg flex items-center gap-2">
+                            <i class="fas fa-desktop"></i> Screen
+                        </button>
+                        <button id="webcamBtn" class="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg flex items-center gap-2">
+                            <i class="fas fa-video"></i> Webcam
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Audio Options -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Audio</label>
+                    <div class="space-y-2">
+                        <label class="flex items-center gap-2">
+                            <input type="checkbox" id="micCheckbox" class="form-checkbox h-5 w-5 text-indigo-600">
+                            <span>Microphone</span>
+                        </label>
+                        <label class="flex items-center gap-2">
+                            <input type="checkbox" id="sysAudioCheckbox" class="form-checkbox h-5 w-5 text-indigo-600">
+                            <span>System Audio</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Quality Settings -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Quality</label>
+                    <select id="qualitySelect" class="w-full rounded-lg border-gray-300">
+                        <option value="480">480p (SD)</option>
+                        <option value="720" selected>720p (HD)</option>
+                        <option value="1080">1080p (Full HD)</option>
+                        <option value="2160">2160p (4K)</option>
+                    </select>
+                </div>
+
+                <!-- Frame Rate -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Frame Rate</label>
+                    <select id="fpsSelect" class="w-full rounded-lg border-gray-300">
+                        <option value="15">15 fps</option>
+                        <option value="24">24 fps</option>
+                        <option value="30" selected>30 fps</option>
+                        <option value="60">60 fps</option>
+                    </select>
+                </div>
+
+                <!-- Watermark -->
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Watermark</label>
+                    <div class="flex items-center gap-2">
+                        <input type="text" id="watermarkText" placeholder="Your text" class="flex-1 rounded-lg border-gray-300">
+                        <button id="addWatermarkBtn" class="bg-gray-200 text-gray-700 p-2 rounded-lg">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Recording Controls -->
+                <div class="mt-8 space-y-3">
+                    <button id="startBtn" class="w-full bg-green-600 text-white py-3 rounded-lg font-medium flex items-center justify-center gap-2 hover:bg-green-700 transition">
+                        <i class="fas fa-circle"></i> Start Recording
+                    </button>
+                    <button id="stopBtn" disabled class="w-full bg-red-600 text-white py-3 rounded-lg font-medium flex items-center justify-center gap-2 hover:bg-red-700 transition disabled:opacity-50">
+                        <i class="fas fa-stop"></i> Stop Recording
+                    </button>
+                    <button id="pauseBtn" disabled class="w-full bg-yellow-500 text-white py-3 rounded-lg font-medium flex items-center justify-center gap-2 hover:bg-yellow-600 transition disabled:opacity-50">
+                        <i class="fas fa-pause"></i> Pause
+                    </button>
+                </div>
+
+                <!-- Timer -->
+                <div id="timer" class="mt-4 text-center text-2xl font-mono hidden">
+                    00:00:00
+                </div>
+            </div>
+
+            <!-- Center Panel - Preview & Annotation -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Preview -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                    <div class="p-4 bg-gray-100 border-b flex justify-between items-center">
+                        <h2 class="font-medium flex items-center gap-2">
+                            <i class="fas fa-eye text-indigo-500"></i> Preview
+                        </h2>
+                        <div class="flex gap-2">
+                            <button id="fullscreenBtn" class="text-gray-500 hover:text-indigo-600">
+                                <i class="fas fa-expand"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <video id="preview" class="w-full bg-black" autoplay muted></video>
+                        <canvas id="annotationCanvas" class="absolute top-0 left-0 w-full h-full pointer-events-none"></canvas>
+                    </div>
+                </div>
+
+                <!-- Annotation Tools -->
+                <div class="bg-white rounded-xl shadow-lg p-4">
+                    <h2 class="font-medium mb-3 flex items-center gap-2">
+                        <i class="fas fa-pencil-alt text-indigo-500"></i> Annotation Tools
+                    </h2>
+                    <div class="flex flex-wrap gap-2">
+                        <button data-tool="pen" class="annotation-tool bg-indigo-100 text-indigo-700 px-3 py-1 rounded-lg flex items-center gap-1">
+                            <i class="fas fa-pen"></i> Pen
+                        </button>
+                        <button data-tool="text" class="annotation-tool bg-gray-100 text-gray-700 px-3 py-1 rounded-lg flex items-center gap-1">
+                            <i class="fas fa-font"></i> Text
+                        </button>
+                        <button data-tool="arrow" class="annotation-tool bg-gray-100 text-gray-700 px-3 py-1 rounded-lg flex items-center gap-1">
+                            <i class="fas fa-arrow-right"></i> Arrow
+                        </button>
+                        <button data-tool="rectangle" class="annotation-tool bg-gray-100 text-gray-700 px-3 py-1 rounded-lg flex items-center gap-1">
+                            <i class="fas fa-square"></i> Rectangle
+                        </button>
+                        <button data-tool="circle" class="annotation-tool bg-gray-100 text-gray-700 px-3 py-1 rounded-lg flex items-center gap-1">
+                            <i class="fas fa-circle"></i> Circle
+                        </button>
+                        <button id="clearAnnotationsBtn" class="bg-gray-100 text-gray-700 px-3 py-1 rounded-lg flex items-center gap-1">
+                            <i class="fas fa-trash-alt"></i> Clear
+                        </button>
+                    </div>
+                    <div class="mt-3 hidden" id="colorPickerContainer">
+                        <label class="text-sm text-gray-600">Color:</label>
+                        <input type="color" id="annotationColor" value="#FF0000" class="ml-2">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recordings Section -->
+        <div class="mt-12 bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="p-4 bg-gray-100 border-b flex justify-between items-center">
+                <h2 class="font-medium flex items-center gap-2">
+                    <i class="fas fa-folder-open text-indigo-500"></i> My Recordings
+                </h2>
+                <div class="flex gap-2">
+                    <input type="text" id="searchRecordings" placeholder="Search..." class="px-3 py-1 rounded-lg border-gray-300 text-sm">
+                </div>
+            </div>
+            <div class="p-4">
+                <div id="recordingsList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <!-- Recordings will appear here -->
+                    <div class="text-center py-10 text-gray-400">
+                        <i class="fas fa-folder-open text-4xl mb-2"></i>
+                        <p>No recordings yet</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Video Editor Modal -->
+    <div id="editorModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
+            <div class="p-4 bg-gray-100 border-b flex justify-between items-center">
+                <h2 class="font-medium">Edit Recording</h2>
+                <button id="closeEditorBtn" class="text-gray-500 hover:text-red-500">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="flex-1 overflow-auto p-4">
+                <video id="editingVideo" controls class="w-full mb-4"></video>
+                <div class="grid grid-cols-3 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Start Time</label>
+                        <input type="range" id="trimStart" min="0" max="100" value="0" class="w-full">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-1">End Time</label>
+                        <input type="range" id="trimEnd" min="0" max="100" value="100" class="w-full">
+                    </div>
+                    <div class="flex items-end">
+                        <button id="applyTrimBtn" class="bg-indigo-600 text-white px-4 py-2 rounded-lg w-full">
+                            Apply Trim
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Thumbnail</label>
+                    <div class="flex gap-2">
+                        <button id="captureThumbnailBtn" class="bg-gray-200 text-gray-700 px-3 py-1 rounded-lg">
+                            Capture Current Frame
+                        </button>
+                        <input type="file" id="customThumbnail" class="hidden" accept="image/*">
+                        <button id="uploadThumbnailBtn" class="bg-gray-200 text-gray-700 px-3 py-1 rounded-lg">
+                            Upload Custom
+                        </button>
+                    </div>
+                    <div id="thumbnailPreview" class="mt-2 w-32 h-20 bg-gray-100 border border-gray-300 flex items-center justify-center text-gray-400 text-sm">
+                        No thumbnail
+                    </div>
+                </div>
+            </div>
+            <div class="p-4 bg-gray-100 border-t flex justify-end gap-2">
+                <button id="saveEditedBtn" class="bg-green-600 text-white px-6 py-2 rounded-lg">
+                    Save Changes
+                </button>
+                <button id="cancelEditBtn" class="bg-gray-300 text-gray-700 px-6 py-2 rounded-lg">
+                    Cancel
+                </button>
+            </div>
+        </div>
     </div>
 
     <script>
-        async function startDownload() {
-            const urlInput = document.getElementById('urlInput');
-            const statusDiv = document.getElementById('status');
+        // DOM Elements
+        const screenBtn = document.getElementById('screenBtn');
+        const webcamBtn = document.getElementById('webcamBtn');
+        const micCheckbox = document.getElementById('micCheckbox');
+        const sysAudioCheckbox = document.getElementById('sysAudioCheckbox');
+        const qualitySelect = document.getElementById('qualitySelect');
+        const fpsSelect = document.getElementById('fpsSelect');
+        const watermarkText = document.getElementById('watermarkText');
+        const addWatermarkBtn = document.getElementById('addWatermarkBtn');
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const preview = document.getElementById('preview');
+        const timer = document.getElementById('timer');
+        const annotationTools = document.querySelectorAll('.annotation-tool');
+        const clearAnnotationsBtn = document.getElementById('clearAnnotationsBtn');
+        const annotationCanvas = document.getElementById('annotationCanvas');
+        const annotationColor = document.getElementById('annotationColor');
+        const colorPickerContainer = document.getElementById('colorPickerContainer');
+        const recordingsList = document.getElementById('recordingsList');
+        const searchRecordings = document.getElementById('searchRecordings');
+        const editorModal = document.getElementById('editorModal');
+        const editingVideo = document.getElementById('editingVideo');
+        const trimStart = document.getElementById('trimStart');
+        const trimEnd = document.getElementById('trimEnd');
+        const applyTrimBtn = document.getElementById('applyTrimBtn');
+        const captureThumbnailBtn = document.getElementById('captureThumbnailBtn');
+        const uploadThumbnailBtn = document.getElementById('uploadThumbnailBtn');
+        const customThumbnail = document.getElementById('customThumbnail');
+        const thumbnailPreview = document.getElementById('thumbnailPreview');
+        const saveEditedBtn = document.getElementById('saveEditedBtn');
+        const cancelEditBtn = document.getElementById('cancelEditBtn');
+        const closeEditorBtn = document.getElementById('closeEditorBtn');
+
+        // App State
+        let mediaRecorder;
+        let screenStream;
+        let micStream;
+        let webcamStream;
+        let recordedChunks = [];
+        let startTime;
+        let timerInterval;
+        let isPaused = false;
+        let pauseStartTime;
+        let totalPausedTime = 0;
+        let currentTool = null;
+        let isDrawing = false;
+        let lastX = 0;
+        let lastY = 0;
+        let recordings = JSON.parse(localStorage.getItem('recordings') || '[]');
+        let currentEditingRecording = null;
+        let currentThumbnail = null;
+
+        // Initialize
+        updateRecordingsList();
+
+        // Event Listeners
+        screenBtn.addEventListener('click', () => selectSource('screen'));
+        webcamBtn.addEventListener('click', () => selectSource('webcam'));
+        startBtn.addEventListener('click', startRecording);
+        stopBtn.addEventListener('click', stopRecording);
+        pauseBtn.addEventListener('click', togglePause);
+        fullscreenBtn.addEventListener('click', toggleFullscreen);
+        addWatermarkBtn.addEventListener('click', addWatermark);
+        clearAnnotationsBtn.addEventListener('click', clearAnnotations);
+        searchRecordings.addEventListener('input', searchRecordingsList);
+        closeEditorBtn.addEventListener('click', closeEditor);
+        cancelEditBtn.addEventListener('click', closeEditor);
+        saveEditedBtn.addEventListener('click', saveEditedRecording);
+        applyTrimBtn.addEventListener('click', applyTrim);
+        captureThumbnailBtn.addEventListener('click', captureThumbnail);
+        uploadThumbnailBtn.addEventListener('click', () => customThumbnail.click());
+        customThumbnail.addEventListener('change', handleThumbnailUpload);
+
+        // Annotation Tools
+        annotationTools.forEach(tool => {
+            tool.addEventListener('click', () => {
+                currentTool = tool.dataset.tool;
+                annotationTools.forEach(t => t.classList.remove('bg-indigo-100', 'text-indigo-700'));
+                tool.classList.add('bg-indigo-100', 'text-indigo-700');
+                colorPickerContainer.classList.remove('hidden');
+            });
+        });
+
+        // Canvas Events
+        annotationCanvas.addEventListener('mousedown', startDrawing);
+        annotationCanvas.addEventListener('mousemove', draw);
+        annotationCanvas.addEventListener('mouseup', stopDrawing);
+        annotationCanvas.addEventListener('mouseout', stopDrawing);
+
+        // Functions
+        async function selectSource(source) {
+            try {
+                // Stop any existing streams
+                stopAllStreams();
+
+                if (source === 'screen') {
+                    screenStream = await navigator.mediaDevices.getDisplayMedia({
+                        video: {
+                            width: { ideal: parseInt(qualitySelect.value) },
+                            height: { ideal: parseInt(qualitySelect.value) },
+                            frameRate: { ideal: parseInt(fpsSelect.value) }
+                        },
+                        audio: sysAudioCheckbox.checked
+                    });
+                    preview.srcObject = screenStream;
+                    screenBtn.classList.add('bg-indigo-100', 'text-indigo-700');
+                    webcamBtn.classList.remove('bg-indigo-100', 'text-indigo-700');
+                } else {
+                    webcamStream = await navigator.mediaDevices.getUserMedia({
+                        video: {
+                            width: { ideal: parseInt(qualitySelect.value) },
+                            height: { ideal: parseInt(qualitySelect.value) },
+                            frameRate: { ideal: parseInt(fpsSelect.value) }
+                        },
+                        audio: false
+                    });
+                    preview.srcObject = webcamStream;
+                    webcamBtn.classList.add('bg-indigo-100', 'text-indigo-700');
+                    screenBtn.classList.remove('bg-indigo-100', 'text-indigo-700');
+                }
+
+                // Handle track ending
+                const stream = source === 'screen' ? screenStream : webcamStream;
+                stream.getTracks().forEach(track => {
+                    track.onended = () => {
+                        stopRecording();
+                        resetUI();
+                    };
+                });
+
+                // Setup canvas size
+                resizeCanvas();
+                startBtn.disabled = false;
+            } catch (err) {
+                console.error('Error accessing media:', err);
+                alert(`Error accessing ${source}: ${err.message}`);
+            }
+        }
+
+        function resizeCanvas() {
+            if (preview.videoWidth && preview.videoHeight) {
+                annotationCanvas.width = preview.videoWidth;
+                annotationCanvas.height = preview.videoHeight;
+            } else {
+                // Default size if video not loaded yet
+                annotationCanvas.width = preview.offsetWidth;
+                annotationCanvas.height = preview.offsetHeight;
+            }
+        }
+
+        function startRecording() {
+            try {
+                recordedChunks = [];
+                
+                // Get microphone if requested
+                if (micCheckbox.checked) {
+                    micStream = navigator.mediaDevices.getUserMedia({ audio: true })
+                        .then(stream => {
+                            micStream = stream;
+                            setupMediaRecorder();
+                        })
+                        .catch(err => {
+                            console.error('Error accessing microphone:', err);
+                            setupMediaRecorder();
+                        });
+                } else {
+                    setupMediaRecorder();
+                }
+            } catch (err) {
+                console.error('Recording error:', err);
+                alert('Error starting recording: ' + err.message);
+            }
+        }
+
+        function setupMediaRecorder() {
+            const activeStream = screenStream || webcamStream;
+            const combinedStream = new MediaStream([
+                ...activeStream.getTracks(),
+                ...(micStream ? micStream.getAudioTracks() : [])
+            ]);
+
+            // Initialize media recorder
+            mediaRecorder = new MediaRecorder(combinedStream, {
+                mimeType: 'video/webm; codecs=vp9',
+                videoBitsPerSecond: getBitrateForQuality()
+            });
+
+            mediaRecorder.ondataavailable = e => {
+                if (e.data.size > 0) recordedChunks.push(e.data);
+            };
+
+            mediaRecorder.onstop = saveRecording;
+            mediaRecorder.onpause = () => {
+                isPaused = true;
+                pauseStartTime = Date.now();
+            };
+            mediaRecorder.onresume = () => {
+                if (isPaused) {
+                    totalPausedTime += Date.now() - pauseStartTime;
+                    isPaused = false;
+                }
+            };
+
+            mediaRecorder.start(100);
+
+            // UI updates
+            startBtn.disabled = true;
+            stopBtn.disabled = false;
+            pauseBtn.disabled = false;
+            screenBtn.disabled = true;
+            webcamBtn.disabled = true;
+            timer.classList.remove('hidden');
+            startTime = Date.now();
+            totalPausedTime = 0;
+            updateTimer();
+
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        function getBitrateForQuality() {
+            const quality = qualitySelect.value;
+            switch(quality) {
+                case '480': return 1000000; // 1 Mbps
+                case '720': return 2500000; // 2.5 Mbps
+                case '1080': return 5000000; // 5 Mbps
+                case '2160': return 15000000; // 15 Mbps
+                default: return 2500000; // Default 2.5 Mbps
+            }
+        }
+
+        function stopRecording() {
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                mediaRecorder.stop();
+            }
+            clearInterval(timerInterval);
+            stopBtn.disabled = true;
+            pauseBtn.disabled = true;
+            preview.srcObject = null;
             
-            if(!urlInput.value) {
-                statusDiv.textContent = "Please enter a valid URL";
+            // Stop all tracks
+            [screenStream, micStream, webcamStream].forEach(stream => {
+                if (stream) stream.getTracks().forEach(track => track.stop());
+            });
+        }
+
+        function togglePause() {
+            if (isPaused) {
+                mediaRecorder.resume();
+                pauseBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+            } else {
+                mediaRecorder.pause();
+                pauseBtn.innerHTML = '<i class="fas fa-play"></i> Resume';
+            }
+        }
+
+        function updateTimer() {
+            if (isPaused) return;
+            
+            const elapsed = Date.now() - startTime - totalPausedTime;
+            const hours = Math.floor(elapsed / 3600000).toString().padStart(2, '0');
+            const minutes = Math.floor((elapsed % 3600000) / 60000).toString().padStart(2, '0');
+            const seconds = Math.floor((elapsed % 60000) / 1000).toString().padStart(2, '0');
+            timer.textContent = `${hours}:${minutes}:${seconds}`;
+        }
+
+        function saveRecording() {
+            const blob = new Blob(recordedChunks, { type: 'video/webm' });
+            const url = URL.createObjectURL(blob);
+            const date = new Date();
+            const name = `Recording_${date.toISOString().replace(/[:.]/g, '-')}.webm`;
+            const duration = timer.textContent;
+
+            // Create thumbnail
+            createThumbnail(blob).then(thumbnail => {
+                // Save to localStorage
+                recordings.unshift({ 
+                    name, 
+                    url, 
+                    date: date.toLocaleString(),
+                    duration,
+                    thumbnail
+                });
+                localStorage.setItem('recordings', JSON.stringify(recordings));
+                updateRecordingsList();
+                resetUI();
+            });
+        }
+
+        function createThumbnail(videoBlob) {
+            return new Promise((resolve) => {
+                const video = document.createElement('video');
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                
+                video.src = URL.createObjectURL(videoBlob);
+                video.addEventListener('loadedmetadata', () => {
+                    // Seek to 25% of the video for thumbnail
+                    video.currentTime = video.duration * 0.25;
+                });
+                
+                video.addEventListener('seeked', () => {
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                    const thumbnail = canvas.toDataURL('image/jpeg', 0.7);
+                    resolve(thumbnail);
+                });
+            });
+        }
+
+        function updateRecordingsList(filter = '') {
+            if (recordings.length === 0) {
+                recordingsList.innerHTML = `
+                    <div class="text-center py-10 text-gray-400 col-span-3">
+                        <i class="fas fa-folder-open text-4xl mb-2"></i>
+                        <p>No recordings yet</p>
+                    </div>
+                `;
                 return;
             }
 
-            try {
-                statusDiv.textContent = "Fetching file list...";
-                const response = await fetch(urlInput.value);
-                const html = await response.text();
-                const files = parseFilesFromHTML(html);
-                
-                statusDiv.textContent = `Found ${files.length} files, starting downloads...`;
-                
-                // Download files one by one
-                for(const file of files) {
-                    await downloadFile(file);
-                    await new Promise(resolve => setTimeout(resolve, 1000));
-                }
-                
-                statusDiv.textContent = "All downloads completed!";
-            } catch (error) {
-                statusDiv.textContent = "Error: " + error.message;
+            const filtered = filter 
+                ? recordings.filter(rec => 
+                    rec.name.toLowerCase().includes(filter.toLowerCase()) || 
+                    rec.date.toLowerCase().includes(filter.toLowerCase()))
+                : recordings;
+
+            recordingsList.innerHTML = filtered.map((rec, index) => `
+                <div class="bg-gray-50 rounded-lg overflow-hidden hover:shadow-md transition">
+                    <div class="relative h-40 bg-black flex items-center justify-center">
+                        ${rec.thumbnail 
+                            ? `<img src="${rec.thumbnail}" class="h-full w-full object-contain">`
+                            : `<i class="fas fa-video text-gray-500 text-3xl"></i>`}
+                        <div class="absolute bottom-2 left-2 bg-black bg-opacity-70 text-white px-2 py-1 rounded text-xs">
+                            ${rec.duration}
+                        </div>
+                    </div>
+                    <div class="p-3">
+                        <h3 class="font-medium text-gray-800 truncate">${rec.name}</h3>
+                        <p class="text-xs text-gray-500 mt-1">${rec.date}</p>
+                        <div class="flex gap-2 mt-3">
+                            <button data-index="${index}" class="edit-btn flex-1 bg-indigo-100 text-indigo-700 text-sm py-1 rounded hover:bg-indigo-200 transition">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <a href="${rec.url}" download="${rec.name}" class="flex-1 bg-green-100 text-green-700 text-sm py-1 rounded hover:bg-green-200 transition text-center">
+                                <i class="fas fa-download"></i> Download
+                            </a>
+                        </div>
+                        <div class="flex gap-2 mt-2">
+                            <button data-index="${index}" class="share-btn bg-blue-100 text-blue-700 text-sm py-1 rounded hover:bg-blue-200 transition flex-1">
+                                <i class="fas fa-share"></i> Share
+                            </button>
+                            <button data-index="${index}" class="delete-btn bg-red-100 text-red-700 text-sm py-1 rounded hover:bg-red-200 transition flex-1">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Add event listeners to new buttons
+            document.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.addEventListener('click', () => openEditor(parseInt(btn.dataset.index)));
+            });
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', () => deleteRecording(parseInt(btn.dataset.index)));
+            });
+            document.querySelectorAll('.share-btn').forEach(btn => {
+                btn.addEventListener('click', () => shareRecording(parseInt(btn.dataset.index)));
+            });
+        }
+
+        function openEditor(index) {
+            currentEditingRecording = index;
+            const rec = recordings[index];
+            editingVideo.src = rec.url;
+            currentThumbnail = rec.thumbnail || null;
+            
+            if (currentThumbnail) {
+                thumbnailPreview.innerHTML = `<img src="${currentThumbnail}" class="w-full h-full object-cover">`;
+            } else {
+                thumbnailPreview.innerHTML = 'No thumbnail';
+            }
+            
+            editorModal.classList.remove('hidden');
+        }
+
+        function closeEditor() {
+            editorModal.classList.add('hidden');
+            currentEditingRecording = null;
+            currentThumbnail = null;
+        }
+
+        function applyTrim() {
+            // In a real app, you would use FFmpeg.js or a server-side process to trim the video
+            alert('Video trimming would be implemented with FFmpeg.js in a production app');
+        }
+
+        function captureThumbnail() {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = editingVideo.videoWidth;
+            canvas.height = editingVideo.videoHeight;
+            ctx.drawImage(editingVideo, 0, 0, canvas.width, canvas.height);
+            currentThumbnail = canvas.toDataURL('image/jpeg', 0.7);
+            thumbnailPreview.innerHTML = `<img src="${currentThumbnail}" class="w-full h-full object-cover">`;
+        }
+
+        function handleThumbnailUpload(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    currentThumbnail = event.target.result;
+                    thumbnailPreview.innerHTML = `<img src="${currentThumbnail}" class="w-full h-full object-cover">`;
+                };
+                reader.readAsDataURL(file);
             }
         }
 
-        function parseFilesFromHTML(html) {
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(html, 'text/html');
-            const links = Array.from(doc.querySelectorAll('a[href]'));
-            
-            return links
-                .map(link => link.href)
-                .filter(href => 
-                    !href.endsWith('/') && 
-                    !href.includes('?') && 
-                    !href.startsWith('mailto:') &&
-                    !href.startsWith('javascript:')
-                );
+        function saveEditedRecording() {
+            if (currentEditingRecording !== null) {
+                recordings[currentEditingRecording].thumbnail = currentThumbnail;
+                localStorage.setItem('recordings', JSON.stringify(recordings));
+                updateRecordingsList();
+                closeEditor();
+            }
         }
 
-        function downloadFile(url) {
-            return new Promise((resolve, reject) => {
-                const anchor = document.createElement('a');
-                anchor.href = url;
-                anchor.download = url.split('/').pop();
-                anchor.style.display = 'none';
-                
-                anchor.onclick = () => {
-                    setTimeout(() => {
-                        document.body.removeChild(anchor);
-                        resolve();
-                    }, 100);
-                };
-                
-                document.body.appendChild(anchor);
-                anchor.click();
-            });
+        function deleteRecording(index) {
+            if (confirm('Are you sure you want to delete this recording?')) {
+                URL.revokeObjectURL(recordings[index].url);
+                recordings.splice(index, 1);
+                localStorage.setItem('recordings', JSON.stringify(recordings));
+                updateRecordingsList();
+            }
         }
+
+        function shareRecording(index) {
+            // In a real app, this would use the Web Share API or social media links
+            alert('Sharing would be implemented with the Web Share API in a production app');
+        }
+
+        function searchRecordingsList() {
+            updateRecordingsList(searchRecordings.value);
+        }
+
+        function addWatermark() {
+            if (!watermarkText.value.trim()) return;
+            
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = annotationCanvas.width;
+            canvas.height = annotationCanvas.height;
+            
+            // Draw existing annotations
+            ctx.drawImage(annotationCanvas, 0, 0);
+            
+            // Add watermark
+            ctx.font = '20px Arial';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.textAlign = 'center';
+            ctx.fillText(watermarkText.value, canvas.width/2, canvas.height-20);
+            
+            // Update canvas
+            annotationCanvas.getContext('2d').drawImage(canvas, 0, 0);
+        }
+
+        function startDrawing(e) {
+            if (!currentTool) return;
+            
+            isDrawing = true;
+            const rect = annotationCanvas.getBoundingClientRect();
+            lastX = e.clientX - rect.left;
+            lastY = e.clientY - rect.top;
+        }
+
+        function draw(e) {
+            if (!isDrawing || !currentTool) return;
+            
+            const ctx = annotationCanvas.getContext('2d');
+            const rect = annotationCanvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            ctx.strokeStyle = annotationColor.value;
+            ctx.fillStyle = annotationColor.value;
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            
+            switch(currentTool) {
+                case 'pen':
+                    ctx.beginPath();
+                    ctx.moveTo(lastX, lastY);
+                    ctx.lineTo(x, y);
+                    ctx.stroke();
+                    break;
+                    
+                case 'text':
+                    if (!isDrawing) {
+                        const text = prompt('Enter text:');
+                        if (text) {
+                            ctx.font = '20px Arial';
+                            ctx.fillText(text, x, y);
+                        }
+                    }
+                    isDrawing = false;
+                    return;
+                    
+                case 'arrow':
+                    drawArrow(ctx, lastX, lastY, x, y);
+                    break;
+                    
+                case 'rectangle':
+                    ctx.beginPath();
+                    ctx.rect(lastX, lastY, x - lastX, y - lastY);
+                    ctx.stroke();
+                    break;
+                    
+                case 'circle':
+                    const radius = Math.sqrt(Math.pow(x - lastX, 2) + Math.pow(y - lastY, 2));
+                    ctx.beginPath();
+                    ctx.arc(lastX, lastY, radius, 0, Math.PI * 2);
+                    ctx.stroke();
+                    break;
+            }
+            
+            lastX = x;
+            lastY = y;
+        }
+
+        function drawArrow(ctx, fromX, fromY, toX, toY) {
+            const headLength = 10;
+            const angle = Math.atan2(toY - fromY, toX - fromX);
+            
+            ctx.beginPath();
+            ctx.moveTo(fromX, fromY);
+            ctx.lineTo(toX, toY);
+            ctx.lineTo(toX - headLength * Math.cos(angle - Math.PI/6), toY - headLength * Math.sin(angle - Math.PI/6));
+            ctx.moveTo(toX, toY);
+            ctx.lineTo(toX - headLength * Math.cos(angle + Math.PI/6), toY - headLength * Math.sin(angle + Math.PI/6));
+            ctx.stroke();
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+        }
+
+        function clearAnnotations() {
+            const ctx = annotationCanvas.getContext('2d');
+            ctx.clearRect(0, 0, annotationCanvas.width, annotationCanvas.height);
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                preview.requestFullscreen().catch(err => {
+                    alert(`Error attempting to enable fullscreen: ${err.message}`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        function resetUI() {
+            startBtn.disabled = true;
+            stopBtn.disabled = true;
+            pauseBtn.disabled = true;
+            screenBtn.disabled = false;
+            webcamBtn.disabled = false;
+            timer.classList.add('hidden');
+            screenBtn.classList.remove('bg-indigo-100', 'text-indigo-700');
+            webcamBtn.classList.remove('bg-indigo-100', 'text-indigo-700');
+            clearAnnotations();
+        }
+
+        function stopAllStreams() {
+            [screenStream, micStream, webcamStream].forEach(stream => {
+                if (stream) {
+                    stream.getTracks().forEach(track => track.stop());
+                }
+            });
+            screenStream = null;
+            micStream = null;
+            webcamStream = null;
+        }
+
+        // Cleanup on exit
+        window.addEventListener('beforeunload', () => {
+            stopAllStreams();
+            recordings.forEach(rec => URL.revokeObjectURL(rec.url));
+        });
     </script>
 </body>
 </html>
