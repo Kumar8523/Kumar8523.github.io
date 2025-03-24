@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>নেটওয়ার্ক ও লোকেশন তথ্য</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        #info {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            display: inline-block;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>আপনার নেটওয়ার্ক ও লোকেশন তথ্য</h2>
+    <div id="info">
+        <p><strong>IP ঠিকানা:</strong> <span id="ipAddress">লোড হচ্ছে...</span></p>
+        <p><strong>ISP:</strong> <span id="isp">লোড হচ্ছে...</span></p>
+        <p><strong>লোকেশন (Latitude, Longitude):</strong> <span id="location">লোড হচ্ছে...</span></p>
+        <p><strong>শহর:</strong> <span id="city">লোড হচ্ছে...</span></p>
+        <p><strong>দেশ:</strong> <span id="country">লোড হচ্ছে...</span></p>
+        <p><strong>টাইমজোন:</strong> <span id="timezone">লোড হচ্ছে...</span></p>
+    </div>
+
+    <script>
+        async function fetchNetworkInfo() {
+            try {
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+
+                if (!data.ip) throw new Error("প্রথম API ব্যর্থ হয়েছে");
+
+                document.getElementById('ipAddress').textContent = data.ip || 'N/A';
+                document.getElementById('isp').textContent = data.org || 'N/A';
+                document.getElementById('location').textContent = data.latitude && data.longitude 
+                    ? `${data.latitude}, ${data.longitude}` 
+                    : 'N/A';
+                document.getElementById('city').textContent = data.city || 'N/A';
+                document.getElementById('country').textContent = data.country_name || 'N/A';
+                document.getElementById('timezone').textContent = data.timezone || 'N/A';
+
+            } catch (error) {
+                console.warn('প্রথম API ব্যর্থ, বিকল্প API ব্যবহার করা হচ্ছে...', error);
+
+                // বিকল্প API (Backup API)
+                fetch('https://ipinfo.io/json')
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('ipAddress').textContent = data.ip || 'N/A';
+                        document.getElementById('isp').textContent = data.org || 'N/A';
+                        if (data.loc) {
+                            const [latitude, longitude] = data.loc.split(',');
+                            document.getElementById('location').textContent = `${latitude}, ${longitude}`;
+                        } else {
+                            document.getElementById('location').textContent = 'N/A';
+                        }
+                        document.getElementById('city').textContent = data.city || 'N/A';
+                        document.getElementById('country').textContent = data.country || 'N/A';
+                        document.getElementById('timezone').textContent = data.timezone || 'N/A';
+                    })
+                    .catch(error => {
+                        console.error('সব API ব্যর্থ হয়েছে:', error);
+                        document.getElementById('info').innerHTML = "<p>তথ্য লোড করতে ব্যর্থ। অনুগ্রহ করে পরে চেষ্টা করুন।</p>";
+                    });
+            }
+        }
+
+        // পেজ লোড হলে অটো কল হবে
+        fetchNetworkInfo();
+    </script>
+
+</body>
+</html>
