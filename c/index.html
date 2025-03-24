@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network & Device Info</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>
+        .gauge {
+            width: 100%;
+            height: 20px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .gauge-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4ade80, #3b82f6);
+            transition: width 0.5s ease-out;
+        }
+        .spinner {
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Network & Device Information</h1>
+            <p class="text-gray-600 mt-2">Get accurate internet speed and system details</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Internet Speed Test -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <h2 class="text-xl font-semibold mb-4 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                    Internet Speed Test
+                </h2>
+                
+                <div class="space-y-6">
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <span class="text-gray-700">Download Speed</span>
+                            <span id="downloadSpeed" class="font-mono">0 Mbps</span>
+                        </div>
+                        <div class="gauge">
+                            <div id="downloadGauge" class="gauge-fill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <span class="text-gray-700">Upload Speed</span>
+                            <span id="uploadSpeed" class="font-mono">0 Mbps</span>
+                        </div>
+                        <div class="gauge">
+                            <div id="uploadGauge" class="gauge-fill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="flex justify-between mb-1">
+                            <span class="text-gray-700">Ping</span>
+                            <span id="pingResult" class="font-mono">0 ms</span>
+                        </div>
+                    </div>
+                    
+                    <button id="startTestBtn" class="w-full bg-blue-600 text-white py-3 rounded-lg font-medium hover:bg-blue-700 transition flex items-center justify-center gap-2">
+                        <span id="testBtnText">Start Speed Test</span>
+                        <svg id="testSpinner" class="h-5 w-5 text-white spinner hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Location & Network Info -->
+            <div class="bg-white rounded-xl shadow-md p-6">
+                <h2 class="text-xl font-semibold mb-4 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    Location & Network Information
+                </h2>
+                
+                <div class="space-y-4">
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="text-gray-700">IP Address</span>
+                        <span id="ipAddress" class="font-mono">Loading...</span>
+                    </div>
+                    
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="text-gray-700">ISP</span>
+                        <span id="isp" class="font-mono">Loading...</span>
+                    </div>
+                    
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="text-gray-700">Location</span>
+                        <span id="location" class="font-mono">Loading...</span>
+                    </div>
+                    
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="text-gray-700">City</span>
+                        <span id="city" class="font-mono">Loading...</span>
+                    </div>
+                    
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="text-gray-700">Country</span>
+                        <span id="country" class="font-mono">Loading...</span>
+                    </div>
+                    
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="text-gray-700">Timezone</span>
+                        <span id="timezone" class="font-mono">Loading...</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Device Information -->
+            <div class="bg-white rounded-xl shadow-md p-6 lg:col-span-2">
+                <h2 class="text-xl font-semibold mb-4 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                    </svg>
+                    Device Information
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="text-gray-700">Browser</span>
+                        <span id="browser" class="font-mono">Loading...</span>
+                    </div>
+                    
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="text-gray-700">OS</span>
+                        <span id="os" class="font-mono">Loading...</span>
+                    </div>
+                    
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="text-gray-700">Device Type</span>
+                        <span id="deviceType" class="font-mono">Loading...</span>
+                    </div>
+                    
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="text-gray-700">Screen Resolution</span>
+                        <span id="screenRes" class="font-mono">Loading...</span>
+                    </div>
+                    
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="text-gray-700">CPU Cores</span>
+                        <span id="cpuCores" class="font-mono">Loading...</span>
+                    </div>
+                    
+                    <div class="flex justify-between border-b pb-2">
+                        <span class="text-gray-700">Memory</span>
+                        <span id="deviceMemory" class="font-mono">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const startTestBtn = document.getElementById('startTestBtn');
+        const testBtnText = document.getElementById('testBtnText');
+        const testSpinner = document.getElementById('testSpinner');
+        const downloadSpeed = document.getElementById('downloadSpeed');
+        const uploadSpeed = document.getElementById('uploadSpeed');
+        const pingResult = document.getElementById('pingResult');
+        const downloadGauge = document.getElementById('downloadGauge');
+        const uploadGauge = document.getElementById('uploadGauge');
+
+        // Speed Test Variables
+        let testInProgress = false;
+        let downloadSize = 10 * 1024 * 1024; // 10MB test file
+        let uploadSize = 5 * 1024 * 1024; // 5MB test file
+        let testServer = 'https://httpbin.org/bytes'; // Replace with your own server for better accuracy
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchNetworkInfo();
+            detectDeviceInfo();
+        });
+
+        // Speed Test Button Click Handler
+        startTestBtn.addEventListener('click', async function() {
+            if (testInProgress) return;
+            
+            testInProgress = true;
+            testBtnText.textContent = 'Testing...';
+            testSpinner.classList.remove('hidden');
+            startTestBtn.disabled = true;
+            
+            // Reset previous results
+            downloadSpeed.textContent = '0 Mbps';
+            uploadSpeed.textContent = '0 Mbps';
+            pingResult.textContent = '0 ms';
+            downloadGauge.style.width = '0%';
+            uploadGauge.style.width = '0%';
+            
+            try {
+                // Test Ping first
+                const ping = await testPing();
+                pingResult.textContent = `${ping} ms`;
+                
+                // Test Download Speed
+                const dlSpeed = await testDownloadSpeed();
+                downloadSpeed.textContent = `${dlSpeed.toFixed(2)} Mbps`;
+                downloadGauge.style.width = `${Math.min(100, dlSpeed / 100 * 100)}%`;
+                
+                // Test Upload Speed
+                const ulSpeed = await testUploadSpeed();
+                uploadSpeed.textContent = `${ulSpeed.toFixed(2)} Mbps`;
+                uploadGauge.style.width = `${Math.min(100, ulSpeed / 50 * 100)}%`;
+            } catch (error) {
+                console.error('Speed test error:', error);
+                alert('Speed test failed. Please try again.');
+            }
+            
+            testInProgress = false;
+            testBtnText.textContent = 'Start Speed Test';
+            testSpinner.classList.add('hidden');
+            startTestBtn.disabled = false;
+        });
+
+        // Test Ping
+        async function testPing() {
+            const start = performance.now();
+            await axios.head(testServer);
+            const end = performance.now();
+            return Math.round(end - start);
+        }
+
+        // Test Download Speed
+        async function testDownloadSpeed() {
+            const start = performance.now();
+            const response = await axios.get(`${testServer}/${downloadSize}`, {
+                responseType: 'arraybuffer',
+                headers: {
+                    'Cache-Control': 'no-cache',
+                    'Pragma': 'no-cache'
+                }
+            });
+            const end = performance.now();
+            
+            const duration = (end - start) / 1000; // in seconds
+            const bitsLoaded = downloadSize * 8;
+            const speedMbps = (bitsLoaded / duration) / 1000000;
+            
+            return speedMbps;
+        }
+
+        // Test Upload Speed
+        async function testUploadSpeed() {
+            // Create a random data blob to upload
+            const data = new Uint8Array(uploadSize);
+            for (let i = 0; i < data.length; i++) {
+                data[i] = Math.floor(Math.random() * 256);
+            }
+            
+            const start = performance.now();
+            await axios.post(testServer, data, {
+                headers: {
+                    'Content-Type': 'application/octet-stream',
+                    'Cache-Control': 'no-cache',
+                    'Pragma': 'no-cache'
+                }
+            });
+            const end = performance.now();
+            
+            const duration = (end - start) / 1000; // in seconds
+            const bitsLoaded = uploadSize * 8;
+            const speedMbps = (bitsLoaded / duration) / 1000000;
+            
+            return speedMbps;
+        }
+
+        // Fetch Network and Location Info
+        async function fetchNetworkInfo() {
+            try {
+                // Using ipapi.co API for location and network info
+                const response = await axios.get('https://ipapi.co/json/');
+                const data = response.data;
+                
+                document.getElementById('ipAddress').textContent = data.ip || 'N/A';
+                document.getElementById('isp').textContent = data.org || 'N/A';
+                document.getElementById('location').textContent = `${data.latitude || 'N/A'}, ${data.longitude || 'N/A'}`;
+                document.getElementById('city').textContent = data.city || 'N/A';
+                document.getElementById('country').textContent = `${data.country_name || 'N/A'} (${data.country || 'N/A'})`;
+                document.getElementById('timezone').textContent = data.timezone || 'N/A';
+            } catch (error) {
+                console.error('Error fetching network info:', error);
+                // Fallback to less accurate method if API fails
+                fetch('https://api.ipify.org?format=json')
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById('ipAddress').textContent = data.ip || 'N/A';
+                    });
+            }
+        }
+
+        // Detect Device Information
+        function detectDeviceInfo() {
+            // Browser Detection
+            const userAgent = navigator.userAgent;
+            let browser = 'Unknown';
+            
+            if (userAgent.includes('Firefox')) browser = 'Firefox';
+            else if (userAgent.includes('SamsungBrowser')) browser = 'Samsung Browser';
+            else if (userAgent.includes('Opera') || userAgent.includes('OPR')) browser = 'Opera';
+            else if (userAgent.includes('Trident')) browser = 'Internet Explorer';
+            else if (userAgent.includes('Edge')) browser = 'Edge';
+            else if (userAgent.includes('Chrome')) browser = 'Chrome';
+            else if (userAgent.includes('Safari')) browser = 'Safari';
+            
+            document.getElementById('browser').textContent = browser;
+            
+            // OS Detection
+            let os = 'Unknown';
+            
+            if (userAgent.includes('Windows')) os = 'Windows';
+            else if (userAgent.includes('Mac')) os = 'MacOS';
+            else if (userAgent.includes('Linux')) os = 'Linux';
+            else if (userAgent.includes('Android')) os = 'Android';
+            else if (userAgent.includes('iOS') || userAgent.includes('iPhone') || userAgent.includes('iPad')) os = 'iOS';
+            
+            document.getElementById('os').textContent = os;
+            
+            // Device Type
+            const isMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(userAgent);
+            document.getElementById('deviceType').textContent = isMobile ? 'Mobile' : 'Desktop';
+            
+            // Screen Resolution
+            document.getElementById('screenRes').textContent = `${window.screen.width} × ${window.screen.height}`;
+            
+            // CPU Cores
+            const cores = navigator.hardwareConcurrency || 'Unknown';
+            document.getElementById('cpuCores').textContent = cores;
+            
+            // Device Memory (approximate)
+            if (navigator.deviceMemory) {
+                document.getElementById('deviceMemory').textContent = `${navigator.deviceMemory} GB`;
+            } else {
+                // Fallback for browsers that don't support deviceMemory
+                if (isMobile) {
+                    document.getElementById('deviceMemory').textContent = 'Mobile (unknown)';
+                } else {
+                    document.getElementById('deviceMemory').textContent = 'Desktop (unknown)';
+                }
+            }
+        }
+    </script>
+</body>
+</html>
