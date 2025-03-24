@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>নেটওয়ার্ক ও লোকেশন তথ্য</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#4f46e5',
+                        secondary: '#6366f1',
+                        dark: '#1e293b',
+                        light: '#f8fafc'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen p-4 md:p-8">
+    <div class="max-w-2xl mx-auto">
+        <!-- হেডার সেকশন -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-indigo-800 mb-2">
+                <i class="fas fa-network-wired mr-2"></i>নেটওয়ার্ক ও লোকেশন তথ্য
+            </h1>
+            <p class="text-gray-600">আপনার ডিভাইসের সমস্ত নেটওয়ার্ক সম্পর্কিত তথ্য একসাথে দেখুন</p>
+        </header>
+
+        <!-- মেইন কার্ড -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <!-- কার্ড হেডার -->
+            <div class="bg-indigo-600 text-white p-4 flex items-center">
+                <i class="fas fa-info-circle text-2xl mr-3"></i>
+                <h2 class="text-xl font-semibold">আপনার ডিভাইসের তথ্য</h2>
+            </div>
+
+            <!-- তথ্য সেকশন -->
+            <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- আইপি সেকশন -->
+                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <div class="flex items-center mb-2">
+                        <i class="fas fa-globe text-indigo-600 mr-2"></i>
+                        <h3 class="font-medium text-gray-700">আইপি ঠিকানা</h3>
+                    </div>
+                    <div id="ipAddress" class="text-lg font-mono text-indigo-800 bg-gray-100 p-2 rounded">
+                        <i class="fas fa-spinner fa-spin mr-2"></i>লোড হচ্ছে...
+                    </div>
+                </div>
+
+                <!-- ISP সেকশন -->
+                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <div class="flex items-center mb-2">
+                        <i class="fas fa-wifi text-indigo-600 mr-2"></i>
+                        <h3 class="font-medium text-gray-700">ইন্টারনেট সেবাদাতা</h3>
+                    </div>
+                    <div id="isp" class="text-lg text-indigo-800">
+                        <i class="fas fa-spinner fa-spin mr-2"></i>লোড হচ্ছে...
+                    </div>
+                </div>
+
+                <!-- লোকেশন সেকশন -->
+                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <div class="flex items-center mb-2">
+                        <i class="fas fa-map-marker-alt text-indigo-600 mr-2"></i>
+                        <h3 class="font-medium text-gray-700">লোকেশন</h3>
+                    </div>
+                    <div id="location" class="text-lg text-indigo-800 cursor-pointer hover:underline">
+                        <i class="fas fa-spinner fa-spin mr-2"></i>লোড হচ্ছে...
+                    </div>
+                </div>
+
+                <!-- নেটওয়ার্ক টাইপ সেকশন -->
+                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <div class="flex items-center mb-2">
+                        <i class="fas fa-network-wired text-indigo-600 mr-2"></i>
+                        <h3 class="font-medium text-gray-700">নেটওয়ার্ক টাইপ</h3>
+                    </div>
+                    <div id="connectionType" class="text-lg text-indigo-800">
+                        <i class="fas fa-spinner fa-spin mr-2"></i>লোড হচ্ছে...
+                    </div>
+                </div>
+
+                <!-- শহর সেকশন -->
+                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <div class="flex items-center mb-2">
+                        <i class="fas fa-city text-indigo-600 mr-2"></i>
+                        <h3 class="font-medium text-gray-700">শহর</h3>
+                    </div>
+                    <div id="city" class="text-lg text-indigo-800">
+                        <i class="fas fa-spinner fa-spin mr-2"></i>লোড হচ্ছে...
+                    </div>
+                </div>
+
+                <!-- দেশ সেকশন -->
+                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <div class="flex items-center mb-2">
+                        <i class="fas fa-flag text-indigo-600 mr-2"></i>
+                        <h3 class="font-medium text-gray-700">দেশ</h3>
+                    </div>
+                    <div id="country" class="text-lg text-indigo-800 flex items-center">
+                        <i class="fas fa-spinner fa-spin mr-2"></i>লোড হচ্ছে...
+                    </div>
+                </div>
+            </div>
+
+            <!-- সিস্টেম ইনফো সেকশন -->
+            <div class="p-6 border-t border-gray-200">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-microchip text-indigo-600 mr-2"></i>
+                    সিস্টেম তথ্য
+                </h3>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <div class="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                        <div class="text-sm text-gray-500">ব্রাউজার</div>
+                        <div id="browser" class="font-medium">-</div>
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                        <div class="text-sm text-gray-500">অপারেটিং সিস্টেম</div>
+                        <div id="os" class="font-medium">-</div>
+                    </div>
+                    <div class="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                        <div class="text-sm text-gray-500">ডিভাইস টাইপ</div>
+                        <div id="deviceType" class="font-medium">-</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- স্পিড টেস্ট সেকশন -->
+            <div class="p-6 border-t border-gray-200">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                    <i class="fas fa-tachometer-alt text-indigo-600 mr-2"></i>
+                    ইন্টারনেট স্পিড টেস্ট
+                </h3>
+                <div class="flex flex-col md:flex-row gap-4 mb-4">
+                    <div class="flex-1 bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-download text-green-600 mr-2"></i>
+                            <h4 class="font-medium text-gray-700">ডাউনলোড স্পিড</h4>
+                        </div>
+                        <div id="downloadSpeed" class="text-xl font-bold text-green-700">
+                            -- Mbps
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1" id="downloadQuality"></div>
+                    </div>
+                    <div class="flex-1 bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-upload text-blue-600 mr-2"></i>
+                            <h4 class="font-medium text-gray-700">আপলোড স্পিড</h4>
+                        </div>
+                        <div id="uploadSpeed" class="text-xl font-bold text-blue-700">
+                            -- Mbps
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1" id="uploadQuality"></div>
+                    </div>
+                    <div class="flex-1 bg-gray-50 p-4 rounded-lg border border-gray-200">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-clock text-purple-600 mr-2"></i>
+                            <h4 class="font-medium text-gray-700">পিং</h4>
+                        </div>
+                        <div id="ping" class="text-xl font-bold text-purple-700">
+                            -- ms
+                        </div>
+                        <div class="text-xs text-gray-500 mt-1" id="pingQuality"></div>
+                    </div>
+                </div>
+                <button id="speedTestBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-6 rounded-lg font-medium transition-colors">
+                    <i class="fas fa-play mr-2"></i>স্পিড টেস্ট শুরু করুন
+                </button>
+            </div>
+        </div>
+
+        <!-- ফুটার -->
+        <footer class="mt-8 text-center text-gray-500 text-sm">
+            <p>এই ওয়েবসাইট শুধুমাত্র আপনার ডিভাইসের তথ্য দেখায়, কোনো তথ্য সংরক্ষণ করা হয় না</p>
+            <p class="mt-1">© <span id="currentYear"></span> নেটওয়ার্ক ইনফো টুল</p>
+        </footer>
+    </div>
+
+    <script>
+        // বর্তমান বছর দেখানোর জন্য
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // নেটওয়ার্ক তথ্য ফাংশন
+        async function fetchNetworkInfo() {
+            try {
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+
+                if (!data.ip) throw new Error("প্রথম API ব্যর্থ হয়েছে");
+
+                updateInfo(data);
+                detectSystemInfo();
+            } catch (error) {
+                console.warn('প্রথম API ব্যর্থ, বিকল্প API ব্যবহার করা হচ্ছে...', error);
+                fetch('https://ipinfo.io/json')
+                    .then(response => response.json())
+                    .then(data => {
+                        const formattedData = {
+                            ip: data.ip,
+                            org: data.org,
+                            latitude: data.loc?.split(',')[0],
+                            longitude: data.loc?.split(',')[1],
+                            city: data.city,
+                            country_name: data.country,
+                            timezone: data.timezone
+                        };
+                        updateInfo(formattedData);
+                        detectSystemInfo();
+                    })
+                    .catch(error => {
+                        console.error('সব API ব্যর্থ হয়েছে:', error);
+                        showError();
+                    });
+            }
+        }
+
+        // তথ্য আপডেট ফাংশন
+        function updateInfo(data) {
+            document.getElementById('ipAddress').innerHTML = data.ip || '<span class="text-red-500">N/A</span>';
+            document.getElementById('isp').innerHTML = data.org || '<span class="text-red-500">N/A</span>';
+            
+            if (data.latitude && data.longitude) {
+                const locationDiv = document.getElementById('location');
+                locationDiv.innerHTML = `
+                    ${data.latitude}, ${data.longitude}
+                    <i class="fas fa-external-link-alt ml-1 text-xs"></i>
+                `;
+                
+                locationDiv.onclick = () => {
+                    window.open(`https://maps.google.com/?q=${data.latitude},${data.longitude}`, '_blank');
+                };
+            } else {
+                document.getElementById('location').innerHTML = '<span class="text-red-500">N/A</span>';
+            }
+            
+            document.getElementById('city').textContent = data.city || 'N/A';
+            document.getElementById('country').textContent = data.country_name || 'N/A';
+            
+            // নেটওয়ার্ক টাইপ ডিটেক্ট
+            if (navigator.connection) {
+                const connection = navigator.connection;
+                const type = connection.effectiveType || connection.type || 'Unknown';
+                document.getElementById('connectionType').textContent = `${type} (${connection.downlink} Mbps)`;
+            } else {
+                document.getElementById('connectionType').textContent = 'Unknown';
+            }
+        }
+
+        // সিস্টেম ইনফো ডিটেক্ট
+        function detectSystemInfo() {
+            const userAgent = navigator.userAgent;
+            
+            // ব্রাউজার ডিটেক্ট
+            let browser = "Unknown";
+            if (userAgent.includes("Firefox")) browser = "Firefox";
+            else if (userAgent.includes("Edg")) browser = "Edge";
+            else if (userAgent.includes("Chrome")) browser = "Chrome";
+            else if (userAgent.includes("Safari")) browser = "Safari";
+            document.getElementById('browser').textContent = browser;
+            
+            // OS ডিটেক্ট
+            let os = "Unknown";
+            if (userAgent.includes("Windows")) os = "Windows";
+            else if (userAgent.includes("Mac")) os = "MacOS";
+            else if (userAgent.includes("Linux")) os = "Linux";
+            else if (userAgent.includes("Android")) os = "Android";
+            else if (userAgent.includes("iOS")) os = "iOS";
+            document.getElementById('os').textContent = os;
+            
+            // ডিভাইস টাইপ
+            const isMobile = /Mobi|Android/i.test(userAgent);
+            document.getElementById('deviceType').textContent = isMobile ? "Mobile" : "Desktop";
+        }
+
+        // এরর শো ফাংশন
+        function showError() {
+            const infoDivs = document.querySelectorAll('#ipAddress, #isp, #location, #city, #country, #connectionType');
+            infoDivs.forEach(div => {
+                div.innerHTML = '<span class="text-red-500">তথ্য লোড করতে ব্যর্থ</span>';
+            });
+        }
+
+        // স্পিড টেস্ট ফাংশন
+        async function runSpeedTest() {
+            const btn = document.getElementById('speedTestBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>পরীক্ষা চলছে...';
+
+            try {
+                // পিং টেস্ট
+                const pingStart = performance.now();
+                await fetch('https://httpbin.org/get', {cache: "no-store"});
+                const pingTime = performance.now() - pingStart;
+                document.getElementById('ping').textContent = `${pingTime.toFixed(0)} ms`;
+                updatePingQuality(pingTime);
+
+                // ডাউনলোড স্পিড টেস্ট
+                const downloadStart = performance.now();
+                const downloadSize = 2000000; // 2MB
+                const downloadResponse = await fetch(`https://httpbin.org/stream-bytes/${downloadSize}?seed=${Math.random()}`);
+                await downloadResponse.arrayBuffer();
+                const downloadTime = (performance.now() - downloadStart) / 1000; // সেকেন্ডে
+                const downloadSpeed = ((downloadSize * 8) / (1000000 * downloadTime)).toFixed(2); // Mbps
+                document.getElementById('downloadSpeed').textContent = `${downloadSpeed} Mbps`;
+                updateSpeedQuality(downloadSpeed, 'download');
+
+                // আপলোড স্পিড টেস্ট
+                const uploadStart = performance.now();
+                const uploadSize = 1000000; // 1MB
+                const dummyData = new ArrayBuffer(uploadSize);
+                await fetch('https://httpbin.org/post', {
+                    method: 'POST',
+                    body: dummyData
+                });
+                const uploadTime = (performance.now() - uploadStart) / 1000;
+                const uploadSpeed = ((uploadSize * 8) / (1000000 * uploadTime)).toFixed(2);
+                document.getElementById('uploadSpeed').textContent = `${uploadSpeed} Mbps`;
+                updateSpeedQuality(uploadSpeed, 'upload');
+
+            } catch (error) {
+                console.error('স্পিড টেস্ট ব্যর্থ:', error);
+                document.getElementById('downloadSpeed').innerHTML = '<span class="text-red-500">ব্যর্থ</span>';
+                document.getElementById('uploadSpeed').innerHTML = '<span class="text-red-500">ব্যর্থ</span>';
+                document.getElementById('ping').innerHTML = '<span class="text-red-500">ব্যর্থ</span>';
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-redo mr-2"></i>আবার টেস্ট করুন';
+            }
+        }
+
+        // স্পিড কোয়ালিটি ইন্ডিকেটর
+        function updateSpeedQuality(speed, type) {
+            const element = document.getElementById(`${type}Quality`);
+            let quality = "";
+            let color = "";
+            
+            if (type === 'download') {
+                if (speed > 50) { quality = "চমৎকার (4K স্ট্রিমিং)"; color = "text-green-600"; }
+                else if (speed > 25) { quality = "ভাল (HD ভিডিও)"; color = "text-blue-600"; }
+                else if (speed > 10) { quality = "মধ্যম (SD ভিডিও)"; color = "text-yellow-600"; }
+                else { quality = "ধীর (বেসিক ব্রাউজিং)"; color = "text-red-600"; }
+            } else {
+                if (speed > 20) { quality = "চমৎকার"; color = "text-green-600"; }
+                else if (speed > 10) { quality = "ভাল"; color = "text-blue-600"; }
+                else if (speed > 5) { quality = "মধ্যম"; color = "text-yellow-600"; }
+                else { quality = "ধীর"; color = "text-red-600"; }
+            }
+            
+            element.innerHTML = `<span class="${color}">${quality}</span>`;
+        }
+
+        // পিং কোয়ালিটি ইন্ডিকেটর
+        function updatePingQuality(ping) {
+            const element = document.getElementById('pingQuality');
+            let quality = "";
+            let color = "";
+            
+            if (ping < 50) { quality = "চমৎকার (গেমিং)"; color = "text-green-600"; }
+            else if (ping < 100) { quality = "ভাল (ভিডিও কল)"; color = "text-blue-600"; }
+            else if (ping < 200) { quality = "মধ্যম"; color = "text-yellow-600"; }
+            else { quality = "ধীর"; color = "text-red-600"; }
+            
+            element.innerHTML = `<span class="${color}">${quality}</span>`;
+        }
+
+        // ইভেন্ট লিসেনার
+        document.getElementById('speedTestBtn').addEventListener('click', runSpeedTest);
+
+        // লোকেশন ক্লিক ইভেন্ট
+        document.getElementById('location').addEventListener('click', function() {
+            const text = this.textContent.trim();
+            const coords = text.match(/-?\d+\.\d+, -?\d+\.\d+/);
+            if (coords) {
+                window.open(`https://maps.google.com/?q=${coords[0]}`, '_blank');
+            }
+        });
+
+        // পেজ লোড হলে অটো কল হবে
+        fetchNetworkInfo();
+    </script>
+</body>
+  </html>
