@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Instant Screen Recorder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Mobile-like touch interactions */
+        button {
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+        
+        /* Prevent context menu on long press */
+        * {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-6">
+        <!-- Header -->
+        <header class="mb-6 text-center">
+            <h1 class="text-2xl font-bold text-gray-800">Instant Screen Recorder</h1>
+            <p class="text-sm text-gray-600 mt-1">Tap to start recording</p>
+        </header>
+
+        <!-- Main Content -->
+        <div class="max-w-md mx-auto">
+            <!-- Preview Container -->
+            <div class="aspect-video bg-black rounded-xl overflow-hidden shadow-lg mb-6 relative">
+                <video id="preview" class="w-full h-full object-contain" autoplay muted></video>
+                <div id="timer" class="absolute top-2 left-2 bg-black/50 text-white px-2 py-1 rounded text-sm hidden">
+                    00:00
+                </div>
+            </div>
+
+            <!-- Controls -->
+            <div class="flex flex-col gap-4">
+                <!-- Recording Button -->
+                <button id="mainControlBtn" class="w-full py-4 bg-red-500 text-white rounded-xl font-medium flex items-center justify-center gap-2 active:bg-red-600 transition-transform active:scale-95">
+                    <i class="fas fa-circle"></i> Start Recording
+                </button>
+
+                <!-- Additional Options -->
+                <div class="grid grid-cols-2 gap-4">
+                    <button id="toggleAudioBtn" class="p-3 bg-white rounded-lg shadow flex items-center justify-center gap-2 active:bg-gray-100">
+                        <i class="fas fa-microphone-slash text-red-500"></i>
+                        <span class="text-sm">Audio Off</span>
+                    </button>
+                    <button id="toggleCameraBtn" class="p-3 bg-white rounded-lg shadow flex items-center justify-center gap-2 active:bg-gray-100">
+                        <i class="fas fa-video text-blue-500"></i>
+                        <span class="text-sm">Camera</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const mainControlBtn = document.getElementById('mainControlBtn');
+        const toggleAudioBtn = document.getElementById('toggleAudioBtn');
+        const toggleCameraBtn = document.getElementById('toggleCameraBtn');
+        const preview = document.getElementById('preview');
+        const timer = document.getElementById('timer');
+
+        // App State
+        let mediaRecorder;
+        let isRecording = false;
+        let startTime;
+        let timerInterval;
+        let audioEnabled = false;
+        let cameraEnabled = false;
+
+        // Main Control Button Handler
+        mainControlBtn.addEventListener('click', async () => {
+            if (!isRecording) {
+                await startRecording();
+            } else {
+                stopRecording();
+            }
+        });
+
+        // Toggle Audio
+        toggleAudioBtn.addEventListener('click', () => {
+            audioEnabled = !audioEnabled;
+            toggleAudioBtn.innerHTML = `
+                <i class="fas fa-microphone${audioEnabled ? '' : '-slash'} text-${audioEnabled ? 'green' : 'red'}-500"></i>
+                <span class="text-sm">Audio ${audioEnabled ? 'On' : 'Off'}</span>
+            `;
+        });
+
+        // Toggle Camera
+        toggleCameraBtn.addEventListener('click', () => {
+            cameraEnabled = !cameraEnabled;
+            toggleCameraBtn.innerHTML = `
+                <i class="fas fa-video${cameraEnabled ? '' : '-slash'} text-blue-500"></i>
+                <span class="text-sm">${cameraEnabled ? 'Camera' : 'No Cam'}</span>
+            `;
+        });
+
+        async function startRecording() {
+            try {
+                const stream = await navigator.mediaDevices.getDisplayMedia({
+                    video: true,
+                    audio: audioEnabled
+                });
+
+                if (cameraEnabled) {
+                    const webcamStream = await navigator.mediaDevices.getUserMedia({
+                        video: true,
+                        audio: false
+                    });
+                    stream.addTrack(webcamStream.getVideoTracks()[0]);
+                }
+
+                preview.srcObject = stream;
+                
+                mediaRecorder = new MediaRecorder(stream, {
+                    mimeType: 'video/webm; codecs=vp9'
+                });
+
+                const chunks = [];
+                
+                mediaRecorder.ondataavailable = e => chunks.push(e.data);
+                mediaRecorder.onstop = () => {
+                    const blob = new Blob(chunks, { type: 'video/webm' });
+                    const url = URL.createObjectURL(blob);
+                    const filename = `recording_${new Date().toISOString().slice(0,19)}.webm`;
+                    
+                    // Auto-download
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                };
+
+                mediaRecorder.start();
+                isRecording = true;
+                mainControlBtn.innerHTML = `<i class="fas fa-stop"></i> Stop Recording`;
+                mainControlBtn.classList.replace('bg-red-500', 'bg-green-500');
+                
+                // Timer
+                startTime = Date.now();
+                timer.classList.remove('hidden');
+                updateTimer();
+                timerInterval = setInterval(updateTimer, 1000);
+                
+                // Handle screen sharing cancellation
+                stream.getVideoTracks()[0].onended = () => {
+                    if (isRecording) stopRecording();
+                };
+            } catch (error) {
+                console.error('Error starting recording:', error);
+            }
+        }
+
+        function stopRecording() {
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                mediaRecorder.stop();
+                mediaRecorder.stream.getTracks().forEach(track => track.stop());
+                
+                isRecording = false;
+                mainControlBtn.innerHTML = `<i class="fas fa-circle"></i> Start Recording`;
+                mainControlBtn.classList.replace('bg-green-500', 'bg-red-500');
+                preview.srcObject = null;
+                
+                clearInterval(timerInterval);
+                timer.classList.add('hidden');
+            }
+        }
+
+        function updateTimer() {
+            const elapsed = Date.now() - startTime;
+            const minutes = Math.floor(elapsed / 60000).toString().padStart(2, '0');
+            const seconds = Math.floor((elapsed % 60000) / 1000).toString().padStart(2, '0');
+            timer.textContent = `${minutes}:${seconds}`;
+        }
+
+        // Prevent context menu
+        document.addEventListener('contextmenu', (e) => e.preventDefault());
+    </script>
+</body>
+</html>
