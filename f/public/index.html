@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Talkie</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Web Talkie 🎙</h1>
+        <input type="text" id="roomId" placeholder="Enter Room ID" />
+        <button id="joinRoom">Join Room</button>
+        <div id="status">Disconnected</div>
+        <button id="talkBtn">Hold to Talk</button>
+        <ul id="participants"></ul>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
