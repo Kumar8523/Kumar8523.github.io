@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>গল্পবাজ - GolpoBaj Radio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .radio-wave {
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+    </style>
+</head>
+<body class="radio-wave min-h-screen flex items-center justify-center">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-lg mx-auto bg-white/10 backdrop-blur-lg rounded-3xl shadow-2xl p-8">
+            <!-- Header -->
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-bold text-white mb-2">🎙️ গল্পবাজ</h1>
+                <p class="text-gray-200">বাংলার সেরা অডিও অভিজ্ঞতা</p>
+            </div>
+
+            <!-- Player Card -->
+            <div class="bg-black/20 rounded-xl p-6 mb-6">
+                <!-- Artwork and Info -->
+                <div class="flex items-center gap-6 mb-6">
+                    <div class="w-24 h-24 bg-white/10 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-music text-3xl text-white/30"></i>
+                    </div>
+                    <div>
+                        <h2 id="currentTitle" class="text-xl font-bold text-white">লোড হচ্ছে...</h2>
+                        <p id="currentType" class="text-purple-300 text-sm"></p>
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="relative h-2 bg-white/10 rounded-full mb-4">
+                    <div id="progress" class="absolute h-2 bg-purple-500 rounded-full transition-all duration-200" style="width: 0%"></div>
+                </div>
+
+                <!-- Upcoming Info -->
+                <div class="flex justify-between text-sm">
+                    <span class="text-gray-300" id="currentTime">0:00</span>
+                    <div class="text-right">
+                        <p class="text-gray-300">পরবর্তী</p>
+                        <p id="nextUp" class="text-white font-medium">-</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Countdown -->
+            <div id="countdownContainer" class="hidden text-center py-4 bg-black/20 rounded-xl">
+                <p class="text-gray-300 text-sm mb-2">পরবর্তী অনুষ্ঠান শুরু হবে</p>
+                <div id="countdown" class="text-3xl font-bold text-white">60</div>
+            </div>
+        </div>
+    </div>
+
+    <audio id="audioPlayer"></audio>
+
+    <script>
+        const audioPlayer = document.getElementById('audioPlayer');
+        let currentProgramIndex = 0;
+        let currentAdIndex = 0;
+        let content = [];
+        let ads = [];
+        let countdownInterval = null;
+
+        // UI Elements
+        const uiElements = {
+            currentTitle: document.getElementById('currentTitle'),
+            currentType: document.getElementById('currentType'),
+            progress: document.getElementById('progress'),
+            nextUp: document.getElementById('nextUp'),
+            countdownContainer: document.getElementById('countdownContainer'),
+            countdown: document.getElementById('countdown'),
+            currentTime: document.getElementById('currentTime')
+        };
+
+        // Format time
+        const formatTime = (seconds) => {
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        };
+
+        // Initialize Player
+        const initPlayer = async () => {
+            try {
+                [content, ads] = await Promise.all([
+                    fetch('content.json').then(res => res.json()),
+                    fetch('ads.json').then(res => res.json())
+                ]);
+
+                if(content.length === 0 || ads.length === 0) {
+                    throw new Error('কোনো কন্টেন্ট পাওয়া যায়নি');
+                }
+
+                playProgram(currentProgramIndex);
+                updateNextUp();
+            } catch (error) {
+                uiElements.currentTitle.textContent = error.message;
+            }
+        };
+
+        // Play Program
+        const playProgram = (index) => {
+            const program = content[index];
+            audioPlayer.src = program.url;
+            audioPlayer.play();
+            
+            uiElements.currentTitle.textContent = program.title;
+            uiElements.currentType.textContent = program.type.toUpperCase();
+            
+            audioPlayer.onended = () => playAd(currentAdIndex);
+        };
+
+        // Play Advertisement
+        const playAd = (index) => {
+            const ad = ads[index];
+            audioPlayer.src = ad.url;
+            audioPlayer.play();
+            
+            uiElements.currentTitle.textContent = ad.title;
+            uiElements.currentType.textContent = 'বিজ্ঞাপন';
+            uiElements.currentType.style.color = '#f59e0b';
+            
+            audioPlayer.onended = () => {
+                currentAdIndex = (index + 1) % ads.length;
+                startCountdown();
+            };
+        };
+
+        // Start Countdown
+        const startCountdown = () => {
+            let seconds = 60;
+            uiElements.countdownContainer.classList.remove('hidden');
+            
+            const update = () => {
+                uiElements.countdown.textContent = seconds;
+                seconds--;
+                
+                if(seconds < 0) {
+                    clearInterval(countdownInterval);
+                    uiElements.countdownContainer.classList.add('hidden');
+                    currentProgramIndex = (currentProgramIndex + 1) % content.length;
+                    playProgram(currentProgramIndex);
+                    updateNextUp();
+                }
+            };
+            
+            update();
+            countdownInterval = setInterval(update, 1000);
+        };
+
+        // Update Next Up
+        const updateNextUp = () => {
+            const nextIndex = (currentProgramIndex + 1) % content.length;
+            uiElements.nextUp.textContent = content[nextIndex].title;
+        };
+
+        // Update Progress
+        audioPlayer.addEventListener('timeupdate', () => {
+            const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100 || 0;
+            uiElements.progress.style.width = `${progress}%`;
+            uiElements.currentTime.textContent = formatTime(audioPlayer.currentTime);
+        });
+
+        // Initialize
+        audioPlayer.volume = 0.8;
+        initPlayer();
+    </script>
+</body>
+</html>
