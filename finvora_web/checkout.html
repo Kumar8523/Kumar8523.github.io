@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout | Finvora</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0F172A',
+            secondary: '#64748B',
+            accent: '#E11D48'
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #f3f4f6;
+    }
+    /* Container for main content */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .cart-item {
+      border-bottom: 1px solid #e5e7eb;
+      padding-bottom: 1rem;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body class="antialiased">
+  <div class="container bg-gray-50">
+    <!-- Using flex-col on mobile and flex-row on md+ -->
+    <div class="flex flex-col md:flex-row gap-8">
+      <!-- Customer Information -->
+      <div class="bg-white p-8 rounded-lg shadow-md w-full md:w-1/2">
+        <h2 class="text-2xl mb-6 font-light">Customer Information</h2>
+        <form id="checkoutForm">
+          <div class="space-y-4">
+            <div>
+              <label class="block mb-2 font-medium">Full Name</label>
+              <input type="text" id="fullName" required class="w-full p-3 border rounded" placeholder="Enter your full name" />
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block mb-2 font-medium">Phone Number</label>
+                <input type="tel" id="phone" required class="w-full p-3 border rounded" placeholder="Enter your phone number" />
+              </div>
+              <div>
+                <label class="block mb-2 font-medium">Email</label>
+                <input type="email" id="email" required class="w-full p-3 border rounded" placeholder="Enter your email address" />
+              </div>
+              <div>
+                <label class="block mb-2 font-medium">Transation ID</label>
+                <input type="text" id="transationId" required class="w-full p-3 border rounded" placeholder="Enter your transation id" />
+              </div>
+            </div>
+            <div>
+              <label class="block mb-2 font-medium">Shipping Address</label>
+              <textarea id="address" rows="3" required class="w-full p-3 border rounded" placeholder="Enter your address"></textarea>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Order Summary -->
+      <div class="bg-white p-8 rounded-lg shadow-md w-full md:w-1/2">
+        <h2 class="text-2xl mb-6 font-light">Order Summary</h2>
+        <div id="orderItems" class="space-y-6">
+          <!-- Cart items will be loaded dynamically -->
+        </div>
+
+        <!-- Global Coupon Section -->
+        <div class="pt-6">
+          <div class="flex gap-2">
+            <input type="text" id="globalCouponCode" placeholder="Enter coupon code" class="flex-1 p-3 border rounded" />
+            <button onclick="applyGlobalCoupon()" class="bg-black text-white px-6 rounded hover:bg-gray-800">
+              Apply Coupon
+            </button>
+          </div>
+          <div id="couponStatus" class="mt-2 text-sm"></div>
+        </div>
+
+        <!-- Payment Information -->
+        <div class="pt-8 space-y-4">
+          <div class="flex justify-between">
+            <span>Subtotal:</span>
+            <span id="subtotal">৳ 0.00</span>
+          </div>
+          <div class="flex justify-between">
+            <span>Discount:</span>
+            <span id="discount">-৳ 0.00</span>
+          </div>
+          <div class="flex justify-between font-medium">
+            <span>Total:</span>
+            <span id="grandTotal">৳ 0.00</span>
+          </div>
+        </div>
+
+        <div class="mt-8">
+          <button onclick="submitOrder()" class="w-full bg-black text-white py-4 rounded hover:bg-gray-800">
+            Confirm Order
+          </button>
+        </div>
+        <p class="text-center mt-4 text-sm text-gray-500">
+          Payment details will be confirmed via contact within 3 business days.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Global coupon variable (only one coupon per order)
+    let globalCoupon = null;
+
+    // Load Cart Items and Render Them
+    function loadCartItems() {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const container = document.getElementById('orderItems');
+      if (!container) return;
+      if (cart.length === 0) {
+        container.innerHTML = '<p class="text-center text-gray-600">Your cart is empty.</p>';
+        return;
+      }
+      container.innerHTML = cart.map((item, index) => `
+        <div class="cart-item flex flex-col sm:flex-row items-center gap-4">
+          <div class="w-24 h-24 bg-gray-100 rounded overflow-hidden">
+            <img src="${item.image || 'https://via.placeholder.com/100'}" alt="${item.name}" class="w-full h-full object-cover">
+          </div>
+          <div class="flex-1">
+            <h3 class="font-medium">${item.name}</h3>
+            <p class="text-gray-600">Size: ${item.size ? item.size : 'N/A'}</p>
+            <p class="text-gray-600">Price: $${item.price.toFixed(2)}</p>
+            <div class="flex items-center mt-2">
+              <button onclick="updateQuantity(${index}, -1)" class="px-2 border rounded-l">-</button>
+              <input type="number" value="${item.quantity}" min="1" class="w-16 text-center border-t border-b" onchange="updateQuantity(${index}, 0, this.value)">
+              <button onclick="updateQuantity(${index}, 1)" class="px-2 border rounded-r">+</button>
+            </div>
+          </div>
+          <div class="flex flex-col items-end">
+            <p class="font-bold">$${(item.price * item.quantity).toFixed(2)}</p>
+            <button onclick="removeCartItem(${index})" class="mt-2 text-red-600 hover:underline">Remove</button>
+          </div>
+        </div>
+      `).join('');
+      calculateTotals();
+    }
+
+    // Update Quantity for Cart Items
+    function updateQuantity(index, change, newValue) {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      if (newValue) {
+        cart[index].quantity = parseInt(newValue);
+      } else {
+        cart[index].quantity += change;
+        if (cart[index].quantity < 1) cart[index].quantity = 1;
+      }
+      localStorage.setItem('cart', JSON.stringify(cart));
+      loadCartItems();
+      updateCartCount();
+    }
+
+    // Remove a Cart Item
+    function removeCartItem(index) {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      cart.splice(index, 1);
+      localStorage.setItem('cart', JSON.stringify(cart));
+      loadCartItems();
+      updateCartCount();
+    }
+
+    // Apply Global Coupon (Only one coupon can be applied for entire order)
+    function applyGlobalCoupon() {
+      const code = document.getElementById('globalCouponCode').value.trim();
+      // For demonstration, only "GLOBAL10" is valid for a 10% discount
+      if (code === "GLOBAL10") {
+        globalCoupon = { code, discount: 0 };
+        document.getElementById('couponStatus').textContent = "Coupon applied successfully!";
+        document.getElementById('couponStatus').classList.remove('text-red-600');
+        document.getElementById('couponStatus').classList.add('text-green-600');
+      } else {
+        globalCoupon = null;
+        document.getElementById('couponStatus').textContent = "Invalid coupon code.";
+        document.getElementById('couponStatus').classList.remove('text-green-600');
+        document.getElementById('couponStatus').classList.add('text-red-600');
+      }
+      calculateTotals();
+    }
+
+    // Calculate Totals for Checkout
+    function calculateTotals() {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      let subtotal = 0;
+      cart.forEach(item => {
+        subtotal += item.price * item.quantity;
+      });
+      let discount = 0;
+      if (globalCoupon) {
+        discount = subtotal * (globalCoupon.discount / 100);
+      }
+      const shipping = subtotal > 0 ? 15.00 : 0;
+      const grandTotal = subtotal + shipping - discount;
+      document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
+      document.getElementById('discount').textContent = `-$${discount.toFixed(2)}`;
+      document.getElementById('grandTotal').textContent = `$${grandTotal.toFixed(2)}`;
+    }
+
+    // Update Cart Count in Navbar
+    function updateCartCount() {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const count = cart.reduce((acc, item) => acc + item.quantity, 0);
+      document.querySelectorAll('.cart-count').forEach(el => {
+        el.textContent = count;
+      });
+    }
+
+    // Order Submission via Google Apps Script (Google Sheet Integration)
+    async function submitOrder() {
+      const customer = {
+        name: document.getElementById('fullName').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        address: document.getElementById('address').value.trim()
+      };
+      const order = JSON.parse(localStorage.getItem('cart')) || [];
+      const total = document.getElementById('grandTotal').textContent;
+      const formData = {
+        customer,
+        order,
+        total,
+        coupon: globalCoupon,
+        timestamp: new Date().toISOString()
+      };
+      // Replace with your actual Google Apps Script URL
+      const scriptURL = 'YOUR_GOOGLE_SCRIPT_URL';
+      try {
+        const response = await fetch(scriptURL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        });
+        if (response.ok) {
+          alert('Order placed successfully! We will contact you for payment.');
+          localStorage.removeItem('cart');
+          window.location.href = '/order-confirmation.html';
+        } else {
+          alert('Order submission failed. Please try again later.');
+        }
+      } catch (error) {
+        console.error('Error submitting order:', error);
+        alert('Order submission failed. Please try again later.');
+      }
+    }
+
+    // Initialize functions on DOM load
+    document.addEventListener('DOMContentLoaded', () => {
+      updateCartCount();
+      if (document.getElementById('orderItems')) {
+        loadCartItems();
+      }
+    });
+  </script>
+  <script src="scripts/app.js"></script>
+</body>
+</html>
