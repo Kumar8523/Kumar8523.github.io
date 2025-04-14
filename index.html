@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>পহেলা বৈশাখ ১৪৩২ | বাংলা নববর্ষের সম্পূর্ণ উৎসব</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;700&family=Noto+Sans+Bengali:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            font-family: 'Noto Sans Bengali', sans-serif;
+            background-color: #FFF5F5;
+        }
+        .bangla-font {
+            font-family: 'Noto Sans Bengali', sans-serif;
+        }
+        .festival-card {
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #FEF3C7, #FEE2E2);
+        }
+        .festival-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .alpona-pattern {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M20,50 Q50,20 80,50 Q50,80 20,50" fill="none" stroke="%23EF4444" stroke-width="2"/></svg>');
+            background-size: 100px 100px;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        .floating {
+            animation: float 4s ease-in-out infinite;
+        }
+        .live-badge {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(220, 38, 38, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); }
+        }
+    </style>
+</head>
+<body class="bangla-font">
+    <!-- নেভিগেশন বার -->
+    <nav class="bg-red-600 text-white shadow-lg">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <i class="fas fa-calendar-alt text-2xl"></i>
+                <span class="text-xl font-bold">পহেলা বৈশাখ ১৪৩২</span>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#home" class="hover:text-yellow-200">হোম</a>
+                <a href="#events" class="hover:text-yellow-200">আয়োজন</a>
+                <a href="#live" class="hover:text-yellow-200">লাইভ</a>
+                <a href="#hat" class="hover:text-yellow-200">বৈশাখী হাট</a>
+                <a href="#gallery" class="hover:text-yellow-200">গ্যালারি</a>
+            </div>
+            <button class="md:hidden">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- হিরো সেকশন -->
+    <section id="home" class="relative py-20 bg-gradient-to-r from-red-500 to-yellow-500 text-white overflow-hidden">
+        <div class="alpona-pattern absolute inset-0 opacity-10"></div>
+        <div class="container mx-auto px-6 relative z-10">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <h1 class="text-4xl md:text-6xl font-bold mb-6">স্বাগতম <br> বাংলা নববর্ষ ১৪৩২</h1>
+                    <p class="text-xl mb-8">বাংলার হাজার বছরের ঐতিহ্য ও সংস্কৃতির ধারক পহেলা বৈশাখের শুভেচ্ছা</p>
+                    <div class="flex space-x-4">
+                        <button onclick="playHalkhata()" class="bg-white text-red-600 px-6 py-3 rounded-full font-bold hover:bg-yellow-100 transition">
+                            <i class="fas fa-book mr-2"></i>হালখাতা খুলুন
+                        </button>
+                        <button onclick="shareWishes()" class="bg-transparent border-2 border-white px-6 py-3 rounded-full hover:bg-white hover:text-red-600 transition">
+                            <i class="fas fa-share-alt mr-2"></i>শুভেচ্ছা শেয়ার করুন
+                        </button>
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center">
+                    <img src="https://i.ibb.co/4T4JY3Z/boishakh.png" alt="বৈশাখী উৎসব" class="floating w-full max-w-md">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- বৈশাখী কাউন্টডাউন -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-12 text-red-600">নতুন বছরের জন্য প্রস্তুত হোন</h2>
+            <div class="bg-yellow-50 rounded-xl p-8 shadow-inner">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <div id="days" class="text-5xl font-bold text-red-600">০০</div>
+                        <div class="text-gray-600 mt-2">দিন</div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <div id="hours" class="text-5xl font-bold text-red-600">০০</div>
+                        <div class="text-gray-600 mt-2">ঘণ্টা</div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <div id="minutes" class="text-5xl font-bold text-red-600">০০</div>
+                        <div class="text-gray-600 mt-2">মিনিট</div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <div id="seconds" class="text-5xl font-bold text-red-600">০০</div>
+                        <div class="text-gray-600 mt-2">সেকেন্ড</div>
+                    </div>
+                </div>
+                <div class="mt-8 text-center">
+                    <button onclick="setReminder()" class="bg-red-600 text-white px-6 py-3 rounded-full hover:bg-red-700 transition">
+                        <i class="fas fa-bell mr-2"></i>রিমাইন্ডার সেট করুন
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- লাইভ স্ট্রিমিং সেকশন -->
+    <section id="live" class="py-16 bg-red-50">
+        <div class="container mx-auto px-6">
+            <div class="flex items-center justify-center mb-8">
+                <span class="live-badge bg-red-600 text-white px-4 py-1 rounded-full mr-3">LIVE</span>
+                <h2 class="text-3xl font-bold text-red-600">লাইভ স্ট্রিমিং</h2>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-xl overflow-hidden">
+                <div class="aspect-w-16 aspect-h-9">
+                    <!-- YouTube লাইভ এম্বেড (প্রকৃত লাইভের জন্য লিংক পরিবর্তন করুন) -->
+                    <iframe 
+                        src="https://www.youtube.com/embed/live_stream?channel=UC9N1H6B3vRH4e4Uu4WX7jXQ" 
+                        frameborder="0" 
+                        allowfullscreen
+                        class="w-full h-96"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
+                    </iframe>
+                </div>
+                
+                <div class="p-6">
+                    <h3 class="text-2xl font-bold mb-4">রমনা বটমূল থেকে সরাসরি</h3>
+                    <p class="text-gray-700 mb-4">ঢাকা বিশ্ববিদ্যালয়ের রমনা বটমূলে পহেলা বৈশাখের মূল অনুষ্ঠানটি সরাসরি দেখুন</p>
+                    
+                    <div class="flex flex-wrap gap-4 mt-6">
+                        <div class="flex items-center bg-yellow-100 px-4 py-2 rounded-full">
+                            <i class="fas fa-eye text-yellow-600 mr-2"></i>
+                            <span class="font-medium" id="viewer-count">২৫,০০০+</span> দর্শক
+                        </div>
+                        <div class="flex items-center bg-blue-100 px-4 py-2 rounded-full">
+                            <i class="fas fa-comments text-blue-600 mr-2"></i>
+                            <span class="font-medium" id="comment-count">১,২০০+</span> মন্তব্য
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <h4 class="font-bold mb-2">আজকের লাইভ শিডিউল:</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <span class="bg-red-100 text-red-600 rounded-full w-6 h-6 flex items-center justify-center mr-2 mt-1">➤</span>
+                                <span>সকাল ৯:০০ - রবীন্দ্র সংগীত ও কবিতা আবৃত্তি</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="bg-red-100 text-red-600 rounded-full w-6 h-6 flex items-center justify-center mr-2 mt-1">➤</span>
+                                <span>সকাল ১০:৩০ - ঐতিহ্যবাহী নৃত্য পরিবেশনা</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="bg-red-100 text-red-600 rounded-full w-6 h-6 flex items-center justify-center mr-2 mt-1">➤</span>
+                                <span>দুপুর ১২:০০ - মঙ্গল শোভাযাত্রা</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-bold mb-4">অন্যান্য লাইভ স্ট্রিম</h3>
+                    <div class="space-y-4">
+                        <a href="#" class="flex items-center hover:bg-gray-50 p-2 rounded-lg transition">
+                            <div class="bg-gray-200 w-16 h-16 rounded-md overflow-hidden mr-3">
+                                <img src="https://i.ibb.co/0jQ5ZzN/chhayanaut.jpg" alt="ছায়ানট" class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <h4 class="font-medium">ছায়ানটের সাংস্কৃতিক অনুষ্ঠান</h4>
+                                <p class="text-sm text-gray-500">শুরু হবে সকাল ৮:৩০</p>
+                            </div>
+                        </a>
+                        <a href="#" class="flex items-center hover:bg-gray-50 p-2 rounded-lg transition">
+                            <div class="bg-gray-200 w-16 h-16 rounded-md overflow-hidden mr-3">
+                                <img src="https://i.ibb.co/4T4JY3Z/dhaka-university.jpg" alt="ঢাকা বিশ্ববিদ্যালয়" class="w-full h-full object-cover">
+                            </div>
+                            <div>
+                                <h4 class="font-medium">ঢাকা বিশ্ববিদ্যালয়ের শোভাযাত্রা</h4>
+                                <p class="text-sm text-gray-500">শুরু হবে সকাল ১০:০০</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <h3 class="text-xl font-bold mb-4">লাইভ চ্যাট</h3>
+                    <div class="bg-gray-50 rounded-lg p-4 h-64 overflow-y-auto" id="live-chat">
+                        <!-- চ্যাট মেসেজ এখানে জাভাস্ক্রিপ্ট দ্বারা যোগ হবে -->
+                        <div class="text-center text-gray-500 py-8">চ্যাট শুরু করতে নিচে মেসেজ লিখুন</div>
+                    </div>
+                    <div class="mt-4 flex">
+                        <input type="text" placeholder="মেসেজ লিখুন..." class="flex-grow border border-gray-300 rounded-l-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-red-500">
+                        <button onclick="sendChatMessage()" class="bg-red-600 text-white px-4 py-2 rounded-r-lg hover:bg-red-700 transition">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- বৈশাখী হাট সেকশন -->
+    <section id="hat" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-12 text-red-600">বৈশাখী হাট</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- পণ্য কার্ড -->
+                <div class="festival-card rounded-xl overflow-hidden shadow-lg">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://i.ibb.co/0jQ5ZzN/terracotta.jpg" alt="টেরাকোটা" class="w-full h-full object-cover">
+                        <div class="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 rounded text-sm">২৫% ছাড়</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">টেরাকোটা শিল্প</h3>
+                        <p class="text-gray-600 mb-4">ঐতিহ্যবাহী বাংলার মৃৎশিল্প</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-red-600 font-bold">৳ ৩৫০</span>
+                            <button class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition">
+                                <i class="fas fa-shopping-cart mr-1"></i>কিনুন
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="festival-card rounded-xl overflow-hidden shadow-lg">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://i.ibb.co/4T4JY3Z/saree.jpg" alt="শাড়ি" class="w-full h-full object-cover">
+                        <div class="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 rounded text-sm">নতুন সংগ্রহ</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">জামদানি শাড়ি</h3>
+                        <p class="text-gray-600 mb-4">ঐতিহ্যবাহী বাংলার বুনন শিল্প</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-red-600 font-bold">৳ ২,৮০০</span>
+                            <button class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition">
+                                <i class="fas fa-shopping-cart mr-1"></i>কিনুন
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="festival-card rounded-xl overflow-hidden shadow-lg">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://i.ibb.co/0jQ5ZzN/panjabi.jpg" alt="পাঞ্জাবি" class="w-full h-full object-cover">
+                        <div class="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 rounded text-sm">বেস্ট সেলার</div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">বৈশাখী পাঞ্জাবি</h3>
+                        <p class="text-gray-600 mb-4">সুতি কাপড়ের হাতে তৈরি পাঞ্জাবি</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-red-600 font-bold">৳ ৯৯০</span>
+                            <button class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition">
+                                <i class="fas fa-shopping-cart mr-1"></i>কিনুন
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <button class="bg-red-600 text-white px-8 py-3 rounded-full hover:bg-red-700 transition inline-flex items-center">
+                    <i class="fas fa-store mr-2"></i>সমস্ত পণ্য দেখুন
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ইভেন্ট সেকশন -->
+    <section id="events" class="py-16 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-12 text-red-600">উৎসব আয়োজন</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- ইভেন্ট কার্ড -->
+                <div class="festival-card rounded-xl overflow-hidden shadow-lg">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://i.ibb.co/4T4JY3Z/mangal-shobhajatra.jpg" alt="মঙ্গল শোভাযাত্রা" class="w-full h-full object-cover">
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                            <span class="text-white font-bold">১৪ এপ্রিল, সকাল ৯:০০</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">মঙ্গল শোভাযাত্রা</h3>
+                        <p class="text-gray-600 mb-4">ঢাকা বিশ্ববিদ্যালয় চত্বর থেকে শুরু হয়ে শহর প্রদক্ষিণ করবে এই বর্ণাঢ্য শোভাযাত্রা</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-red-600"><i class="fas fa-map-marker-alt mr-1"></i>ঢাকা বিশ্ববিদ্যালয়</span>
+                            <button class="text-blue-600 hover:underline">
+                                বিস্তারিত <i class="fas fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="festival-card rounded-xl overflow-hidden shadow-lg">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://i.ibb.co/0jQ5ZzN/chhayanaut.jpg" alt="ছায়ানট" class="w-full h-full object-cover">
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                            <span class="text-white font-bold">১৪ এপ্রিল, ভোর ৬:০০</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">ছায়ানটের সংগীতানুষ্ঠান</h3>
+                        <p class="text-gray-600 mb-4">রমনা বটমূলে রবীন্দ্রনাথের গান ও কবিতা নিয়ে সাংস্কৃতিক অনুষ্ঠান</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-red-600"><i class="fas fa-map-marker-alt mr-1"></i>রমনা পার্ক</span>
+                            <button class="text-blue-600 hover:underline">
+                                বিস্তারিত <i class="fas fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="festival-card rounded-xl overflow-hidden shadow-lg">
+                    <div class="relative h-48 overflow-hidden">
+                        <img src="https://i.ibb.co/4T4JY3Z/baul.jpg" alt="বাউল গান" class="w-full h-full object-cover">
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-4">
+                            <span class="text-white font-bold">১৪ এপ্রিল, সন্ধ্যা ৭:০০</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">বাউল সম্মেলন</h3>
+                        <p class="text-gray-600 mb-4">ঐতিহ্যবাহী বাংলার বাউল গানের অনুষ্ঠান</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-red-600"><i class="fas fa-map-marker-alt mr-1"></i>শিল্পকলা একাডেমি</span>
+                            <button class="text-blue-600 hover:underline">
+                                বিস্তারিত <i class="fas fa-arrow-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <button class="bg-red-600 text-white px-8 py-3 rounded-full hover:bg-red-700 transition inline-flex items-center">
+                    <i class="fas fa-calendar-alt mr-2"></i>সমস্ত ইভেন্ট দেখুন
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- গ্যালারি সেকশন -->
+    <section id="gallery" class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-12 text-red-600">গ্যালারি</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <!-- গ্যালারি আইটেম -->
+                <div class="gallery-item overflow-hidden rounded-lg shadow-md hover:shadow-xl transition cursor-pointer">
+                    <img src="https://i.ibb.co/0jQ5ZzN/boishakh-festival.jpg" alt="বৈশাখী উৎসব" class="w-full h-48 object-cover transform hover:scale-110 transition duration-500">
+                </div>
+                <div class="gallery-item overflow-hidden rounded-lg shadow-md hover:shadow-xl transition cursor-pointer">
+                    <img src="https://i.ibb.co/4T4JY3Z/mangal-shobhajatra-2.jpg" alt="মঙ্গল শোভাযাত্রা" class="w-full h-48 object-cover transform hover:scale-110 transition duration-500">
+                </div>
+                <div class="gallery-item overflow-hidden rounded-lg shadow-md hover:shadow-xl transition cursor-pointer">
+                    <img src="https://i.ibb.co/0jQ5ZzN/ramna-batamul.jpg" alt="রমনা বটমূল" class="w-full h-48 object-cover transform hover:scale-110 transition duration-500">
+                </div>
+                <div class="gallery-item overflow-hidden rounded-lg shadow-md hover:shadow-xl transition cursor-pointer">
+                    <img src="https://i.ibb.co/4T4JY3Z/folk-dance.jpg" alt="লোকনৃত্য" class="w-full h-48 object-cover transform hover:scale-110 transition duration-500">
+                </div>
+                <div class="gallery-item overflow-hidden rounded-lg shadow-md hover:shadow-xl transition cursor-pointer">
+                    <img src="https://i.ibb.co/0jQ5ZzN/panta-ilish.jpg" alt="পান্তা ইলিশ" class="w-full h-48 object-cover transform hover:scale-110 transition duration-500">
+                </div>
+                <div class="gallery-item overflow-hidden rounded-lg shadow-md hover:shadow-xl transition cursor-pointer">
+                    <img src="https://i.ibb.co/4T4JY3Z/art-exhibition.jpg" alt="শিল্প প্রদর্শনী" class="w-full h-48 object-cover transform hover:scale-110 transition duration-500">
+                </div>
+                <div class="gallery-item overflow-hidden rounded-lg shadow-md hover:shadow-xl transition cursor-pointer">
+                    <img src="https://i.ibb.co/0jQ5ZzN/children.jpg" alt="শিশুদের আনন্দ" class="w-full h-48 object-cover transform hover:scale-110 transition duration-500">
+                </div>
+                <div class="gallery-item overflow-hidden rounded-lg shadow-md hover:shadow-xl transition cursor-pointer">
+                    <img src="https://i.ibb.co/4T4JY3Z/fireworks.jpg" alt="আতশবাজি" class="w-full h-48 object-cover transform hover:scale-110 transition duration-500">
+                </div>
+            </div>
+            <div class="text-center mt-8">
+                <button class="bg-red-600 text-white px-6 py-3 rounded-full hover:bg-red-700 transition">
+                    <i class="fas fa-images mr-2"></i>সমস্ত ছবি দেখুন
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ফুটার -->
+    <footer class="bg-red-800 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">পহেলা বৈশাখ ১৪৩২</h3>
+                    <p>বাংলা নববর্ষের সকল আয়োজন ও তথ্য একত্রে</p>
+                    <div class="mt-4">
+                        <button onclick="playHalkhata()" class="bg-white text-red-600 px-4 py-2 rounded-full text-sm hover:bg-yellow-100 transition">
+                            <i class="fas fa-book mr-1"></i>হালখাতা খুলুন
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">লিংক</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="hover:text-yellow-200">হোম</a></li>
+                        <li><a href="#live" class="hover:text-yellow-200">লাইভ</a></li>
+                        <li><a href="#events" class="hover:text-yellow-200">আয়োজন</a></li>
+                        <li><a href="#hat" class="hover:text-yellow-200">বৈশাখী হাট</a></li>
+                        <li><a href="#gallery" class="hover:text-yellow-200">গ্যালারি</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">যোগাযোগ</h4>
+                    <p><i class="fas fa-phone-alt mr-2"></i> +880 1234 567890</p>
+                    <p><i class="fas fa-envelope mr-2"></i> contact@boishakh1423.com</p>
+                    <p><i class="fas fa-map-marker-alt mr-2"></i> ১২৩/ক, বাংলাবাজার, ঢাকা</p>
+                </div>
+                <div>
+                    <h4 class="font-bold mb-4">সামাজিক যোগাযোগ</h4>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-2xl hover:text-yellow-200"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-2xl hover:text-yellow-200"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-2xl hover:text-yellow-200"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="text-2xl hover:text-yellow-200"><i class="fab fa-twitter"></i></a>
+                    </div>
+                    <div class="mt-4">
+                        <p>অ্যাপ ডাউনলোড করুন:</p>
+                        <div class="flex space-x-2 mt-2">
+                            <a href="#" class="bg-black text-white px-3 py-1 rounded text-sm flex items-center">
+                                <i class="fab fa-google-play mr-1"></i> Android
+                            </a>
+                            <a href="#" class="bg-black text-white px-3 py-1 rounded text-sm flex items-center">
+                                <i class="fab fa-apple mr-1"></i> iOS
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-red-700 mt-8 pt-8 text-center">
+                <p>© ২০২৫ পহেলা বৈশাখ ১৪৩২ - সকল স্বত্ব সংরক্ষিত</p>
+                <p class="mt-2 text-sm text-red-200">ডিজাইন ও ডেভেলপমেন্ট: বাংলা নববর্ষ উদযাপন কমিটি</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- জাভাস্ক্রিপ্ট -->
+    <script>
+        // কাউন্টডাউন টাইমার
+        function updateCountdown() {
+            const targetDate = new Date('2025-04-14T00:00:00').getTime();
+            const now = new Date().getTime();
+            const diff = targetDate - now;
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById('days').innerText = days.toString().padStart(2, '0');
+            document.getElementById('hours').innerText = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').innerText = mins.toString().padStart(2, '0');
+            document.getElementById('seconds').innerText = secs.toString().padStart(2, '0');
+        }
+        setInterval(updateCountdown, 1000);
+
+        // হালখাতা সিমুলেশন
+        function playHalkhata() {
+            const audio = new Audio('https://www.soundjay.com/buttons/sounds/button-09.mp3');
+            audio.play();
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#EF4444', '#F59E0B', '#10B981'] });
+            alert('হালখাতা খোলা হয়েছে! নতুন বছরের শুভকামনা!');
+        }
+
+        // শুভেচ্ছা শেয়ার
+        function shareWishes() {
+            if (navigator.share) {
+                navigator.share({ title: 'শুভ নববর্ষ ১৪৩২', text: 'আপনার জন্য রইল পহেলা বৈশাখের শুভেচ্ছা!', url: window.location.href })
+                .catch(err => console.log('Error sharing:', err));
+            } else {
+                prompt('লিংকটি কপি করুন:', window.location.href);
+            }
+        }
+
+        // রিমাইন্ডার সেট
+        function setReminder() {
+            if ('Notification' in window) {
+                Notification.requestPermission().then(perm => {
+                    if (perm === 'granted') {
+                        new Notification('রিমাইন্ডার সেট করা হয়েছে!', { body: 'আপনাকে পহেলা বৈশাখের দিন মনে করিয়ে দেওয়া হবে', icon: 'https://i.ibb.co/4T4JY3Z/boishakh-icon.png' });
+                    }
+                });
+            } else {
+                alert('রিমাইন্ডার সেট করা হয়েছে! পহেলা বৈশাখের দিন আমরা আপনাকে মনে করিয়ে দেব।');
+            }
+        }
+
+        // লাইভ চ্যাট ফাংশনালিটি
+        function sendChatMessage() {
+            const chatInput = document.querySelector('#live-chat + div input');
+            const message = chatInput.value.trim();
+            if (!message) return;
+            const chatContainer = document.getElementById('live-chat');
+            // Remove placeholder if exists
+            const placeholder = chatContainer.querySelector('.text-center');
+            if (placeholder) chatContainer.removeChild(placeholder);
+            // Add user message
+            const userMsg = document.createElement('div');
+            userMsg.className = 'bg-white p-3 rounded-lg mb-2 shadow-sm';
+            userMsg.innerHTML = `<div class="font-bold text-red-600">আপনি</div><div>${message}</div><div class="text-xs text-gray-500 text-right mt-1">এইমাত্র</div>`;
+            chatContainer.appendChild(userMsg);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+            chatInput.value = '';
+            // Bot reply
+            setTimeout(() => {
+                const replies = [
+                    "শুভ নববর্ষ! আপনার জন্যও অনেক শুভেচ্ছা।",
+                    "আনন্দে থাকুন! এই বছর আপনার সকল স্বপ্ন পূরণ হোক।",
+                    "পহেলা বৈশাখের আনন্দ উপভোগ করুন!",
+                    "খুশিতে থাকুন, শুভ নববর্ষ!"
+                ];
+                const replyText = replies[Math.floor(Math.random() * replies.length)];
+                const botMsg = document.createElement('div');
+                botMsg.className = 'bg-red-50 p-3 rounded-lg mb-2 shadow-sm';
+                botMsg.innerHTML = `<div class="font-bold text-blue-600">উৎসব কমিটি</div><div>${replyText}</div><div class="text-xs text-gray-500 text-right mt-1">এইমাত্র</div>`;
+                chatContainer.appendChild(botMsg);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }, Math.random() * 2000 + 500);
+        }
+    </script>
+</body>
+</html>
