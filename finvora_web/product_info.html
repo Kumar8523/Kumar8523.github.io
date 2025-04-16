@@ -11,9 +11,9 @@
       theme: {
         extend: {
           colors: {
-            primary: '#0F172A',
-            secondary: '#64748B',
-            accent: '#E11D48'
+            primary: '#EF4444',
+            secondary: '#F59E0B',
+            accent: '#10B981'
           },
           fontFamily: {
             sans: ['Inter', 'sans-serif']
@@ -29,107 +29,53 @@
     .image-gallery-thumbnail:hover {
       transform: scale(1.05);
     }
-    .size-button.selected {
-      background-color: #000;
-      color: white;
-    }
     .review-star {
-      color: #f59e0b;
+      color: #F59E0B;
     }
-    /* পেজে অতিরিক্ত মার্জিন যোগ করা হয়েছে যাতে হেডারের অভাব পূরণ হয় */
     body {
       padding: 2rem;
     }
   </style>
 </head>
 <body class="bg-gray-50">
-  <!-- Main Content for Product Details -->
-  <main class="max-w-5xl mx-auto p-4">
+  <main class="max-w-5xl mx-auto p-4 space-y-12">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-      <!-- Image Gallery -->
       <div class="space-y-4">
         <div class="aspect-square bg-gray-100 rounded-lg overflow-hidden">
           <img id="mainImage" src="https://via.placeholder.com/500x500" class="w-full h-full object-cover cursor-pointer" alt="Product Image">
         </div>
-        <div id="thumbnailContainer" class="grid grid-cols-4 gap-2">
-          <!-- Thumbnail images will be loaded dynamically -->
-        </div>
+        <div id="thumbnailContainer" class="grid grid-cols-4 gap-2"></div>
       </div>
-      <!-- Product Details -->
       <div class="space-y-6">
         <h1 id="productTitle" class="text-4xl font-light">Product Name</h1>
         <div class="flex items-center space-x-2">
-          <div class="review-star flex">
-            ★★★★★
-          </div>
-          <span id="reviewCount">(0 reviews)</span>
+          <div class="review-star flex"></div>
+          <span id="reviewCount" class="text-sm text-gray-600">(0 reviews)</span>
         </div>
-        <p id="productPrice" class="text-3xl">$0.00</p>
-        <!-- Size Selector -->
-        <div class="space-y-3">
-          <div class="flex justify-between">
-            <h3 class="font-medium">Select Size</h3>
-            <button class="text-gray-600 underline" onclick="showSizeChart()">Size Guide</button>
-          </div>
-          <div id="sizeButtons" class="grid grid-cols-4 gap-2">
-            <!-- Size buttons will be populated dynamically -->
-          </div>
+        <div id="priceSection" class="flex items-center space-x-4">
+          <span id="discountedPrice" class="text-3xl font-bold text-primary">$0.00</span>
+          <span id="originalPrice" class="text-xl text-gray-500 line-through hidden">$0.00</span>
         </div>
-        <!-- Stock Status -->
         <div id="stockStatus" class="text-green-600 font-medium">In Stock • Ready to Ship</div>
-        <!-- Action Buttons -->
         <div class="space-y-2">
-          <button onclick="addToCart()" class="w-full bg-black text-white py-4 rounded hover:bg-gray-800">
-            Add to Cart
-          </button>
-          <button onclick="addToWishlist()" class="w-full border border-black py-4 rounded hover:bg-gray-100">
-            Add to Wishlist
+          <button onclick="addToCart()" class="w-full bg-black text-white py-4 rounded hover:bg-gray-800">Add to Cart</button>
+          <button onclick="shareProduct()" class="w-full border border-black py-4 rounded hover:bg-gray-100 flex items-center justify-center gap-2">
+            <i class="fas fa-share-alt"></i> Share Product
           </button>
         </div>
-        <!-- Product Description -->
         <div class="pt-6 space-y-4">
           <h3 class="text-xl font-medium">Description</h3>
-          <p id="productDescription" class="text-gray-600">
-            Product description goes here...
-          </p>
+          <p id="productDescription" class="text-gray-600">Product description goes here...</p>
         </div>
       </div>
     </div>
-    <!-- Reviews Section -->
-    <section class="pt-20">
-      <h2 class="text-3xl mb-8">Customer Reviews</h2>
-      <div id="reviewsContainer" class="space-y-8">
-        <!-- Reviews will be loaded dynamically -->
-      </div>
+    <section class="pt-20 space-y-8">
+      <h2 class="text-3xl font-semibold">Customer Reviews</h2>
+      <div id="reviewsContainer" class="space-y-8"></div>
     </section>
   </main>
 
-  <!-- Size Chart Modal -->
-  <div id="sizeChartModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50">
-    <div class="bg-white p-8 max-w-2xl mx-auto mt-20 rounded">
-      <div class="flex justify-between mb-6">
-        <h3 class="text-2xl">Size Guide</h3>
-        <button onclick="closeModal()">✕</button>
-      </div>
-      <table class="w-full text-left">
-        <thead>
-          <tr>
-            <th>Size</th>
-            <th>Chest (in)</th>
-            <th>Waist (in)</th>
-            <th>Length (in)</th>
-          </tr>
-        </thead>
-        <tbody id="sizeChartBody">
-          <!-- Size chart data will be populated dynamically -->
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- Scripts -->
   <script>
-    // Get product id from URL parameter
     document.addEventListener('DOMContentLoaded', async () => {
       const urlParams = new URLSearchParams(window.location.search);
       const productId = urlParams.get('id');
@@ -139,14 +85,23 @@
         const data = await response.json();
         const product = data.products.find(p => p.id == productId);
         if (product) {
-          // Set product details
           document.getElementById('productTitle').textContent = product.name;
-          document.getElementById('productPrice').textContent = `$${product.price.toFixed(2)}`;
+          if (product.discount) {
+            const discountPrice = (product.price - product.price * (product.discount / 100)).toFixed(2);
+            document.getElementById('discountedPrice').textContent = `$${discountPrice}`;
+            document.getElementById('originalPrice').textContent = `$${product.price.toFixed(2)}`;
+            document.getElementById('originalPrice').classList.remove('hidden');
+          } else {
+            document.getElementById('discountedPrice').textContent = `$${product.price.toFixed(2)}`;
+          }
           document.getElementById('productDescription').textContent = product.description || '';
           document.getElementById('stockStatus').textContent = product.stock > 0 ? `In Stock • ${product.stock} available` : "Out of Stock";
-          document.getElementById('reviewCount').textContent = product.reviews ? `(${product.reviews.length} reviews)` : '';
 
-          // Set main image and thumbnails
+          const ratingStars = document.querySelector('.review-star');
+          const roundedRating = product.rating ? Math.round(product.rating) : 0;
+          ratingStars.innerHTML = '★'.repeat(roundedRating);
+          document.getElementById('reviewCount').textContent = product.reviews ? `(${product.reviews.length} reviews)` : '(0 reviews)';
+
           if (product.images && product.images.length > 0) {
             document.getElementById('mainImage').src = product.images[0];
             const thumbnailContainer = document.getElementById('thumbnailContainer');
@@ -157,19 +112,6 @@
             `).join('');
           }
 
-          // Populate size buttons
-          const sizeButtons = document.getElementById('sizeButtons');
-          if (product.sizes && product.sizes.length > 0) {
-            sizeButtons.innerHTML = product.sizes.map(s => `
-              <button class="size-button border rounded py-3 hover:bg-black hover:text-white" data-size="${s.size}" onclick="selectSize('${s.size}')">
-                ${s.size}
-              </button>
-            `).join('');
-          } else {
-            sizeButtons.innerHTML = `<p>No size options available</p>`;
-          }
-
-          // Load reviews
           const reviewsContainer = document.getElementById('reviewsContainer');
           if (product.reviews && product.reviews.length > 0) {
             reviewsContainer.innerHTML = product.reviews.map(review => `
@@ -192,69 +134,22 @@
       }
     });
 
-    // Function to change main image
     function changeMainImage(imageSrc) {
       document.getElementById('mainImage').src = imageSrc;
     }
 
-    // Size selection
-    let selectedSize = null;
-    function selectSize(size) {
-      selectedSize = size;
-      document.querySelectorAll('.size-button').forEach(btn => {
-        btn.classList.toggle('selected', btn.dataset.size === size);
+    function shareProduct() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const productId = urlParams.get('id');
+      const shortLink = `https://finvora.com/p/${productId}`;
+      navigator.clipboard.writeText(shortLink).then(() => {
+        alert('Product link copied to clipboard: ' + shortLink);
+      }).catch(() => {
+        alert('Failed to copy the link.');
       });
     }
 
-    // Show and close size chart modal
-    function showSizeChart() {
-      document.getElementById('sizeChartModal').classList.remove('hidden');
-      // For demo purposes, hardcoded size chart data is used.
-      const sizeChartBody = document.getElementById('sizeChartBody');
-      sizeChartBody.innerHTML = `
-        <tr>
-          <td>XS</td>
-          <td>34</td>
-          <td>28</td>
-          <td>26</td>
-        </tr>
-        <tr>
-          <td>S</td>
-          <td>36</td>
-          <td>30</td>
-          <td>27</td>
-        </tr>
-        <tr>
-          <td>M</td>
-          <td>38</td>
-          <td>32</td>
-          <td>28</td>
-        </tr>
-        <tr>
-          <td>L</td>
-          <td>40</td>
-          <td>34</td>
-          <td>29</td>
-        </tr>
-        <tr>
-          <td>XL</td>
-          <td>42</td>
-          <td>36</td>
-          <td>30</td>
-        </tr>
-      `;
-    }
-    function closeModal() {
-      document.getElementById('sizeChartModal').classList.add('hidden');
-    }
-
-    // Add to Cart function
     function addToCart() {
-      if (!selectedSize) {
-        alert("Please select a size");
-        return;
-      }
-      // Get product id from URL
       const urlParams = new URLSearchParams(window.location.search);
       const productId = urlParams.get('id');
       fetch('scripts/products.json')
@@ -263,8 +158,7 @@
           const product = data.products.find(p => p.id == productId);
           if (!product) return alert("Product not found");
           let cart = JSON.parse(localStorage.getItem('cart')) || [];
-          // Check if product with selected size exists in cart
-          const existing = cart.find(item => item.productId == product.id && item.size === selectedSize);
+          const existing = cart.find(item => item.productId == product.id);
           if (existing) {
             existing.quantity += 1;
           } else {
@@ -272,31 +166,24 @@
               productId: product.id,
               name: product.name,
               price: product.price,
-              quantity: 1,
-              size: selectedSize
+              quantity: 1
             });
           }
           localStorage.setItem('cart', JSON.stringify(cart));
           updateCartCount();
-          alert("Product added to cart!");
+          alert('Product added to cart!');
         })
         .catch(error => console.error('Error adding to cart:', error));
     }
 
-    // Dummy Add to Wishlist function
-    function addToWishlist() {
-      alert("Added to wishlist! (Functionality to be implemented.)");
-    }
-
-    // Update cart count (if needed)
     function updateCartCount() {
       const cart = JSON.parse(localStorage.getItem('cart')) || [];
       const count = cart.reduce((total, item) => total + item.quantity, 0);
-      // Update cart count in case there's any element
       document.querySelectorAll('.cart-count').forEach(el => {
         el.textContent = count;
       });
     }
+
     updateCartCount();
   </script>
 </body>
