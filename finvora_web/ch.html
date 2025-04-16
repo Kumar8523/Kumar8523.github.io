@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact Us | Finvora</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#0F172A',
+            secondary: '#64748B',
+            accent: '#E11D48'
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    #mobileMenu { transition: all 0.3s ease; }
+    .nav-link { transition: color 0.2s ease; }
+  </style>
+</head>
+
+<body class="font-sans antialiased">
+
+  <!-- Navigation -->
+  <!-- (যেমন আছে তেমন রেখে দিলাম, পরিবর্তনের দরকার নেই) -->
+
+  <!-- Hero Section -->
+  <section class="relative h-[40vh] flex items-center">
+    <img src="img/contact-hero.jpg" alt="Contact Us" class="w-full h-full object-cover absolute inset-0 z-0">
+    <div class="absolute inset-0 bg-black/50 z-0"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-white text-center relative z-10">
+      <h1 class="text-4xl font-bold mb-2">Get in Touch</h1>
+      <p class="text-xl">We’d love to hear from you. Reach out for any queries or feedback.</p>
+    </div>
+  </section>
+
+  <!-- Contact Form Section -->
+  <section class="py-10 bg-gray-100">
+    <div class="max-w-4xl mx-auto px-6 sm:px-8">
+      <h2 class="text-3xl font-bold text-center mb-8">Contact Us</h2>
+      <form id="contactForm" class="bg-white p-6 sm:p-8 rounded-lg shadow-md">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label for="fullName" class="block mb-2 font-medium">Full Name</label>
+            <input type="text" id="fullName" name="fullName" required class="w-full p-3 border rounded" placeholder="Your full name" />
+          </div>
+          <div>
+            <label for="email" class="block mb-2 font-medium">Email</label>
+            <input type="email" id="email" name="email" required class="w-full p-3 border rounded" placeholder="Your email address" />
+          </div>
+          <div>
+            <label for="phone" class="block mb-2 font-medium">Phone Number</label>
+            <input type="tel" id="phone" name="phone" required class="w-full p-3 border rounded" placeholder="Your phone number" />
+          </div>
+          <div>
+            <label for="subject" class="block mb-2 font-medium">Subject</label>
+            <input type="text" id="subject" name="subject" required class="w-full p-3 border rounded" placeholder="Subject" />
+          </div>
+        </div>
+        <div class="mt-6">
+          <label for="message" class="block mb-2 font-medium">Message</label>
+          <textarea id="message" name="message" rows="5" required class="w-full p-3 border rounded" placeholder="Your message"></textarea>
+        </div>
+        <div class="mt-6">
+          <button type="submit" class="w-full bg-black text-white py-4 rounded hover:bg-gray-800">Send Message</button>
+        </div>
+      </form>
+      <div id="formStatus" class="mt-4 text-center"></div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <!-- (আগের মতোই রেখে দিয়েছি, সুন্দর আছে) -->
+
+  <!-- Scripts -->
+  <script>
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    mobileMenuBtn?.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    document.querySelectorAll('.nav-link').forEach(link => {
+      if (link.href === window.location.href) {
+        link.classList.add('text-primary', 'font-medium');
+        link.classList.remove('hover:text-primary');
+      }
+    });
+
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      document.querySelectorAll('.cart-count').forEach(el => {
+        el.textContent = cart.reduce((acc, item) => acc + item.quantity, 0);
+      });
+    }
+    updateCartCount();
+
+    document.addEventListener('click', (e) => {
+      if (!mobileMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+        mobileMenu.classList.add('hidden');
+      }
+    });
+
+    const contactForm = document.getElementById('contactForm');
+    const formStatus = document.getElementById('formStatus');
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = {
+        fullName: document.getElementById('fullName').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        subject: document.getElementById('subject').value.trim(),
+        message: document.getElementById('message').value.trim(),
+        timestamp: new Date().toISOString()
+      };
+      const scriptURL = 'YOUR_GOOGLE_SCRIPT_URL'; // Replace with your script URL
+      try {
+        const response = await fetch(scriptURL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        });
+        if (response.ok) {
+          formStatus.textContent = 'Message sent successfully!';
+          formStatus.className = 'text-green-600 mt-4';
+          contactForm.reset();
+        } else {
+          throw new Error('Network error');
+        }
+      } catch (error) {
+        formStatus.textContent = 'An error occurred. Please try again later.';
+        formStatus.className = 'text-red-600 mt-4';
+      }
+    });
+  </script>
+</body>
+</html>
