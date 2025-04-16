@@ -47,7 +47,7 @@
     .nav-link {
       transition: color 0.2s ease;
     }
-    /* অতিরিক্ত মার্জিন যাতে navbar ও মেইন কন্টেন্টের মধ্যে ফাঁক থাকে */
+    /* ন্যাভবার ও মেইন কন্টেন্টের মধ্যে অতিরিক্ত ফাঁক */
     body {
       padding-top: 6rem;
     }
@@ -82,10 +82,8 @@
             <a href="about.html" class="nav-link hover:text-primary">About</a>
             <a href="contact.html" class="nav-link hover:text-primary">Contact</a>
           </div>
+          <!-- Wishlist লিংক সরিয়ে ফেলা হয়েছে -->
           <div class="ml-6 flex items-center space-x-4">
-            <a href="wishlist.html" class="text-gray-600 hover:text-primary">
-              <i class="far fa-heart"></i>
-            </a>
             <a href="checkout.html" class="text-gray-600 hover:text-primary relative">
               <i class="fas fa-shopping-bag"></i>
               <span class="cart-count absolute -top-2 -right-2 bg-accent text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">0</span>
@@ -116,9 +114,7 @@
         <a href="about.html" class="block px-3 py-2 hover:bg-gray-50 rounded">About</a>
         <a href="contact.html" class="block px-3 py-2 hover:bg-gray-50 rounded">Contact</a>
         <div class="pt-4 flex items-center justify-around border-t">
-          <a href="wishlist.html" class="text-gray-600 p-2">
-            <i class="far fa-heart"></i>
-          </a>
+          <!-- Wishlist লিংক সরিয়ে ফেলা হয়েছে -->
           <a href="checkout.html" class="text-gray-600 p-2 relative">
             <i class="fas fa-shopping-bag"></i>
             <span class="cart-count absolute -top-1 -right-1 bg-accent text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">0</span>
@@ -127,10 +123,10 @@
       </div>
     </div>
   </nav>
-
+  
   <!-- Main Content -->
   <main class="max-w-7xl mx-auto px-4 py-6">
-    <!-- Search & Filter Section -->
+    <!-- Search, Filter & Sort Section -->
     <div class="flex flex-col md:flex-row items-center justify-between mb-8 gap-4">
       <!-- Search Option -->
       <div class="w-full md:w-1/2">
@@ -141,25 +137,32 @@
           </button>
         </form>
       </div>
-      <!-- Simplified Filter Option: Dropdown -->
+      <!-- Filter Option: Dropdown (ক্যাটাগরি) -->
       <div class="w-full md:w-1/4">
         <select id="categoryFilter" class="w-full border rounded-full px-4 py-2">
-          <option value="all">All Categories</option>
-          <option value="Women">Fish</option>
-          <option value="Men">Aquariums-Accessories</option>
-  </select>
+          <option value="all">সকল ক্যাটাগরি</option>
+          <option value="fish">মাছ</option>
+          <option value="aquariums-accessories">মাছের এক্সেসরিজ</option>
+        </select>
+      </div>
+      <!-- Sort Option: Dropdown (দাম অনুযায়ী সাজান) -->
+      <div class="w-full md:w-1/4">
+        <select id="sortOptions" class="w-full border rounded-full px-4 py-2">
+          <option value="">সাজান</option>
+          <option value="asc">মূল্য: কম থেকে বেশি</option>
+          <option value="desc">মূল্য: বেশি থেকে কম</option>
+        </select>
       </div>
     </div>
-
+  
     <!-- Products Grid -->
-    <!-- Updated grid: Mobile now displays 2 columns -->
     <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
       <!-- Product cards will be loaded dynamically -->
     </div>
   </main>
-
+  
   <!-- Footer -->
-  <footer class="bg-gray-900 text-white py-12 bengali-font">
+  <footer class="bg-gray-900 text-white bengali-font py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
       <div>
         <h3 class="text-xl font-bold mb-4">Finvora</h3>
@@ -188,8 +191,8 @@
       </div>
     </div>
   </footer>
-
-  <!-- Scripts -->
+  
+  <!-- Inline Scripts -->
   <script>
     // Mobile Menu Toggle
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
@@ -197,7 +200,7 @@
     mobileMenuBtn.addEventListener('click', () => {
       mobileMenu.classList.toggle('hidden');
     });
-
+  
     // Active Link Styling
     document.querySelectorAll('.nav-link').forEach(link => {
       if(link.href === window.location.href) {
@@ -205,7 +208,7 @@
         link.classList.remove('hover:text-primary');
       }
     });
-
+  
     // Update Cart Count
     function updateCartCount() {
       const cart = JSON.parse(localStorage.getItem('cart')) || [];
@@ -214,7 +217,7 @@
       });
     }
     updateCartCount();
-
+  
     // Load Products and Render Product Cards
     async function loadProducts() {
       try {
@@ -223,12 +226,13 @@
         const products = data.products;
         const grid = document.getElementById('productGrid');
         grid.innerHTML = products.map(product => {
-          // Calculate discounted price if discount exists
-          const discountedPrice = product.discount
-            ? (product.price - product.price * (product.discount / 100)).toFixed(2)
-            : product.price.toFixed(2);
+          // Calculate final (discounted) price
+          const finalPrice = product.discount
+            ? product.price - product.price * (product.discount / 100)
+            : product.price;
+          const discountedPrice = finalPrice.toFixed(2);
           return `
-            <div class="product-card bg-white rounded-lg shadow-sm overflow-hidden" data-category="${product.category}">
+            <div class="product-card bg-white rounded-lg shadow-sm overflow-hidden" data-category="${product.category.toLowerCase()}" data-price="${finalPrice}">
               <div class="relative">
                 <a href="product_info.html?id=${product.id}">
                   <img src="${product.images[0] || 'https://via.placeholder.com/300x400'}" class="product-image w-full h-80 object-cover" alt="${product.name}" loading="lazy">
@@ -252,24 +256,21 @@
           `;
         }).join('');
         attachFilterAndSearch();
+        attachSortListener();
       } catch (error) {
         console.error('Error loading products:', error);
       }
     }
-
-    // Attach filter and search functionality
+  
+    // Attach Filter & Search Functionality
     function attachFilterAndSearch() {
       // Filter by category using dropdown
       const categoryFilter = document.getElementById('categoryFilter');
       categoryFilter.addEventListener('change', () => {
         const selected = categoryFilter.value.toLowerCase();
         document.querySelectorAll('.product-card').forEach(card => {
-          const cat = card.getAttribute('data-category').toLowerCase();
-          if (selected === 'all' || cat === selected) {
-            card.style.display = 'block';
-          } else {
-            card.style.display = 'none';
-          }
+          const cat = card.getAttribute('data-category');
+          card.style.display = (selected === 'all' || cat === selected) ? 'block' : 'none';
         });
       });
       
@@ -279,18 +280,33 @@
         const query = mainSearch.value.toLowerCase();
         document.querySelectorAll('.product-card').forEach(card => {
           const name = card.querySelector('h3').textContent.toLowerCase();
-          if (name.includes(query)) {
-            card.style.display = 'block';
-          } else {
-            card.style.display = 'none';
-          }
+          card.style.display = name.includes(query) ? 'block' : 'none';
         });
       });
     }
-
+  
+    // Attach Sort Functionality for Price
+    function attachSortListener() {
+      const sortSelect = document.getElementById('sortOptions');
+      sortSelect.addEventListener('change', () => {
+        const option = sortSelect.value;
+        const grid = document.getElementById('productGrid');
+        let cards = Array.from(document.querySelectorAll('.product-card'));
+        if(option === 'asc') {
+          cards.sort((a, b) => parseFloat(a.getAttribute('data-price')) - parseFloat(b.getAttribute('data-price')));
+        } else if(option === 'desc') {
+          cards.sort((a, b) => parseFloat(b.getAttribute('data-price')) - parseFloat(a.getAttribute('data-price')));
+        }
+        // Clear grid and re-append sorted cards
+        grid.innerHTML = '';
+        cards.forEach(card => grid.appendChild(card));
+      });
+    }
+  
     // Call loadProducts on DOM load
     document.addEventListener('DOMContentLoaded', loadProducts);
   </script>
+  <!-- যদি অতিরিক্ত লজিক থাকে তা app.js বা search.js থেকে লোড করুন -->
   <script src="scripts/app.js"></script>
   <script src="scripts/search.js"></script>
 </body>
