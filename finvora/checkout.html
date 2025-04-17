@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout | Finvora</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#EF4444',
+            secondary: '#F59E0B',
+            accent: '#10B981'
+          },
+          fontFamily: {
+            bangla: ['Noto Sans Bengali', 'sans-serif'],
+            sans: ['Inter', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;700&family=Noto+Sans+Bengali:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    body { font-family: 'Noto Sans Bengali', sans-serif; background-color: #FFF5F5; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+    .cart-item { border-bottom: 1px solid #e5e7eb; padding-bottom: 1rem; margin-bottom: 1rem; }
+    .promo-input:disabled + .promo-btn { opacity: 0.5; cursor: not-allowed; }
+  </style>
+</head>
+<body class="antialiased">
+  <div class="container bg-white rounded-lg shadow-md">
+    <div class="flex flex-col md:flex-row gap-8">
+      <!-- Customer & Payment Info -->
+      <div class="bg-gray-50 p-8 rounded-lg w-full md:w-1/2 space-y-6">
+        <h2 class="text-2xl font-bold text-primary">Customer Information</h2>
+        <form id="checkoutForm" class="space-y-4">
+          <input type="text" id="fullName" required placeholder="Full Name" class="w-full p-3 border rounded" />
+          <input type="tel" id="phone" required placeholder="Phone Number" class="w-full p-3 border rounded" />
+          <input type="email" id="email" required placeholder="Email" class="w-full p-3 border rounded" />
+          <textarea id="address" rows="3" required placeholder="Shipping Address" class="w-full p-3 border rounded"></textarea>
+          <!-- Payment Options -->
+          <div class="space-y-2">
+            <label class="font-medium">Payment Method:</label>
+            <div class="flex flex-col">
+              <label><input type="radio" name="payment" value="bkash" /> Bkash</label>
+              <label><input type="radio" name="payment" value="nagad" /> Nagad</label>
+              <label><input type="radio" name="payment" value="cod" checked /> Cash on Delivery</label>
+            </div>
+            <div id="accountInfo" class="text-secondary text-sm">
+              <p class="hidden" id="bkashInfo">Bkash Number: 01XXXXXXXXX</p>
+              <p class="hidden" id="nagadInfo">Nagad Number: 01YYYYYYYYY</p>
+            </div>
+            <div>
+              <label class="block mb-2 font-medium">Transaction ID</label>
+              <input type="text" id="transactionId" placeholder="Enter Transaction ID" class="w-full p-3 border rounded" disabled />
+            </div>
+          </div>
+          <!-- Order Note -->
+          <div>
+            <label class="block mb-2 font-medium">Order Note (optional)</label>
+            <textarea id="orderNote" rows="2" placeholder="Any special instructions?" class="w-full p-3 border rounded"></textarea>
+          </div>
+        </form>
+      </div>
+      <!-- Order Summary -->
+      <div class="bg-gray-50 p-8 rounded-lg w-full md:w-1/2">
+        <h2 class="text-2xl font-bold text-primary mb-6">Order Summary</h2>
+        <div id="orderItems" class="space-y-6"></div>
+        <div class="mt-8">
+          <div class="flex justify-between mb-2"><span>Subtotal:</span><span id="subtotal">৳ 0.00</span></div>
+          <div class="flex justify-between mb-2"><span>Discount:</span><span id="discount">৳ 0.00</span></div>
+          <div class="flex justify-between font-medium"><span>Total:</span><span id="grandTotal">৳ 0.00</span></div>
+        </div>
+        <button onclick="submitOrder()" class="w-full mt-6 bg-primary text-white py-4 rounded hover:bg-secondary transition">Confirm Order</button>
+        <p class="text-center mt-4 text-sm text-gray-600">Payment details will be confirmed within 3 business days.</p>
+      </div>
+    </div>
+  </div>
+  <script>
+    let appliedPromo = null;
+    function loadCartItems() {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const container = document.getElementById('orderItems');
+      if (!cart.length) return container.innerHTML = '<p class="text-center text-gray-600">Your cart is empty.</p>';
+      container.innerHTML = cart.map((item, idx) => `
+        <div class="cart-item flex flex-col sm:flex-row items-start gap-4">
+          <img src="${item.image||'https://via.placeholder.com/100'}" alt="${item.name}" class="w-24 h-24 object-cover rounded" />
+          <div class="flex-1">
+            <h3 class="font-bold text-lg">${item.name}</h3>
+            <p class="text-gray-600">Quantity: <input type="number" value="${item.quantity}" min="1" onchange="updateQuantity(${idx},0,this.value)" class="w-16 text-center border rounded"/></p>
+            <p class="text-gray-600">Price: ৳${(item.price*item.quantity).toFixed(2)}</p>
+            <button onclick="removeCartItem(${idx})" class="text-red-600 hover:underline">Remove</button>
+            <div class="mt-2 flex flex-col md:flex-row gap-2">
+              <input type="text" id="promo${idx}" placeholder="Promo Code" class="promo-input flex-1 p-2 border rounded" ${appliedPromo?'disabled':''} />
+              <button onclick="applyPromo(${idx})" class="promo-btn bg-primary text-white px-4 py-2 rounded hover:bg-secondary transition" ${appliedPromo?'disabled':''}>Apply</button>
+            </div>
+          </div>
+        </div>`).join('');
+      calculateTotals();
+    }
+    function applyPromo(idx) {
+      const code = document.getElementById(`promo${idx}`).value.trim();
+      if (!code) return;
+      appliedPromo = code;
+      document.querySelectorAll('.promo-input, .promo-btn').forEach(el=>el.disabled=true);
+      calculateTotals();
+    }
+    function updateQuantity(i,change,newVal) {
+      const cart=JSON.parse(localStorage.getItem('cart'))||[];
+      cart[i].quantity=newVal?parseInt(newVal):cart[i].quantity+change;
+      if(cart[i].quantity<1)cart[i].quantity=1;
+      localStorage.setItem('cart',JSON.stringify(cart));loadCartItems();updateCartCount();
+    }
+    function removeCartItem(i){const cart=JSON.parse(localStorage.getItem('cart'))||[];cart.splice(i,1);localStorage.setItem('cart',JSON.stringify(cart));loadCartItems();updateCartCount();}
+    function calculateTotals(){const cart=JSON.parse(localStorage.getItem('cart'))||[];let sub=0;cart.forEach(i=>sub+=i.price*i.quantity);let disc=appliedPromo?sub*0.1:0;const ship=sub?15:0;const total=sub+ship-disc;document.getElementById('subtotal').textContent=`৳${sub.toFixed(2)}`;document.getElementById('discount').textContent=`৳${disc.toFixed(2)}`;document.getElementById('grandTotal').textContent=`৳${total.toFixed(2)}`;}
+    function updateCartCount(){const cart=JSON.parse(localStorage.getItem('cart'))||[];const c=cart.reduce((a,i)=>a+i.quantity,0);document.querySelectorAll('.cart-count').forEach(el=>el.textContent=c);}    
+    // Payment logic
+    document.querySelectorAll('input[name=payment]').forEach(radio=>radio.addEventListener('change',e=>{
+      document.getElementById('transactionId').disabled=e.target.value==='cod';
+      document.getElementById('bkashInfo').classList.toggle('hidden',e.target.value!=='bkash');
+      document.getElementById('nagadInfo').classList.toggle('hidden',e.target.value!=='nagad');
+    }));
+    async function submitOrder(){/* ...existing submission logic... */}
+    document.addEventListener('DOMContentLoaded',()=>{updateCartCount();loadCartItems();});
+  </script>
+</body>
+</html>

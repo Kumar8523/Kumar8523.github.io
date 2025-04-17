@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finvora</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#000000',
+              secondary: '#F59E0B',
+              accent: '#10B981'
+            },
+            fontFamily: {
+              bangla: ['Noto Sans Bengali', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;700&family=Noto+Sans+Bengali:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+      body { font-family: 'Noto Sans Bengali', sans-serif; background-color: #FFF5F5; }
+      .alpona-pattern { background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M20,50 Q50,20 80,50 Q50,80 20,50" fill="none" stroke="%23EF4444" stroke-width="2"/></svg>'); background-size: 100px 100px; }
+      .hero-bg { background-image: linear-gradient(rgba(239,68,68,0.8), rgba(245,158,11,0.8)), url('images/hero-bg.jpg'); background-size: cover; background-position: center; }
+      nav { background-color: rgba(255,255,255,0.9); backdrop-blur: 8px; }
+      .festival-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body class="bangla-font antialiased">
+  <!-- Navigation -->
+  <div id="navbar"></div>
+
+  
+  <!-- Hero Section -->
+  <section class="hero-bg h-screen flex items-center pt-16 alpona-pattern">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-white relative z-10">
+      <div class="max-w-2xl">
+        <span class="uppercase tracking-widest text-sm mb-4 inline-block">Finvora</span>
+        <h1 class="text-5xl font-bold mb-6 leading-tight">Lorem ipsum dolor sit amet.</h1>
+        <p class="text-lg mb-8 opacity-90">Lorem ipsum, dolor sit amet consectetur adipisicing elit.</p>
+        <a href="products.html" class="bg-white text-primary px-8 py-3 rounded-full font-medium inline-block hover:bg-gray-100 transition duration-300">Shop Now</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Collections -->
+  <section id="collections" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-center mb-12 text-primary">Our Collections</h2>
+      <div id="collections-container" class="grid grid-cols-1 md:grid-cols-4 gap-6"></div>
+      <div class="text-center mt-8">
+        <a href="products.html" class="bg-primary text-white px-6 py-3 rounded-full hover:bg-secondary transition">Show All Products</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- User Reviews -->
+  <section id="reviews" class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-center mb-12 text-primary">User Reviews</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-white p-6 rounded-lg shadow">
+          <div class="flex items-center mb-4">
+            <img src="https://via.placeholder.com/50" alt="User 1" class="w-12 h-12 rounded-full mr-4">
+            <div>
+              <h3 class="font-bold">User One</h3>
+              <div class="flex text-yellow-400">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+              </div>
+            </div>
+          </div>
+          <p class="text-gray-600">"Great selection and fast delivery!"</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow">
+          <div class="flex items-center mb-4">
+            <img src="https://via.placeholder.com/50" alt="User 2" class="w-12 h-12 rounded-full mr-4">
+            <div>
+              <h3 class="font-bold">User Two</h3>
+              <div class="flex text-yellow-400">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+              </div>
+            </div>
+          </div>
+          <p class="text-gray-600">"Excellent quality and customer service."</p>
+        </div>
+        <div class="bg-white p-6 rounded-lg shadow">
+          <div class="flex items-center mb-4">
+            <img src="https://via.placeholder.com/50" alt="User 3" class="w-12 h-12 rounded-full mr-4">
+            <div>
+              <h3 class="font-bold">User Three</h3>
+              <div class="flex text-yellow-400">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i><i class="fas fa-star"></i>
+              </div>
+            </div>
+          </div>
+          <p class="text-gray-600">"Loved the festive theme and easy navigation."</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  
+  <div id="footer"></div>
+
+  <script src="main.js"></script>
+  <script src="scripts/navbar_footer.js"></script>
+  <script src="scripts/app.js"></script>
+</body>
+</html>
