@@ -4,11 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Finvora | All Products</title>
-  
-  <!-- ফন্ট ও আইকন CDN -->
+  <!-- Font & Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter&family=Noto+Sans+Bengali&display=swap" rel="stylesheet">
-  
+  <link href="https://fonts.googleapis.com/css2?family=Inter&display=swap" rel="stylesheet">
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -16,65 +14,42 @@
       theme: {
         extend: {
           colors: {
-            primary: '#0F172A',
-            secondary: '#64748B',
-            accent: '#E11D48'
+            primary: '#EF4444',
+            secondary: '#F59E0B',
+            accent: '#10B981'
           },
           fontFamily: {
             sans: ['Inter', 'sans-serif']
           }
         }
       }
-    }
+    };
   </script>
-  
   <style>
-    .bengali-font { font-family: 'Noto Sans Bengali', sans-serif; }
-    .product-card:hover .product-actions {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .product-image {
-      transition: transform 0.3s ease;
-      transform-origin: center;
-    }
-    .product-card:hover .product-image {
-      transform: scale(1.03);
-    }
-    #mobileMenu {
-      transition: all 0.3s ease;
-    }
-    .nav-link {
-      transition: color 0.2s ease;
-    }
-    /* ন্যাভবার ও মেইন কন্টেন্টের মধ্যে অতিরিক্ত ফাঁক */
-    body {
-      padding-top: 6rem;
-    }
+    #mobileMenu { transition: all 0.3s ease; }
+    .nav-link { transition: color 0.2s ease; }
+    .product-card:hover .product-actions { opacity: 1; transform: translateY(0); }
+    .product-image { transition: transform 0.3s ease; transform-origin: center; }
+    .product-card:hover .product-image { transform: scale(1.03); }
+    body { padding-top: 6rem; }
+    /* Suggestions dropdown */
+    #suggestions { position: absolute; background: white; border: 1px solid #ddd; width: 100%; max-height: 200px; overflow-y: auto; z-index: 10; }
+    #suggestions div { padding: 0.5rem; cursor: pointer; }
+    #suggestions div:hover { background: #f3f3f3; }
   </style>
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-50 font-sans">
   <!-- Navigation -->
-  <nav class="bg-white/90 backdrop-blur-md fixed top-0 w-full z-50 shadow-sm border-b">
+  <nav class="bg-white/90 backdrop-blur-md fixed top-0 w-full z-50 shadow border-b">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-center justify-between h-16">
-        <!-- Logo -->
-        <a href="index.html" class="text-2xl font-bold text-primary bengali-font">
-          Finvora
-        </a>
-        <!-- Desktop Navigation -->
-        <div class="hidden md:flex items-center flex-1 max-w-2xl mx-8">
-          <!-- Search Bar -->
-          <form action="products.html" method="GET" class="flex-1">
-            <div class="relative">
-              <input type="text" name="search" id="navSearch" placeholder="Search luxury dresses..." class="w-full px-4 py-2 rounded-full border focus:ring-2 focus:ring-primary">
-              <button type="submit" class="absolute right-3 top-2 text-gray-400 hover:text-primary">
-                <i class="fas fa-search"></i>
-              </button>
-            </div>
-          </form>
+        <a href="index.html" class="text-2xl font-bold text-primary">Finvora</a>
+        <div class="hidden md:flex items-center flex-1 mx-8">
+          <div class="relative w-full">
+            <input type="text" id="mainSearch" placeholder="Search products..." class="w-full px-4 py-2 rounded-full border focus:ring-2 focus:ring-primary">
+            <div id="suggestions" class="hidden"></div>
+          </div>
         </div>
-        <!-- Desktop Menu & Icons -->
         <div class="hidden md:flex items-center space-x-6">
           <div class="flex space-x-6">
             <a href="index.html" class="nav-link hover:text-primary">Home</a>
@@ -82,40 +57,26 @@
             <a href="about.html" class="nav-link hover:text-primary">About</a>
             <a href="contact.html" class="nav-link hover:text-primary">Contact</a>
           </div>
-          <!-- Wishlist লিংক সরিয়ে ফেলা হয়েছে -->
-          <div class="ml-6 flex items-center space-x-4">
-            <a href="checkout.html" class="text-gray-600 hover:text-primary relative">
+          <div class="ml-6">
+            <a href="checkout.html" class="relative text-gray-600 hover:text-primary">
               <i class="fas fa-shopping-bag"></i>
               <span class="cart-count absolute -top-2 -right-2 bg-accent text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">0</span>
             </a>
           </div>
         </div>
-        <!-- Mobile Menu Button -->
         <div class="md:hidden">
-          <button id="mobileMenuBtn" class="text-gray-600 hover:text-primary">
-            <i class="fas fa-bars text-xl"></i>
-          </button>
+          <button id="mobileMenuBtn" class="text-gray-600 hover:text-primary"><i class="fas fa-bars"></i></button>
         </div>
       </div>
     </div>
-    <!-- Mobile Menu -->
     <div id="mobileMenu" class="hidden md:hidden absolute w-full bg-white shadow-lg">
       <div class="px-4 pt-2 pb-3 space-y-2">
-        <form action="products.html" method="GET" class="mb-4">
-          <div class="relative">
-            <input type="text" name="search" placeholder="Search..." class="w-full px-4 py-2 border rounded-full">
-            <button type="submit" class="absolute right-3 top-2 text-gray-400">
-              <i class="fas fa-search"></i>
-            </button>
-          </div>
-        </form>
         <a href="index.html" class="block px-3 py-2 hover:bg-gray-50 rounded">Home</a>
         <a href="products.html" class="block px-3 py-2 hover:bg-gray-50 rounded">Shop</a>
         <a href="about.html" class="block px-3 py-2 hover:bg-gray-50 rounded">About</a>
         <a href="contact.html" class="block px-3 py-2 hover:bg-gray-50 rounded">Contact</a>
         <div class="pt-4 flex items-center justify-around border-t">
-          <!-- Wishlist লিংক সরিয়ে ফেলা হয়েছে -->
-          <a href="checkout.html" class="text-gray-600 p-2 relative">
+          <a href="checkout.html" class="relative p-2 text-gray-600 hover:text-primary">
             <i class="fas fa-shopping-bag"></i>
             <span class="cart-count absolute -top-1 -right-1 bg-accent text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">0</span>
           </a>
@@ -123,56 +84,44 @@
       </div>
     </div>
   </nav>
-  
-  <!-- Main Content -->
-  <main class="max-w-7xl mx-auto px-4 py-6">
-    <!-- Search, Filter & Sort Section -->
-    <div class="flex flex-col md:flex-row items-center justify-between mb-8 gap-4">
-      <!-- Search Option -->
-      <div class="w-full md:w-1/2">
-        <form action="products.html" method="GET" class="relative">
-          <input type="text" name="search" id="mainSearch" placeholder="Search products..." class="w-full px-4 py-2 rounded-full border focus:ring-2 focus:ring-primary">
-          <button type="submit" class="absolute right-3 top-2 text-gray-400 hover:text-primary">
-            <i class="fas fa-search"></i>
-          </button>
-        </form>
-      </div>
-      <!-- Filter Option: Dropdown (ক্যাটাগরি) -->
-      <div class="w-full md:w-1/4">
+
+  <!-- Filters & Sort -->
+  <main class="max-w-7xl mx-auto px-4 py-6 space-y-6">
+    <div class="flex flex-col md:flex-row items-center gap-4">
+      <div class="w-full md:w-1/3">
         <select id="categoryFilter" class="w-full border rounded-full px-4 py-2">
-          <option value="all">সকল ক্যাটাগরি</option>
-          <option value="fish">মাছ</option>
-          <option value="aquariums-accessories">মাছের এক্সেসরিজ</option>
+          <option value="all">All Categories</option>
+          <option value="fish">Fish</option>
+          <option value="fish-food">Fish Food</option>
+          <option value="aquarium-accessories">Aquarium Accessories</option>
         </select>
       </div>
-      <!-- Sort Option: Dropdown (দাম অনুযায়ী সাজান) -->
-      <div class="w-full md:w-1/4">
+      <div class="w-full md:w-1/3">
         <select id="sortOptions" class="w-full border rounded-full px-4 py-2">
-          <option value="">সাজান</option>
-          <option value="asc">মূল্য: কম থেকে বেশি</option>
-          <option value="desc">মূল্য: বেশি থেকে কম</option>
+          <option value="">Sort By</option>
+          <option value="asc">Price: Low to High</option>
+          <option value="desc">Price: High to Low</option>
         </select>
       </div>
     </div>
-  
+
     <!-- Products Grid -->
-    <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      <!-- Product cards will be loaded dynamically -->
-    </div>
+    <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
   </main>
-  
+
   <!-- Footer -->
-  <footer class="bg-gray-900 text-white bengali-font py-12">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
+  <footer class="bg-gray-900 text-white py-12">
+    <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
       <div>
         <h3 class="text-xl font-bold mb-4">Finvora</h3>
-        <p class="text-gray-400">বিশ্বজুড়ে অ্যাকুরিয়ামে প্রাণ ফেরানোর মিশন—Finvora: প্রতিটি শহরে, প্রতিটি দেশে</p>
+        <p class="text-gray-400">Global mission to revive aquariums—Finvora in every city, every country.</p>
       </div>
       <div>
         <h4 class="font-semibold mb-4">Shop</h4>
         <ul class="space-y-2 text-gray-400">
           <li><a href="#" class="hover:text-white">Fish</a></li>
-          <li><a href="#" class="hover:text-white">Aquariums-Accessories</a></li>
+          <li><a href="#" class="hover:text-white">Fish Food</a></li>
+          <li><a href="#" class="hover:text-white">Aquarium Accessories</a></li>
         </ul>
       </div>
       <div>
@@ -184,130 +133,95 @@
       <div>
         <h4 class="font-semibold mb-4">Connect</h4>
         <div class="flex space-x-4">
-          <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
-          <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="hover:text-white text-gray-400"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="hover:text-white text-gray-400"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="hover:text-white text-gray-400"><i class="fab fa-twitter"></i></a>
         </div>
       </div>
     </div>
   </footer>
-  
-  <!-- Inline Scripts -->
+
   <script>
-    // Mobile Menu Toggle
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const mobileMenu = document.getElementById('mobileMenu');
-    mobileMenuBtn.addEventListener('click', () => {
-      mobileMenu.classList.toggle('hidden');
+    // Mobile Menu
+    document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+      document.getElementById('mobileMenu').classList.toggle('hidden');
     });
-  
-    // Active Link Styling
-    document.querySelectorAll('.nav-link').forEach(link => {
-      if(link.href === window.location.href) {
-        link.classList.add('text-primary', 'font-medium');
-        link.classList.remove('hover:text-primary');
-      }
-    });
-  
-    // Update Cart Count
+    // Cart count (reuse existing function)
     function updateCartCount() {
       const cart = JSON.parse(localStorage.getItem('cart')) || [];
-      document.querySelectorAll('.cart-count').forEach(el => {
-        el.textContent = cart.reduce((acc, item) => acc + item.quantity, 0);
-      });
+      document.querySelectorAll('.cart-count').forEach(el => el.textContent = cart.reduce((a,i)=>a+i.quantity,0));
     }
     updateCartCount();
-  
-    // Load Products and Render Product Cards
+
+    let allProducts = [];
     async function loadProducts() {
-      try {
-        const response = await fetch('scripts/products.json');
-        const data = await response.json();
-        const products = data.products;
-        const grid = document.getElementById('productGrid');
-        grid.innerHTML = products.map(product => {
-          // Calculate final (discounted) price
-          const finalPrice = product.discount
-            ? product.price - product.price * (product.discount / 100)
-            : product.price;
-          const discountedPrice = finalPrice.toFixed(2);
-          return `
-            <div class="product-card bg-white rounded-lg shadow-sm overflow-hidden" data-category="${product.category.toLowerCase()}" data-price="${finalPrice}">
-              <div class="relative">
-                <a href="product_info.html?id=${product.id}">
-                  <img src="${product.images[0] || 'https://via.placeholder.com/300x400'}" class="product-image w-full h-80 object-cover" alt="${product.name}" loading="lazy">
-                </a>
-                <div class="product-actions absolute bottom-0 left-0 right-0 bg-white/90 p-4 opacity-0 transition-all transform translate-y-4">
-                  <button onclick="event.stopPropagation(); addToCart(${product.id})" class="w-full mb-2 border border-black py-2 rounded-full hover:bg-black hover:text-white">
-                    Add to Cart
-                  </button>
-                </div>
-              </div>
-              <div class="p-4">
-                <h3 class="font-medium">${product.name}</h3>
-                <div class="flex justify-between items-center mt-2">
-                  <span class="text-lg text-primary">$${discountedPrice}</span>
-                  <div class="flex items-center text-yellow-400">
-                    ★ ${product.rating || 'N/A'}
-                  </div>
-                </div>
-              </div>
+      const resp = await fetch('scripts/products.json');
+      const data = await resp.json();
+      allProducts = data.products;
+      renderProducts(allProducts);
+      setupSearchSuggestions();
+    }
+    function renderProducts(products) {
+      const grid = document.getElementById('productGrid');
+      grid.innerHTML = products.map(p => {
+        const price = (p.discount ? p.price*(1-p.discount/100) : p.price).toFixed(2);
+        return `
+          <div class="product-card bg-white rounded-lg shadow overflow-hidden" data-category="${p.category.toLowerCase()}" data-price="${price}">
+            <img src="${p.images[0]}" alt="${p.name}" class="product-image w-full h-56 object-cover">
+            <div class="p-4">
+              <h3 class="font-medium text-lg mb-2">${p.name}</h3>
+              <p class="text-primary text-xl font-bold mb-2">$${price}</p>
+              <div class="flex items-center text-yellow-400 mb-4">★★★★★<span class="ml-2 text-gray-600">(${p.rating||0})</span></div>
+              <button onclick="addToCart(${p.id})" class="w-full bg-black text-white py-2 rounded hover:bg-gray-800">Add to Cart</button>
             </div>
-          `;
-        }).join('');
-        attachFilterAndSearch();
-        attachSortListener();
-      } catch (error) {
-        console.error('Error loading products:', error);
-      }
+          </div>
+        `;
+      }).join('');
     }
-  
-    // Attach Filter & Search Functionality
-    function attachFilterAndSearch() {
-      // Filter by category using dropdown
-      const categoryFilter = document.getElementById('categoryFilter');
-      categoryFilter.addEventListener('change', () => {
-        const selected = categoryFilter.value.toLowerCase();
-        document.querySelectorAll('.product-card').forEach(card => {
-          const cat = card.getAttribute('data-category');
-          card.style.display = (selected === 'all' || cat === selected) ? 'block' : 'none';
-        });
-      });
-      
-      // Search functionality: Filter products based on search input
-      const mainSearch = document.getElementById('mainSearch');
-      mainSearch.addEventListener('input', () => {
-        const query = mainSearch.value.toLowerCase();
-        document.querySelectorAll('.product-card').forEach(card => {
-          const name = card.querySelector('h3').textContent.toLowerCase();
-          card.style.display = name.includes(query) ? 'block' : 'none';
-        });
-      });
-    }
-  
-    // Attach Sort Functionality for Price
-    function attachSortListener() {
-      const sortSelect = document.getElementById('sortOptions');
-      sortSelect.addEventListener('change', () => {
-        const option = sortSelect.value;
-        const grid = document.getElementById('productGrid');
-        let cards = Array.from(document.querySelectorAll('.product-card'));
-        if(option === 'asc') {
-          cards.sort((a, b) => parseFloat(a.getAttribute('data-price')) - parseFloat(b.getAttribute('data-price')));
-        } else if(option === 'desc') {
-          cards.sort((a, b) => parseFloat(b.getAttribute('data-price')) - parseFloat(a.getAttribute('data-price')));
-        }
-        // Clear grid and re-append sorted cards
-        grid.innerHTML = '';
-        cards.forEach(card => grid.appendChild(card));
+
+    // Filters
+    document.getElementById('categoryFilter').addEventListener('change', (e) => {
+      const cat = e.target.value;
+      const filtered = cat==='all' ? allProducts : allProducts.filter(p=>p.category.toLowerCase()===cat);
+      renderProducts(filtered);
+    });
+    // Sort
+    document.getElementById('sortOptions').addEventListener('change', (e) => {
+      const val = e.target.value;
+      const sorted = [...allProducts];
+      if(val==='asc') sorted.sort((a,b)=> (a.discount? a.price*(1-a.discount/100):a.price) - (b.discount? b.price*(1-b.discount/100):b.price));
+      if(val==='desc') sorted.sort((a,b)=> (b.discount? b.price*(1-b.discount/100):b.price) - (a.discount? a.price*(1-a.discount/100):a.price));
+      renderProducts(sorted);
+    });
+
+    // Search suggestions
+    function setupSearchSuggestions() {
+      const input = document.getElementById('mainSearch');
+      const suggBox = document.getElementById('suggestions');
+      input.addEventListener('input', ()=>{
+        const q = input.value.toLowerCase();
+        if(!q) { suggBox.innerHTML=''; suggBox.classList.add('hidden'); return; }
+        const matches = allProducts.filter(p=>p.name.toLowerCase().includes(q)).slice(0,5);
+        if(matches.length){
+          suggBox.innerHTML = matches.map(m=>`<div onclick="selectSuggestion('${m.name}')">${m.name}</div>`).join('');
+          suggBox.classList.remove('hidden');
+        } else { suggBox.innerHTML=''; suggBox.classList.add('hidden'); }
       });
     }
-  
-    // Call loadProducts on DOM load
+    function selectSuggestion(text){ document.getElementById('mainSearch').value=text; document.getElementById('suggestions').classList.add('hidden'); renderProducts(allProducts.filter(p=>p.name===text)); }
+
+    // Add to Cart
+    function addToCart(id){
+      const p = allProducts.find(x=>x.id===id);
+      let cart = JSON.parse(localStorage.getItem('cart'))||[];
+      const ex = cart.find(i=>i.productId===id);
+      if(ex) ex.quantity++;
+      else cart.push({productId:id,name:p.name,price:p.price,quantity:1});
+      localStorage.setItem('cart', JSON.stringify(cart)); updateCartCount();
+      alert('Added to cart');
+    }
+
     document.addEventListener('DOMContentLoaded', loadProducts);
   </script>
-  <!-- যদি অতিরিক্ত লজিক থাকে তা app.js বা search.js থেকে লোড করুন -->
-  <script src="scripts/app.js"></script>
-  <script src="scripts/search.js"></script>
 </body>
 </html>
