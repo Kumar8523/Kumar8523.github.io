@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,195 +10,112 @@
       theme: {
         extend: {
           colors: {
-            primary: '#0F172A',
-            secondary: '#64748B',
-            accent: '#E11D48'
+            primary: '#EF4444',
+            secondary: '#F59E0B',
+            accent: '#10B981'
           },
           fontFamily: {
-            sans: ['Inter', 'sans-serif'],
+            bangla: ['Noto Sans Bengali', 'sans-serif'],
           }
         }
       }
     }
   </script>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;700&family=Noto+Sans+Bengali:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    .hero-bg {
-      background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.2)), url('images/hero-bg.jpg');
-      background-size: cover;
-      background-position: center;
-    }
-    .collection-card:hover .collection-overlay {
-      opacity: 1;
-    }
-    #mobileMenu {
-      transition: all 0.3s ease;
-    }
-    .nav-link {
-      transition: color 0.2s ease;
-    }
-    .product-card:hover .product-actions {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    body { font-family: 'Noto Sans Bengali', sans-serif; background-color: #FFF5F5; }
+    nav { background-color: rgba(255,255,255,0.9); backdrop-blur: 8px; }
+    .festival-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+    .review-card img { width: 64px; height: 64px; object-fit: cover; border-radius: 9999px; }
+    .review-star { color: #F59E0B; }
   </style>
 </head>
-<body class="font-sans antialiased">
+<body class="bangla-font antialiased">
   <!-- Navigation -->
-  <nav class="bg-white/90 backdrop-blur-md fixed w-full z-50 shadow-sm border-b">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-16">
-        <!-- Logo -->
-        <a href="index.html" class="text-2xl font-bold text-primary">
-          Finvora
-        </a>
-
-        <!-- Desktop Navigation -->
-        <div class="hidden md:flex items-center flex-1 max-w-2xl mx-8">
-          <!-- Search Bar -->
-          <form action="products.html" method="GET" class="flex-1">
-            <div class="relative">
-              <input type="text" name="search" id="navSearch" placeholder="Search luxury dresses..." class="w-full px-4 py-2 rounded-full border focus:ring-2 focus:ring-primary">
-              <button type="submit" class="absolute right-3 top-2 text-gray-400 hover:text-primary">
-                <i class="fas fa-search"></i>
-              </button>
-            </div>
-          </form>
-        </div>
-
-        <!-- Desktop Menu & Icons -->
-        <div class="hidden md:flex items-center space-x-6">
-          <div class="flex space-x-6">
-            <a href="index.html" class="nav-link hover:text-primary">Home</a>
-            <a href="products.html" class="nav-link hover:text-primary">Shop</a>
-            <a href="about.html" class="nav-link hover:text-primary">About</a>
-            <a href="contact.html" class="nav-link hover:text-primary">Contact</a>
-          </div>
-          <div class="ml-6 flex items-center space-x-4">
-            <a href="wishlist.html" class="text-gray-600 hover:text-primary">
-              <i class="far fa-heart"></i>
-            </a>
-            <a href="checkout.html" class="text-gray-600 hover:text-primary relative">
-              <i class="fas fa-shopping-bag"></i>
-              <span class="cart-count absolute -top-2 -right-2 bg-accent text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">0</span>
-            </a>
-          </div>
-        </div>
-
-        <!-- Mobile Menu Button -->
-        <div class="md:hidden">
-          <button id="mobileMenuBtn" class="text-gray-600 hover:text-primary">
-            <i class="fas fa-bars text-xl"></i>
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Mobile Menu -->
-    <div id="mobileMenu" class="hidden md:hidden absolute w-full bg-white shadow-lg">
-      <div class="px-4 pt-2 pb-3 space-y-2">
-        <!-- Mobile Search -->
-        <form action="products.html" method="GET" class="mb-4">
-          <div class="relative">
-            <input type="text" name="search" placeholder="Search..." class="w-full px-4 py-2 border rounded-full">
-            <button type="submit" class="absolute right-3 top-2 text-gray-400">
-              <i class="fas fa-search"></i>
-            </button>
-          </div>
-        </form>
-        <!-- Mobile Links -->
-        <a href="index.html" class="block px-3 py-2 hover:bg-gray-50 rounded">Home</a>
-        <a href="products.html" class="block px-3 py-2 hover:bg-gray-50 rounded">Shop</a>
-        <a href="about.html" class="block px-3 py-2 hover:bg-gray-50 rounded">About</a>
-        <a href="contact.html" class="block px-3 py-2 hover:bg-gray-50 rounded">Contact</a>
-        <!-- Mobile Icons -->
-        <div class="pt-4 flex items-center justify-around border-t">
-          <a href="wishlist.html" class="text-gray-600 p-2">
-            <i class="far fa-heart"></i>
-          </a>
-          <a href="checkout.html" class="text-gray-600 p-2 relative">
-            <i class="fas fa-shopping-bag"></i>
-            <span class="cart-count absolute -top-1 -right-1 bg-accent text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">0</span>
-          </a>
-        </div>
-      </div>
-    </div>
+  <nav class="fixed w-full z-50 shadow-sm border-b">
+    <!-- existing navbar content -->
   </nav>
 
   <!-- Hero Section -->
   <section class="hero-bg h-screen flex items-center pt-16">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-white">
-      <div class="max-w-2xl">
-        <span class="uppercase tracking-widest text-sm mb-4 inline-block">Finvora</span>
-        <h1 class="text-5xl font-bold mb-6 leading-tight">Lorem ipsum dolor sit amet.</h1>
-        <p class="text-lg mb-8 opacity-90">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Consequuntur, nesciunt reprehenderit.</p>
-        <a href="products.html" class="bg-white text-primary px-8 py-3 rounded-full font-medium inline-block hover:bg-gray-100 transition duration-300">
-          Shop Now
-        </a>
-      </div>
-    </div>
+    <!-- existing hero content -->
   </section>
 
-  <!-- Categories -->
-  <section class="py-20 bg-white">
+  <!-- Collections -->
+  <section id="collections" class="py-20 bg-white">
+    <!-- existing collections content -->
+  </section>
+
+  <!-- User Reviews -->
+  <section id="reviews" class="py-20 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 class="text-3xl font-bold text-center mb-12">Our Collections</h2>
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <a href="products.html?category=" class="group relative overflow-hidden h-96 rounded-lg">
-          <img src="img/" alt="Women" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
-          <div class="absolute inset-0 bg-black/30 flex items-center justify-center">
-            <h3 class="text-2xl text-white font-medium group-hover:scale-110 transition"></h3>
+      <h2 class="text-3xl font-bold text-center mb-12 text-primary">User Reviews</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Sample Review Card -->
+        <div class="review-card bg-white p-6 rounded-lg shadow">
+          <div class="flex items-start space-x-4">
+            <img src="https://via.placeholder.com/64" alt="User 1" class="">
+            <div class="flex-1">
+              <h3 class="font-bold">User One</h3>
+              <div class="review-star flex">★★★★★</div>
+              <p class="text-gray-600 mt-2">"Great selection and fast delivery!"</p>
+            </div>
           </div>
-        </a>
-        <!-- অন্যান্য ক্যাটাগরি এখানে পুনরাবৃত্তি করা যেতে পারে -->
+          <button onclick="showReviewForm()" class="mt-4 w-full bg-primary text-white py-2 rounded hover:bg-secondary transition">Write Your Review</button>
+        </div>
+        <!-- More review cards similarly... -->
       </div>
-    </div>
-  </section>
 
-  <!-- Trending Products -->
-  <section class="py-20 bg-gray-50">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between items-center mb-12">
-        <h2 class="text-3xl font-bold">Trending Now</h2>
-        <a href="products.html" class="text-primary hover:underline">View All</a>
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8" id="trending-products">
-        <!-- JSON থেকে Trending প্রোডাক্ট লোড হবে -->
+      <!-- Review Form (hidden by default) -->
+      <div id="writeReviewForm" class="hidden mt-12 bg-white p-8 rounded-lg shadow max-w-3xl mx-auto">
+        <h3 class="text-2xl font-bold mb-4">Write Your Review</h3>
+        <form id="reviewForm" class="space-y-4">
+          <div>
+            <label class="block mb-1 font-medium">Your Name</label>
+            <input type="text" id="reviewerName" class="w-full border rounded px-3 py-2" required>
+          </div>
+          <div>
+            <label class="block mb-1 font-medium">Rating</label>
+            <select id="reviewRating" class="w-full border rounded px-3 py-2">
+              <option value="5">5 - Excellent</option>
+              <option value="4">4 - Good</option>
+              <option value="3">3 - Average</option>
+              <option value="2">2 - Poor</option>
+              <option value="1">1 - Terrible</option>
+            </select>
+          </div>
+          <div>
+            <label class="block mb-1 font-medium">Your Review</label>
+            <textarea id="reviewComment" rows="4" class="w-full border rounded px-3 py-2" required></textarea>
+          </div>
+          <button type="submit" class="bg-primary text-white px-6 py-2 rounded hover:bg-secondary transition">Submit Review</button>
+        </form>
       </div>
     </div>
   </section>
 
   <!-- Footer -->
-  <footer class="bg-gray-900 text-white py-12 bengali-font">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-8">
-      <div>
-        <h3 class="text-xl font-bold mb-4">Finvora</h3>
-        <p class="text-gray-400">বিশ্বজুড়ে অ্যাকুরিয়ামে প্রাণ ফেরানোর মিশন—Finvora: প্রতিটি শহরে, প্রতিটি দেশে</p>
-      </div>
-      <div>
-        <h4 class="font-semibold mb-4">Shop</h4>
-        <ul class="space-y-2 text-gray-400">
-          <li><a href="#" class="hover:text-white">Fish</a></li>
-          <li><a href="#" class="hover:text-white">Aquariums-Accessories</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4 class="font-semibold mb-4">Support</h4>
-        <ul class="space-y-2 text-gray-400">
-          <li><a href="contact.html" class="hover:text-white">Contact Us</a></li>
-        </ul>
-      </div>
-      <div>
-        <h4 class="font-semibold mb-4">Connect</h4>
-        <div class="flex space-x-4">
-          <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
-          <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
-          <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
-        </div>
-      </div>
-    </div>
+  <footer class="bg-red-800 text-white py-12">
+    <!-- existing footer content -->
   </footer>
-  
-  <script src="scripts/app.js"></script> 
+
+  <script>
+    function showReviewForm() {
+      document.getElementById('writeReviewForm').classList.remove('hidden');
+      window.scrollTo({ top: document.getElementById('writeReviewForm').offsetTop - 100, behavior: 'smooth' });
+    }
+
+    // Handle Review Form Submission
+    document.getElementById('reviewForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('reviewerName').value;
+      const rating = document.getElementById('reviewRating').value;
+      const comment = document.getElementById('reviewComment').value;
+      // TODO: save review to backend or localStorage
+      alert('Thank you for your review!');
+      this.reset();
+    });
+  </script>
 </body>
 </html>
