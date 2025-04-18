@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>শিক্ষক মূল্যায়ন সিস্টেম</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            background-color: #f8fafc;
+        }
+        .rating-star {
+            transition: all 0.2s ease;
+        }
+        .rating-star:hover {
+            transform: scale(1.2);
+        }
+        .review-card {
+            transition: all 0.3s ease;
+        }
+        .review-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .tab-active {
+            border-bottom: 3px solid #3b82f6;
+            color: #3b82f6;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md sticky top-0 z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-chalkboard-teacher text-blue-600 text-2xl mr-2"></i>
+                        <span class="text-xl font-bold text-blue-600">শিক্ষক মূল্যায়ন</span>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#submit" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-50 hover:text-blue-600 transition">রিভিউ দিন</a>
+                        <a href="#reviews" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-50 hover:text-blue-600 transition">রিভিউসমূহ</a>
+                        <a href="#stats" class="px-3 py-2 rounded-md text-sm font-medium hover:bg-blue-50 hover:text-blue-600 transition">পরিসংখ্যান</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Submission Form -->
+        <section id="submit" class="py-12 px-4">
+            <div class="max-w-2xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
+                <div class="p-8">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-gray-800">শিক্ষক মূল্যায়ন ফর্ম</h2>
+                        <div class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">নতুন</div>
+                    </div>
+                    
+                    <form id="reviewForm" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="teacher" class="block text-sm font-medium text-gray-700 mb-1">শিক্ষকের নাম <span class="text-red-500">*</span></label>
+                                <input type="text" id="teacher" placeholder="শিক্ষকের পূর্ণ নাম" 
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                            </div>
+                            <div>
+                                <label for="subject" class="block text-sm font-medium text-gray-700 mb-1">বিষয় <span class="text-red-500">*</span></label>
+                                <input type="text" id="subject" placeholder="বিষয়ের নাম" 
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                            </div>
+                            <div>
+                                <label for="class" class="block text-sm font-medium text-gray-700 mb-1">শ্রেণী <span class="text-red-500">*</span></label>
+                                <select id="class" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                                    <option value="">শ্রেণী নির্বাচন করুন</option>
+                                    <option>৬ষ্ঠ</option>
+                                    <option>৭ম</option>
+                                    <option>৮ম</option>
+                                    <option>৯ম</option>
+                                    <option>১০ম</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="section" class="block text-sm font-medium text-gray-700 mb-1">শাখা <span class="text-red-500">*</span></label>
+                                <select id="section" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required>
+                                    <option value="">শাখা নির্বাচন করুন</option>
+                                    <option>ক</option>
+                                    <option>খ</option>
+                                    <option>গ</option>
+                                    <option>ঘ</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">আপনার নাম (গোপন থাকবে)</label>
+                                <input type="text" id="name" placeholder="আপনার নাম" 
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label for="roll" class="block text-sm font-medium text-gray-700 mb-1">রোল নম্বর (গোপন থাকবে)</label>
+                                <input type="number" id="roll" placeholder="রোল নম্বর" 
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">শিক্ষকের মূল্যায়ন <span class="text-red-500">*</span></label>
+                                <div class="rating-container flex justify-center space-x-2">
+                                    <input type="radio" name="rating" value="5" id="star5" class="hidden">
+                                    <label for="star5" class="rating-star text-3xl cursor-pointer text-gray-300 hover:text-yellow-400">★</label>
+                                    <input type="radio" name="rating" value="4" id="star4" class="hidden">
+                                    <label for="star4" class="rating-star text-3xl cursor-pointer text-gray-300 hover:text-yellow-400">★</label>
+                                    <input type="radio" name="rating" value="3" id="star3" class="hidden">
+                                    <label for="star3" class="rating-star text-3xl cursor-pointer text-gray-300 hover:text-yellow-400">★</label>
+                                    <input type="radio" name="rating" value="2" id="star2" class="hidden">
+                                    <label for="star2" class="rating-star text-3xl cursor-pointer text-gray-300 hover:text-yellow-400">★</label>
+                                    <input type="radio" name="rating" value="1" id="star1" class="hidden">
+                                    <label for="star1" class="rating-star text-3xl cursor-pointer text-gray-300 hover:text-yellow-400">★</label>
+                                </div>
+                                <div class="flex justify-between text-xs text-gray-500 mt-1">
+                                    <span>খুব খারাপ</span>
+                                    <span>খুব ভালো</span>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label for="comment" class="block text-sm font-medium text-gray-700 mb-1">মন্তব্য <span class="text-red-500">*</span></label>
+                                <textarea id="comment" rows="4" placeholder="আপনার মূল্যায়ন লিখুন..." 
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" required></textarea>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center">
+                            <input id="anonymous" type="checkbox" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                            <label for="anonymous" class="ml-2 block text-sm text-gray-700">নাম প্রকাশ না করা</label>
+                        </div>
+
+                        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-4 rounded-lg transition duration-300 flex items-center justify-center">
+                            <i class="fas fa-paper-plane mr-2"></i> জমা দিন
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reviews Section -->
+        <section id="reviews" class="py-12 px-4 bg-gray-50">
+            <div class="max-w-6xl mx-auto">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-2xl font-bold text-gray-800">শিক্ষক মূল্যায়নসমূহ</h2>
+                    <div class="flex space-x-1 bg-gray-200 rounded-lg p-1">
+                        <button id="tab-all" class="px-4 py-2 text-sm rounded-md tab-active">সকল</button>
+                        <button id="tab-top" class="px-4 py-2 text-sm rounded-md">শীর্ষ</button>
+                        <button id="tab-recent" class="px-4 py-2 text-sm rounded-md">সাম্প্রতিক</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="reviewsContainer">
+                    <!-- Reviews will be loaded here -->
+                    <div class="animate-pulse bg-white p-6 rounded-xl shadow-sm">
+                        <div class="space-y-4">
+                            <div class="h-4 bg-gray-200 rounded w-3/4"></div>
+                            <div class="h-4 bg-gray-200 rounded"></div>
+                            <div class="h-4 bg-gray-200 rounded w-5/6"></div>
+                        </div>
+                    </div>
+                    <div class="animate-pulse bg-white p-6 rounded-xl shadow-sm">
+                        <div class="space-y-4">
+                            <div class="h-4 bg-gray-200 rounded w-3/4"></div>
+                            <div class="h-4 bg-gray-200 rounded"></div>
+                            <div class="h-4 bg-gray-200 rounded w-5/6"></div>
+                        </div>
+                    </div>
+                    <div class="animate-pulse bg-white p-6 rounded-xl shadow-sm">
+                        <div class="space-y-4">
+                            <div class="h-4 bg-gray-200 rounded w-3/4"></div>
+                            <div class="h-4 bg-gray-200 rounded"></div>
+                            <div class="h-4 bg-gray-200 rounded w-5/6"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-8 text-center">
+                    <button id="loadMore" class="bg-white border border-blue-600 text-blue-600 px-6 py-2 rounded-lg hover:bg-blue-50 transition">
+                        আরো দেখুন
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Statistics Section -->
+        <section id="stats" class="py-12 px-4">
+            <div class="max-w-6xl mx-auto">
+                <h2 class="text-2xl font-bold text-gray-800 mb-8">পরিসংখ্যান</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-500">মোট মূল্যায়ন</p>
+                                <h3 class="text-3xl font-bold" id="totalReviews">0</h3>
+                            </div>
+                            <div class="bg-blue-100 p-3 rounded-full">
+                                <i class="fas fa-clipboard-list text-blue-600 text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-500">গড় রেটিং</p>
+                                <h3 class="text-3xl font-bold" id="avgRating">0</h3>
+                            </div>
+                            <div class="bg-green-100 p-3 rounded-full">
+                                <i class="fas fa-star text-green-600 text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm text-gray-500">শীর্ষ শিক্ষক</p>
+                                <h3 class="text-xl font-bold truncate" id="topTeacher">-</h3>
+                            </div>
+                            <div class="bg-purple-100 p-3 rounded-full">
+                                <i class="fas fa-chalkboard-teacher text-purple-600 text-xl"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <h3 class="text-lg font-medium mb-4">শ্রেণী অনুযায়ী মূল্যায়ন</h3>
+                    <div class="h-64" id="classChart">
+                        <!-- Chart will be rendered here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <h3 class="text-xl font-bold">শিক্ষক মূল্যায়ন সিস্টেম</h3>
+                    <p class="text-gray-400 mt-1">শিক্ষার মান উন্নয়নে আপনার মূল্যায়ন</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-6 pt-6 text-sm text-gray-400 text-center">
+                <p>© 2024 শিক্ষক মূল্যায়ন সিস্টেম। সকল স্বত্ত্ব সংরক্ষিত।</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Success Modal -->
+    <div id="successModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl p-8 max-w-md w-full mx-4">
+            <div class="text-center">
+                <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+                    <i class="fas fa-check text-green-600"></i>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900 mt-3">সফলভাবে জমা হয়েছে!</h3>
+                <div class="mt-2">
+                    <p class="text-sm text-gray-500">আপনার মূল্যায়ন সফলভাবে জমা হয়েছে। ধন্যবাদ!</p>
+                </div>
+                <div class="mt-5">
+                    <button onclick="closeModal()" type="button" class="inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none sm:text-sm">
+                        ঠিক আছে
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Initialize variables
+        let currentPage = 1;
+        const reviewsPerPage = 6;
+        let allReviews = [];
+        let filteredReviews = [];
+
+        // DOM Elements
+        const reviewForm = document.getElementById('reviewForm');
+        const reviewsContainer = document.getElementById('reviewsContainer');
+        const loadMoreBtn = document.getElementById('loadMore');
+        const tabAll = document.getElementById('tab-all');
+        const tabTop = document.getElementById('tab-top');
+        const tabRecent = document.getElementById('tab-recent');
+        const successModal = document.getElementById('successModal');
+
+        // Rating stars interaction
+        document.querySelectorAll('.rating-star').forEach(star => {
+            star.addEventListener('click', function() {
+                const rating = this.previousElementSibling.value;
+                highlightStars(rating);
+            });
+        });
+
+        function highlightStars(rating) {
+            const stars = document.querySelectorAll('.rating-star');
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('text-yellow-400');
+                    star.classList.remove('text-gray-300');
+                } else {
+                    star.classList.remove('text-yellow-400');
+                    star.classList.add('text-gray-300');
+                }
+            });
+        }
+
+        // Form submission
+        reviewForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = {
+                teacher: document.getElementById('teacher').value,
+                subject: document.getElementById('subject').value,
+                class: document.getElementById('class').value,
+                section: document.getElementById('section').value,
+                name: document.getElementById('name').value,
+                roll: document.getElementById('roll').value,
+                rating: document.querySelector('input[name="rating"]:checked')?.value,
+                comment: document.getElementById('comment').value,
+                anonymous: document.getElementById('anonymous').checked,
+                timestamp: new Date().toISOString()
+            };
+
+            try {
+                const response = await fetch('YOUR_GOOGLE_SCRIPT_URL', {
+                    method: 'POST',
+                    body: JSON.stringify(formData)
+                });
+
+                if(response.ok) {
+                    showModal();
+                    reviewForm.reset();
+                    resetStars();
+                    loadReviews();
+                    loadStats();
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+
+        function resetStars() {
+            document.querySelectorAll('.rating-star').forEach(star => {
+                star.classList.add('text-gray-300');
+                star.classList.remove('text-yellow-400');
+            });
+            document.querySelectorAll('input[name="rating"]').forEach(radio => {
+                radio.checked = false;
+            });
+        }
+
+        function showModal() {
+            successModal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            successModal.classList.add('hidden');
+        }
+
+        // Load reviews
+        async function loadReviews() {
+            try {
+                const response = await fetch('YOUR_GOOGLE_SCRIPT_URL');
+                allReviews = await response.json();
+                filteredReviews = [...allReviews];
+                renderReviews();
+            } catch (error) {
+                console.error('Error loading reviews:', error);
+            }
+        }
+
+        function renderReviews() {
+            const startIndex = (currentPage - 1) * reviewsPerPage;
+            const endIndex = startIndex + reviewsPerPage;
+            const reviewsToShow = filteredReviews.slice(0, endIndex);
+
+            reviewsContainer.innerHTML = reviewsToShow.map(review => `
+                <div class="review-card bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="font-bold text-lg">${review.teacher}</h3>
+                            <p class="text-sm text-gray-600">${review.subject} • ${review.class}/${review.section}</p>
+                        </div>
+                        <div class="flex items-center space-x-1 text-yellow-400">
+                            ${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}
+                        </div>
+                    </div>
+                    <p class="text-gray-700 mb-4">${review.comment}</p>
+                    <div class="flex justify-between items-center text-sm text-gray-500">
+                        <span>${formatDate(review.timestamp)}</span>
+                        ${review.anonymous ? '<span class="bg-gray-100 px-2 py-1 rounded-full text-xs"><i class="fas fa-user-secret mr-1"></i> বেনামী</span>' : ''}
+                    </div>
+                </div>
+            `).join('');
+
+            loadMoreBtn.style.display = filteredReviews.length > endIndex ? 'block' : 'none';
+        }
+
+        function formatDate(dateString) {
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return new Date(dateString).toLocaleDateString('bn-BD', options);
+        }
+
+        // Load statistics
+        async function loadStats() {
+            try {
+                const response = await fetch('YOUR_GOOGLE_SCRIPT_URL?stats=true');
+                const stats = await response.json();
+                
+                document.getElementById('totalReviews').textContent = stats.totalReviews;
+                document.getElementById('avgRating').textContent = stats.avgRating.toFixed(1);
+                document.getElementById('topTeacher').textContent = stats.topTeacher || '-';
+                
+                renderClassChart(stats.classDistribution);
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        function renderClassChart(classData) {
+            const ctx = document.getElementById('classChart').getContext('2d');
+            
+            if (window.classChart) {
+                window.classChart.destroy();
+            }
+            
+            const labels = Object.keys(classData);
+            const data = Object.values(classData);
+            
+            window.classChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'মূল্যায়ন সংখ্যা',
+                        data: data,
+                        backgroundColor: '#3b82f6',
+                        borderColor: '#2563eb',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                precision: 0
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+
+        // Tab switching
+        tabAll.addEventListener('click', () => {
+            setActiveTab(tabAll);
+            filteredReviews = [...allReviews];
+            currentPage = 1;
+            renderReviews();
+        });
+
+        tabTop.addEventListener('click', () => {
+            setActiveTab(tabTop);
+            filteredReviews = [...allReviews].sort((a, b) => b.rating - a.rating);
+            currentPage = 1;
+            renderReviews();
+        });
+
+        tabRecent.addEventListener('click', () => {
+            setActiveTab(tabRecent);
+            filteredReviews = [...allReviews].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            currentPage = 1;
+            renderReviews();
+        });
+
+        function setActiveTab(tab) {
+            [tabAll, tabTop, tabRecent].forEach(t => t.classList.remove('tab-active'));
+            tab.classList.add('tab-active');
+        }
+
+        // Load more reviews
+        loadMoreBtn.addEventListener('click', () => {
+            currentPage++;
+            renderReviews();
+        });
+
+        // Initial load
+        loadReviews();
+        loadStats();
+    </script>
+</body>
+</html>
