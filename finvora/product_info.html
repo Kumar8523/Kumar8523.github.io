@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details | Finvora</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#EF4444',
+            secondary: '#F59E0B',
+            accent: '#10B981'
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .image-gallery-thumbnail {
+      transition: transform 0.3s ease;
+    }
+    .image-gallery-thumbnail:hover {
+      transform: scale(1.05);
+    }
+    .review-star {
+      color: #F59E0B;
+    }
+    body {
+      padding: 2rem;
+    }
+  </style>
+</head>
+<body class="bg-gray-50">
+  <div id="navbar"></div>
+
+  <main class="max-w-5xl mx-auto p-4 space-y-12">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+      <div class="space-y-4">
+        <div class="aspect-square bg-gray-100 rounded-lg overflow-hidden">
+          <img id="mainImage" src="https://via.placeholder.com/500x500" class="w-full h-full object-cover cursor-pointer" alt="Product Image">
+        </div>
+        <div id="thumbnailContainer" class="grid grid-cols-4 gap-2"></div>
+      </div>
+      <div class="space-y-6">
+        <h1 id="productTitle" class="text-4xl font-light">Product Name</h1>
+        <div class="flex items-center space-x-2">
+          <div class="review-star flex"></div>
+          <span id="reviewCount" class="text-sm text-gray-600">(0 reviews)</span>
+        </div>
+        <div id="priceSection" class="flex items-center space-x-4">
+          <span id="discountedPrice" class="text-3xl font-bold text-primary">$0.00</span>
+          <span id="originalPrice" class="text-xl text-gray-500 line-through hidden">$0.00</span>
+        </div>
+        <div id="stockStatus" class="text-green-600 font-medium">In Stock • Ready to Ship</div>
+        <div class="space-y-2">
+          <button onclick="addToCart()" class="w-full bg-black text-white py-4 rounded hover:bg-gray-800">Add to Cart</button>
+          <button onclick="shareProduct()" class="w-full border border-black py-4 rounded hover:bg-gray-100 flex items-center justify-center gap-2">
+            <i class="fas fa-share-alt"></i> Share Product
+          </button>
+        </div>
+        <div class="pt-6 space-y-4">
+          <h3 class="text-xl font-medium">Description</h3>
+          <p id="productDescription" class="text-gray-600">Product description goes here...</p>
+        </div>
+      </div>
+    </div>
+    <section class="pt-20 space-y-8">
+      <h2 class="text-3xl font-semibold">Customer Reviews</h2>
+      <div id="reviewsContainer" class="space-y-8"></div>
+    </section>
+  </main>
+
+  <div id="footer"></div>
+
+  <script src="main.js"></script>
+  <script src="scripts/navbar_footer.js"></script>
+  <script src="scripts/app.js"></script>
+  <script src="scripts/product_info.js"></script>
+
+  
+  <script src="scripts/products.js"></script>
+  <script src="scripts/contact.js"></script>
+  <script src="scripts/search.js"></script>
+  <script src="scripts/user_data.js"></script>
+</body>
+</html>
