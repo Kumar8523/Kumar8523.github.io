@@ -1,91 +1,188 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Product Details | Finvora</title>
+  <title>পণ্য বিবরণ | Finvora</title>
+  
+  <!-- Shared Head Content -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            primary: '#EF4444',
-            secondary: '#F59E0B',
-            accent: '#10B981'
+            primary: '#1a365d',
+            secondary: '#2c5282',
+            accent: '#4299e1',
+            neutral: '#4a5568'
           },
           fontFamily: {
-            sans: ['Inter', 'sans-serif']
+            bangla: ['Hind Siliguri', 'Noto Sans Bengali', 'sans-serif'],
           }
         }
       }
     }
   </script>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;700&family=Noto+Sans+Bengali:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
   <style>
-    .image-gallery-thumbnail {
-      transition: transform 0.3s ease;
+    body {
+      font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif;
+      background-color: #f7fafc;
+      padding-top: 4rem;
     }
-    .image-gallery-thumbnail:hover {
-      transform: scale(1.05);
+    .image-gallery-thumbnail {
+      transition: all 0.3s ease;
+      border: 2px solid transparent;
+    }
+    .image-gallery-thumbnail:hover, 
+    .image-gallery-thumbnail.active {
+      border-color: #4299e1;
     }
     .review-star {
-      color: #F59E0B;
+      color: #f59e0b;
     }
-    body {
-      padding: 2rem;
+    .specs-grid {
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     }
   </style>
 </head>
-<body class="bg-gray-50">
+<body class="bangla-font antialiased">
+  <!-- Navigation -->
   <div id="navbar"></div>
 
-  <main class="max-w-5xl mx-auto p-4 space-y-12">
+  <!-- Product Details -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Breadcrumb -->
+    <div class="flex items-center text-sm text-neutral mb-6">
+      <a href="index.html" class="hover:text-accent">হোম</a>
+      <i class="fas fa-chevron-right mx-2 text-xs"></i>
+      <a href="products.html" class="hover:text-accent">পণ্য</a>
+      <i class="fas fa-chevron-right mx-2 text-xs"></i>
+      <span class="text-primary">পণ্য বিবরণ</span>
+    </div>
+
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-      <div class="space-y-4">
-        <div class="aspect-square bg-gray-100 rounded-lg overflow-hidden">
-          <img id="mainImage" src="https://via.placeholder.com/500x500" class="w-full h-full object-cover cursor-pointer" alt="Product Image">
+      <!-- Product Images -->
+      <div>
+        <div class="bg-white rounded-xl shadow-md overflow-hidden mb-4">
+          <img id="mainImage" src="https://via.placeholder.com/600" alt="Product Image" 
+               class="w-full h-96 object-contain cursor-zoom-in">
         </div>
-        <div id="thumbnailContainer" class="grid grid-cols-4 gap-2"></div>
+        <div id="thumbnailContainer" class="grid grid-cols-4 gap-2">
+          <!-- Thumbnails will be loaded here -->
+        </div>
       </div>
-      <div class="space-y-6">
-        <h1 id="productTitle" class="text-4xl font-light">Product Name</h1>
-        <div class="flex items-center space-x-2">
-          <div class="review-star flex"></div>
-          <span id="reviewCount" class="text-sm text-gray-600">(0 reviews)</span>
+
+      <!-- Product Info -->
+      <div>
+        <h1 id="productTitle" class="text-3xl font-light text-primary mb-2">পণ্যের নাম</h1>
+        
+        <div class="flex items-center mb-4">
+          <div class="review-star flex mr-2"></div>
+          <span id="reviewCount" class="text-sm text-neutral">(0 রিভিউ)</span>
+          <span class="mx-2 text-neutral">|</span>
+          <span id="stockStatus" class="text-green-600 font-medium">
+            <i class="fas fa-check-circle mr-1"></i> স্টকে আছে
+          </span>
         </div>
-        <div id="priceSection" class="flex items-center space-x-4">
-          <span id="discountedPrice" class="text-3xl font-bold text-primary">$0.00</span>
-          <span id="originalPrice" class="text-xl text-gray-500 line-through hidden">$0.00</span>
+
+        <div id="priceSection" class="flex items-center mb-6">
+          <span id="discountedPrice" class="text-3xl font-bold text-primary">৳0.00</span>
+          <span id="originalPrice" class="text-xl text-neutral line-through ml-3 hidden">৳0.00</span>
+          <span id="discountBadge" class="bg-red-100 text-red-800 text-sm font-bold px-2 py-1 rounded ml-3 hidden"></span>
         </div>
-        <div id="stockStatus" class="text-green-600 font-medium">In Stock • Ready to Ship</div>
-        <div class="space-y-2">
-          <button onclick="addToCart()" class="w-full bg-black text-white py-4 rounded hover:bg-gray-800">Add to Cart</button>
-          <button onclick="shareProduct()" class="w-full border border-black py-4 rounded hover:bg-gray-100 flex items-center justify-center gap-2">
-            <i class="fas fa-share-alt"></i> Share Product
+
+        <div class="space-y-2 mb-8">
+          <button onclick="addToCart()" class="w-full bg-primary text-white py-4 rounded hover:bg-secondary transition font-medium">
+            <i class="fas fa-shopping-cart mr-2"></i> কার্টে যোগ করুন
+          </button>
+          <button onclick="shareProduct()" class="w-full border border-primary text-primary py-4 rounded hover:bg-gray-50 transition font-medium">
+            <i class="fas fa-share-alt mr-2"></i> শেয়ার করুন
           </button>
         </div>
-        <div class="pt-6 space-y-4">
-          <h3 class="text-xl font-medium">Description</h3>
-          <p id="productDescription" class="text-gray-600">Product description goes here...</p>
+
+        <!-- Product Tabs -->
+        <div class="border-b border-gray-200 mb-6">
+          <nav class="flex space-x-8">
+            <button class="tab-button active py-4 px-1 border-b-2 font-medium text-sm border-accent text-accent">
+              বিবরণ
+            </button>
+            <button class="tab-button py-4 px-1 border-b-2 font-medium text-sm border-transparent text-neutral hover:text-primary">
+              স্পেসিফিকেশন
+            </button>
+            <button class="tab-button py-4 px-1 border-b-2 font-medium text-sm border-transparent text-neutral hover:text-primary">
+              রিভিউ (0)
+            </button>
+          </nav>
+        </div>
+
+        <!-- Description Tab -->
+        <div id="descriptionTab" class="tab-content active">
+          <p id="productDescription" class="text-neutral">পণ্যের বিবরণ এখানে থাকবে...</p>
+        </div>
+
+        <!-- Specifications Tab -->
+        <div id="specsTab" class="tab-content hidden">
+          <div class="grid specs-grid gap-4">
+            <!-- Specs will be loaded here -->
+          </div>
+        </div>
+
+        <!-- Reviews Tab -->
+        <div id="reviewsTab" class="tab-content hidden">
+          <div id="reviewsContainer" class="space-y-6">
+            <!-- Reviews will be loaded here -->
+          </div>
+          
+          <!-- Review Form -->
+          <div class="mt-8 border-t pt-8">
+            <h3 class="text-lg font-medium text-primary mb-4">রিভিউ লিখুন</h3>
+            <form id="reviewForm" class="space-y-4">
+              <div class="flex items-center">
+                <span class="text-neutral mr-2">রেটিং:</span>
+                <div class="rating-stars flex">
+                  <i class="fas fa-star text-2xl text-gray-300 cursor-pointer hover:text-yellow-400" data-rating="1"></i>
+                  <i class="fas fa-star text-2xl text-gray-300 cursor-pointer hover:text-yellow-400" data-rating="2"></i>
+                  <i class="fas fa-star text-2xl text-gray-300 cursor-pointer hover:text-yellow-400" data-rating="3"></i>
+                  <i class="fas fa-star text-2xl text-gray-300 cursor-pointer hover:text-yellow-400" data-rating="4"></i>
+                  <i class="fas fa-star text-2xl text-gray-300 cursor-pointer hover:text-yellow-400" data-rating="5"></i>
+                </div>
+                <input type="hidden" id="reviewRating" name="rating" value="0">
+              </div>
+              
+              <div>
+                <label for="reviewComment" class="block text-neutral mb-1">মন্তব্য</label>
+                <textarea id="reviewComment" name="comment" rows="4" 
+                          class="w-full border rounded-lg p-3 focus:ring-2 focus:ring-accent"></textarea>
+              </div>
+              
+              <button type="submit" class="bg-primary text-white px-6 py-2 rounded hover:bg-secondary transition">
+                রিভিউ জমা দিন
+              </button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
-    <section class="pt-20 space-y-8">
-      <h2 class="text-3xl font-semibold">Customer Reviews</h2>
-      <div id="reviewsContainer" class="space-y-8"></div>
+
+    <!-- Related Products -->
+    <section class="mt-16">
+      <h2 class="text-2xl font-bold text-primary mb-6">সম্পর্কিত পণ্য</h2>
+      <div id="relatedProducts" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Related products will be loaded here -->
+      </div>
     </section>
   </main>
 
+  <!-- Footer -->
   <div id="footer"></div>
 
+  <!-- Scripts -->
   <script src="scripts/main.js"></script>
   <script src="scripts/navbar_footer.js"></script>
-  <script src="scripts/app.js"></script>
-  <script src="scripts/product_info.js"></script>  
-  <script src="scripts/products.js"></script>
-  <script src="scripts/contact.js"></script>
-  <script src="scripts/search.js"></script>
-  <script src="scripts/user_data.js"></script>
+  <script src="scripts/product_info.js"></script>
 </body>
 </html>
