@@ -1,82 +1,192 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="bn">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About Us | Finvora</title>
+  <title>আমাদের সম্পর্কে | Finvora</title>
+  
+  <!-- Shared Head Content -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            primary: '#000000',
-            secondary: '#F59E0B',
-            accent: '#10B981'
+            primary: '#1a365d',
+            secondary: '#2c5282',
+            accent: '#4299e1',
+            neutral: '#4a5568'
           },
           fontFamily: {
-            sans: ['Inter', 'sans-serif'],
+            bangla: ['Hind Siliguri', 'Noto Sans Bengali', 'sans-serif'],
           }
         }
       }
     }
   </script>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;700&family=Noto+Sans+Bengali:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
   <style>
+    body {
+      font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif;
+      background-color: #f7fafc;
+      padding-top: 4rem;
+    }
     .founder-card:hover .founder-social {
       opacity: 1;
       transform: translateY(0);
     }
-
-    #mobileMenu {
+    .founder-social {
       transition: all 0.3s ease;
+      transform: translateY(1rem);
+      opacity: 0;
     }
-
-    .nav-link {
-      transition: color 0.2s ease;
+    .section-padding {
+      padding: 5rem 0;
     }
-
-    .hero-bg {
-      background-image: linear-gradient(rgba(239, 68, 68, 0.8), rgba(245, 158, 11, 0.8)), url('images/hero-bg.jpg');
-      background-size: cover;
-      background-position: center;
+    .timeline-item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: -2rem;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 2rem;
+      background-color: #4299e1;
     }
   </style>
 </head>
-
-<body class="font-sans antialiased">
+<body class="bangla-font antialiased">
   <!-- Navigation -->
   <div id="navbar"></div>
 
   <!-- Hero Section -->
-  <section class="hero-bg h-[60vh] flex items-center">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-white">
-      <h1 class="text-5xl font-bold mb-4">Finvora</h1>
-      <p class="text-xl">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+  <section class="bg-gradient-to-r from-primary to-secondary text-white py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">আমাদের গল্প</h1>
+      <p class="text-xl text-accent max-w-3xl mx-auto">অ্যাকুরিয়াম প্রেমীদের জন্য একটি বিশ্বস্ত নাম</p>
     </div>
   </section>
 
-  <!-- Our Story Section -->
-  <section class="bg-gray-50 py-24">
-    <div class="max-w-7xl mx-auto px-6">
-      <h2 class="text-5xl font-bold mb-8">Our Story</h2>
+  <!-- Our Story -->
+  <section class="section-padding bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid md:grid-cols-2 gap-12 items-center">
-        <img src="img/logo.jpg" alt="Our Team" class="rounded-lg shadow-xl">
         <div>
-          <p class="text-xl leading-relaxed mb-6">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt vitae repellendus animi aspernatur
-            deserunt! Unde dolor repudiandae ea esse assumenda tempora possimus porro animi doloremque voluptate.
-            Accusamus ducimus soluta dolorum est veritatis, eum eius fuga!
-          </p>
-          <div class="flex space-x-4">
-            <div class="text-center p-4 border-r pr-8">
-              <p class="text-3xl font-bold mb-2">1500+</p>
-              <p class="text-gray-600">Happy Customers</p>
+          <h2 class="text-3xl font-bold text-primary mb-6">আমাদের যাত্রা</h2>
+          <div class="space-y-4 text-neutral">
+            <p>২০১৫ সালে একটি ছোট্ট দোকান থেকে যাত্রা শুরু করে আজ ফিনভোরা বাংলাদেশের অ্যাকুরিয়াম শিল্পে একটি পরিচিত নাম। আমাদের লক্ষ্য ছিলো সবসময় মানসম্মত প্রোডাক্ট এবং সেরা সেবা প্রদান করা।</p>
+            <p>আজ আমরা গর্বের সাথে বলতে পারি যে, দেশের সবচেয়ে বড় অ্যাকুরিয়াম ফিশ সরবরাহকারীদের মধ্যে আমরা অন্যতম। আমাদের রয়েছে নিজস্ব ব্রিডিং ফার্ম এবং এক্সপোর্ট লাইসেন্স।</p>
+          </div>
+          
+          <div class="mt-8 grid grid-cols-2 gap-4">
+            <div class="bg-gray-50 p-4 rounded-lg text-center">
+              <p class="text-3xl font-bold text-primary mb-2">১৫০০+</p>
+              <p class="text-neutral">সন্তুষ্ট গ্রাহক</p>
             </div>
-            <div class="text-center p-4">
-              <p class="text-3xl font-bold mb-2">5+</p>
-              <p class="text-gray-600">Awards Won</p>
+            <div class="bg-gray-50 p-4 rounded-lg text-center">
+              <p class="text-3xl font-bold text-primary mb-2">৫০+</p>
+              <p class="text-neutral">মাছের প্রজাতি</p>
+            </div>
+          </div>
+        </div>
+        <img src="images/about-story.jpg" alt="Our Story" class="rounded-lg shadow-xl w-full h-auto">
+      </div>
+    </div>
+  </section>
+
+  <!-- Mission & Vision -->
+  <section class="section-padding bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-8">
+      <div class="bg-primary text-white p-8 rounded-xl">
+        <div class="flex items-center mb-4">
+          <div class="bg-accent p-3 rounded-full mr-4">
+            <i class="fas fa-bullseye text-white text-xl"></i>
+          </div>
+          <h3 class="text-2xl font-bold">আমাদের মিশন</h3>
+        </div>
+        <p class="text-gray-200">উচ্চমানের প্রযুক্তি ও যত্নশীল ব্যবস্থাপনার মাধ্যমে অ্যাকুরিয়াম শিল্পে নতুন মাত্রা যোগ করা। আমরা প্রতিশ্রুতিবদ্ধ পরিবেশবান্ধব উপায়ে মাছ উৎপাদন ও সরবরাহের মাধ্যমে সৌন্দর্যপ্রেমী মানুষদের ঘরে ঘরে জীবন্ত রঙ ছড়িয়ে দিতে।</p>
+      </div>
+      
+      <div class="bg-white p-8 rounded-xl shadow">
+        <div class="flex items-center mb-4">
+          <div class="bg-accent p-3 rounded-full mr-4">
+            <i class="fas fa-eye text-white text-xl"></i>
+          </div>
+          <h3 class="text-2xl font-bold text-primary">আমাদের ভিশন</h3>
+        </div>
+        <p class="text-neutral">আমরা ফিনভোরাকে গড়ে তুলতে চাই এমন একটি নাম হিসেবে, যা বিশ্বের সবচেয়ে বড় অ্যাকুরিয়াম মাছ সরবরাহকারী ব্র্যান্ড হবে। বাংলাদেশের প্রতিটি শহর থেকে শুরু করে পৃথিবীর প্রতিটি দেশে থাকবে ফিনভোরার নিজস্ব শাখা।</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Timeline -->
+  <section class="section-padding bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-primary text-center mb-12">আমাদের যাত্রাপথ</h2>
+      
+      <div class="relative">
+        <div class="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 bg-accent transform -translate-x-1/2"></div>
+        
+        <div class="space-y-16">
+          <!-- Timeline Item 1 -->
+          <div class="timeline-item relative grid md:grid-cols-2 gap-8 items-center">
+            <div class="md:text-right md:pr-8">
+              <p class="text-accent font-bold">২০১৫</p>
+              <h3 class="text-xl font-bold text-primary">যাত্রা শুরু</h3>
+              <p class="text-neutral">ঢাকার একটি ছোট্ট দোকান থেকে আমাদের যাত্রা শুরু</p>
+            </div>
+            <div class="hidden md:block"></div>
+            <div class="md:col-start-2 md:pl-8">
+              <div class="bg-gray-50 p-6 rounded-lg">
+                <p>প্রথম বছরে আমরা ৫০টি মাছের প্রজাতি নিয়ে কাজ শুরু করি এবং ২০০+ গ্রাহককে সেবা প্রদান করি।</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Timeline Item 2 -->
+          <div class="timeline-item relative grid md:grid-cols-2 gap-8 items-center">
+            <div class="md:text-right md:pr-8 md:order-first">
+              <div class="bg-gray-50 p-6 rounded-lg">
+                <p>আমাদের প্রথম অনলাইন অর্ডার সিস্টেম চালু এবং প্রথম আন্তর্জাতিক অর্ডার সম্পন্ন।</p>
+              </div>
+            </div>
+            <div class="md:col-start-1 md:row-start-1"></div>
+            <div class="md:pl-8">
+              <p class="text-accent font-bold">২০১৮</p>
+              <h3 class="text-xl font-bold text-primary">ডিজিটাল যাত্রা</h3>
+              <p class="text-neutral">ওয়েবসাইট চালু এবং প্রথম এক্সপোর্ট</p>
+            </div>
+          </div>
+          
+          <!-- Timeline Item 3 -->
+          <div class="timeline-item relative grid md:grid-cols-2 gap-8 items-center">
+            <div class="md:text-right md:pr-8">
+              <p class="text-accent font-bold">২০২০</p>
+              <h3 class="text-xl font-bold text-primary">ব্রিডিং ফার্ম স্থাপন</h3>
+              <p class="text-neutral">নিজস্ব ব্রিডিং ফার্ম স্থাপন</p>
+            </div>
+            <div class="hidden md:block"></div>
+            <div class="md:col-start-2 md:pl-8">
+              <div class="bg-gray-50 p-6 rounded-lg">
+                <p>১০,০০০ বর্গফুট জায়গায় আমাদের নিজস্ব ব্রিডিং ফার্ম স্থাপন করা হয় যেখানে ১০০+ প্রজাতির মাছ ব্রিড করা হয়।</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Timeline Item 4 -->
+          <div class="timeline-item relative grid md:grid-cols-2 gap-8 items-center">
+            <div class="md:text-right md:pr-8 md:order-first">
+              <div class="bg-gray-50 p-6 rounded-lg">
+                <p>আমরা এখন মাসে ৫০০০+ অর্ডার প্রসেস করি এবং ১০+ দেশে আমাদের পণ্য রপ্তানি করি।</p>
+              </div>
+            </div>
+            <div class="md:col-start-1 md:row-start-1"></div>
+            <div class="md:pl-8">
+              <p class="text-accent font-bold">২০২৩</p>
+              <h3 class="text-xl font-bold text-primary">মাইলফলক</h3>
+              <p class="text-neutral">১৫০০+ সন্তুষ্ট গ্রাহক</p>
             </div>
           </div>
         </div>
@@ -84,57 +194,54 @@
     </div>
   </section>
 
-  <!-- Mission & Vision Section -->
-  <section class="py-16">
-    <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12">
-      <div class="bg-gray-900 text-white p-12 rounded-xl">
-        <h2 class="text-3xl font-bold mb-6">Our Mission</h2>
-        <p class="text-lg leading-relaxed">
-          আমাদের মিশন হলো—উচ্চমানের প্রযুক্তি ও যত্নশীল ব্যবস্থাপনার মাধ্যমে এক লক্ষ অ্যাকুরিয়ামের মাছ উৎপাদন করে,
-          ঘরোয়া শোভা, রপ্তানি সম্ভাবনা এবং টেকসই অ্যাকুরিয়াম শিল্পে নতুন মাত্রা যোগ করা। Finvorm
-          প্রতিশ্রুতিবদ্ধ—পরিবেশবান্ধব উপায়ে এক লক্ষ অ্যাকুরিয়ামের মাছ উৎপাদন ও সরবরাহের মাধ্যমে সৌন্দর্যপ্রেমী
-          মানুষদের ঘরে ঘরে জীবন্ত রঙ ছড়িয়ে দিতে। আমরা বিশ্বাস করি, প্রতিটি অ্যাকুরিয়ামে প্রাণের ছোঁয়া। তাই আমাদের
-          লক্ষ্য এক লক্ষ অ্যাকুরিয়ামের মাছ উৎপাদন করে জীবন্ত শোভা, টেকসই শিল্প এবং উদ্যোক্তাদের জন্য একটি নতুন দিগন্ত
-          উন্মোচন করা।
-        </p>
-      </div>
-      <div class="bg-gray-50 p-12 rounded-xl">
-        <h2 class="text-3xl font-bold mb-6">Our Vision</h2>
-        <p class="text-lg leading-relaxed">
-          আমাদের স্বপ্ন শুধু মাছ বেচা নয়—আমরা Finvora-কে গড়ে তুলছি এমন একটি নাম হিসেবে, যা বিশ্বের সবচেয়ে বড়
-          অ্যাকুরিয়াম মাছ সরবরাহকারী ব্র্যান্ড হবে। বাংলাদেশের প্রতিটি শহর থেকে শুরু করে পৃথিবীর প্রতিটি দেশে থাকবে
-          Finvora-র নিজস্ব শাখা—যেখান থেকে ছড়িয়ে পড়বে সৌন্দর্য, প্রশান্তি আর জীবনের প্রাণ।
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Leadership Team Section -->
-  <section class="py-16 bg-gray-50">
-    <div class="max-w-7xl mx-auto px-6">
-      <h2 class="text-3xl font-bold text-center mb-12">Leadership Team</h2>
+  <!-- Team Section -->
+  <section class="section-padding bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-primary text-center mb-12">আমাদের টিম</h2>
+      
       <div class="grid md:grid-cols-3 gap-8">
-        <div class="text-center">
-          <img src="img/shaharier.jpg" alt="Founder" class="w-64 h-64 object-cover rounded-full mx-auto mb-4">
-          <h3 class="text-xl font-bold">Md. Shaharier</h3>
-          <p class="text-gray-600">Founder & CEO</p>
-          <p class="text-gray-600">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi repellat quaerat
-            explicabo culpa, magnam doloribus.</p>
-          <div class="mt-4 flex justify-center space-x-4">
-            <a href="https://www.facebook.com/" class="text-gray-600 hover:text-black"><i
-                class="fab fa-facebook"></i></a>
+        <!-- Founder 1 -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden founder-card">
+          <img src="images/team/shaharier.jpg" alt="Md. Shaharier" class="w-full h-64 object-cover">
+          <div class="p-6">
+            <h3 class="text-xl font-bold text-primary">মো. শাহারিয়ার</h3>
+            <p class="text-accent mb-4">প্রতিষ্ঠাতা ও সিইও</p>
+            <p class="text-neutral mb-4">অ্যাকুরিয়াম ফিশ নিয়ে কাজ করার ১০+ বছরের অভিজ্ঞতা। বিশেষজ্ঞতা - ফিশ ব্রিডিং ও ডিজিজ ম্যানেজমেন্ট।</p>
+            <div class="founder-social flex space-x-4">
+              <a href="#" class="text-gray-500 hover:text-accent"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="text-gray-500 hover:text-accent"><i class="fab fa-linkedin-in"></i></a>
+              <a href="#" class="text-gray-500 hover:text-accent"><i class="fab fa-twitter"></i></a>
+            </div>
           </div>
         </div>
-        <div class="text-center">
-          <img src="img/aditya.jpg" alt="CEO & Creative Director"
-            class="w-64 h-64 object-cover rounded-full mx-auto mb-4">
-          <h3 class="text-xl font-bold">Aditya Banerjee</h3>
-          <p class="text-gray-600">Co-Founder</p>
-          <p class="text-gray-600">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi repellat quaerat
-            explicabo culpa, magnam doloribus.</p>
-          <div class="mt-4 flex justify-center space-x-4">
-            <a href="https://www.facebook.com/" class="text-gray-600 hover:text-black"><i
-                class="fab fa-facebook"></i></a>
+        
+        <!-- Founder 2 -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden founder-card">
+          <img src="images/team/aditya.jpg" alt="Aditya Banerjee" class="w-full h-64 object-cover">
+          <div class="p-6">
+            <h3 class="text-xl font-bold text-primary">অদিত্য ব্যানার্জী</h3>
+            <p class="text-accent mb-4">সহ-প্রতিষ্ঠাতা</p>
+            <p class="text-neutral mb-4">অ্যাকুরিয়াম ডিজাইন ও ইকোসিস্টেম বিশেষজ্ঞ। ৮+ বছরের অভিজ্ঞতা নিয়ে কাজ করছেন।</p>
+            <div class="founder-social flex space-x-4">
+              <a href="#" class="text-gray-500 hover:text-accent"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="text-gray-500 hover:text-accent"><i class="fab fa-linkedin-in"></i></a>
+              <a href="#" class="text-gray-500 hover:text-accent"><i class="fab fa-instagram"></i></a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Founder 3 -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden founder-card">
+          <img src="images/team/taslima.jpg" alt="Taslima Akter" class="w-full h-64 object-cover">
+          <div class="p-6">
+            <h3 class="text-xl font-bold text-primary">তাসলিমা আক্তার</h3>
+            <p class="text-accent mb-4">মার্কেটিং ডিরেক্টর</p>
+            <p class="text-neutral mb-4">ডিজিটাল মার্কেটিং বিশেষজ্ঞ। আমাদের ব্র্যান্ডকে অনলাইনে প্রতিষ্ঠিত করতে প্রধান ভূমিকা পালন করছেন।</p>
+            <div class="founder-social flex space-x-4">
+              <a href="#" class="text-gray-500 hover:text-accent"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="text-gray-500 hover:text-accent"><i class="fab fa-linkedin-in"></i></a>
+              <a href="#" class="text-gray-500 hover:text-accent"><i class="fab fa-youtube"></i></a>
+            </div>
           </div>
         </div>
       </div>
@@ -144,12 +251,36 @@
   <!-- Footer -->
   <div id="footer"></div>
 
-  <script src="scripts/app.js"></script>
+  <!-- Scripts -->
   <script src="scripts/main.js"></script>
-  <script src="scripts/navber_footer.js"></script>
-  <script src="scripts/search.js"></script>
-  <script src="scripts/user_data.js"></script>
-
+  <script src="scripts/navbar_footer.js"></script>
+  <script src="scripts/app.js"></script>
+  
+  <script>
+    // About page specific JS
+    document.addEventListener('DOMContentLoaded', () => {
+      // Team card hover effect
+      const founderCards = document.querySelectorAll('.founder-card');
+      founderCards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+          card.querySelector('.founder-social').style.opacity = '1';
+          card.querySelector('.founder-social').style.transform = 'translateY(0)';
+        });
+        card.addEventListener('mouseleave', () => {
+          card.querySelector('.founder-social').style.opacity = '0';
+          card.querySelector('.founder-social').style.transform = 'translateY(1rem)';
+        });
+      });
+      
+      // Mobile timeline adjustment
+      if (window.innerWidth < 768) {
+        const timelineItems = document.querySelectorAll('.timeline-item');
+        timelineItems.forEach(item => {
+          item.classList.remove('grid', 'md:grid-cols-2');
+          item.querySelector('div:first-child').classList.add('mb-4');
+        });
+      }
+    });
+  </script>
 </body>
-
 </html>
