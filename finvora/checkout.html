@@ -1,119 +1,343 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="bn">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Checkout | Finvora</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>চেকআউট | Finvora</title>
+  
+  <!-- Shared Head Content -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       theme: {
         extend: {
           colors: {
-            primary: '#EF4444',
-            secondary: '#F59E0B',
-            accent: '#10B981'
+            primary: '#1a365d',
+            secondary: '#2c5282',
+            accent: '#4299e1',
+            neutral: '#4a5568'
           },
           fontFamily: {
-            bangla: ['Noto Sans Bengali', 'sans-serif'],
-            sans: ['Inter', 'sans-serif']
+            bangla: ['Hind Siliguri', 'Noto Sans Bengali', 'sans-serif'],
           }
         }
       }
     }
   </script>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;700&family=Noto+Sans+Bengali:wght@400;700&display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;700&family=Noto+Sans+Bengali:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
   <style>
     body {
-      font-family: 'Noto Sans Bengali', sans-serif;
-      background-color: #FFF5F5;
+      font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif;
+      background-color: #f7fafc;
+      padding-top: 4rem;
     }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 2rem;
+    .checkout-step {
+      transition: all 0.3s ease;
     }
-
-    .cart-item {
-      border-bottom: 1px solid #e5e7eb;
-      padding-bottom: 1rem;
-      margin-bottom: 1rem;
+    .checkout-step.active {
+      border-color: #4299e1;
     }
-
-    .promo-input:disabled+.promo-btn {
-      opacity: 0.5;
-      cursor: not-allowed;
+    .checkout-step.completed {
+      border-color: #10b981;
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
     }
   </style>
 </head>
+<body class="bangla-font antialiased">
+  <!-- Navigation -->
+  <div id="navbar"></div>
 
-<body class="antialiased">
-  <div class="container bg-white rounded-lg shadow-md">
-    <div class="flex flex-col md:flex-row gap-8">
-      <!-- Customer & Payment Info -->
-      <div class="bg-gray-50 p-8 rounded-lg w-full md:w-1/2 space-y-6">
-        <h2 class="text-2xl font-bold text-primary">Customer Information</h2>
-        <form id="checkoutForm" class="space-y-4">
-          <input type="text" id="fullName" required placeholder="Full Name" class="w-full p-3 border rounded" />
-          <input type="tel" id="phone" required placeholder="Phone Number" class="w-full p-3 border rounded" />
-          <input type="email" id="email" required placeholder="Email" class="w-full p-3 border rounded" />
-          <textarea id="address" rows="3" required placeholder="Shipping Address"
-            class="w-full p-3 border rounded"></textarea>
-          <!-- Payment Options -->
-          <div class="space-y-2">
-            <label class="font-medium">Payment Method:</label>
-            <div class="flex flex-col">
-              <label><input type="radio" name="payment" value="bkash" /> Bkash</label>
-              <label><input type="radio" name="payment" value="nagad" /> Nagad</label>
-              <label><input type="radio" name="payment" value="cod" checked /> Cash on Delivery</label>
-            </div>
-            <div id="accountInfo" class="text-secondary text-sm">
-              <p class="hidden" id="bkashInfo">Bkash Number: 01XXXXXXXXX</p>
-              <p class="hidden" id="nagadInfo">Nagad Number: 01YYYYYYYYY</p>
+  <!-- Checkout Content -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Checkout Steps -->
+    <div class="flex justify-between mb-8">
+      <div class="checkout-step active border-b-4 border-accent pb-2 w-1/4 text-center">
+        <span class="bg-accent text-white rounded-full w-8 h-8 flex items-center justify-center mx-auto mb-2">1</span>
+        <span class="font-medium">ব্যক্তিগত তথ্য</span>
+      </div>
+      <div class="checkout-step border-b-4 border-gray-200 pb-2 w-1/4 text-center">
+        <span class="bg-gray-200 text-neutral rounded-full w-8 h-8 flex items-center justify-center mx-auto mb-2">2</span>
+        <span class="text-neutral">ঠিকানা</span>
+      </div>
+      <div class="checkout-step border-b-4 border-gray-200 pb-2 w-1/4 text-center">
+        <span class="bg-gray-200 text-neutral rounded-full w-8 h-8 flex items-center justify-center mx-auto mb-2">3</span>
+        <span class="text-neutral">পেমেন্ট</span>
+      </div>
+      <div class="checkout-step border-b-4 border-gray-200 pb-2 w-1/4 text-center">
+        <span class="bg-gray-200 text-neutral rounded-full w-8 h-8 flex items-center justify-center mx-auto mb-2">4</span>
+        <span class="text-neutral">নিশ্চিতকরণ</span>
+      </div>
+    </div>
+
+    <!-- Checkout Forms -->
+    <div class="bg-white rounded-xl shadow-md p-6">
+      <!-- Step 1: Personal Info -->
+      <div id="step1" class="tab-content active">
+        <h2 class="text-2xl font-bold text-primary mb-6">ব্যক্তিগত তথ্য</h2>
+        <form id="personalInfoForm" class="space-y-4">
+          <div>
+            <label for="fullName" class="block text-neutral font-medium mb-1">পূর্ণ নাম *</label>
+            <input type="text" id="fullName" name="fullName" required 
+                   class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-accent">
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label for="phone" class="block text-neutral font-medium mb-1">ফোন নম্বর *</label>
+              <input type="tel" id="phone" name="phone" required 
+                     class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-accent">
             </div>
             <div>
-              <label class="block mb-2 font-medium">Transaction ID</label>
-              <input type="text" id="transactionId" placeholder="Enter Transaction ID" class="w-full p-3 border rounded"
-                disabled />
+              <label for="email" class="block text-neutral font-medium mb-1">ইমেইল *</label>
+              <input type="email" id="email" name="email" required 
+                     class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-accent">
             </div>
           </div>
-          <!-- Order Note -->
+          
           <div>
-            <label class="block mb-2 font-medium">Order Note (optional)</label>
-            <textarea id="orderNote" rows="2" placeholder="Any special instructions?"
-              class="w-full p-3 border rounded"></textarea>
+            <label for="orderNote" class="block text-neutral font-medium mb-1">অর্ডার নোট (ঐচ্ছিক)</label>
+            <textarea id="orderNote" name="orderNote" rows="3" 
+                      class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-accent"></textarea>
+          </div>
+          
+          <div class="flex justify-end">
+            <button type="button" onclick="nextStep(2)" 
+                    class="bg-primary text-white px-6 py-3 rounded hover:bg-secondary transition">
+              পরবর্তী ধাপ <i class="fas fa-arrow-right ml-2"></i>
+            </button>
           </div>
         </form>
       </div>
-      <!-- Order Summary -->
-      <div class="bg-gray-50 p-8 rounded-lg w-full md:w-1/2">
-        <h2 class="text-2xl font-bold text-primary mb-6">Order Summary</h2>
-        <div id="orderItems" class="space-y-6"></div>
-        <div class="mt-8">
-          <div class="flex justify-between mb-2"><span>Subtotal:</span><span id="subtotal">৳ 0.00</span></div>
-          <div class="flex justify-between mb-2"><span>Discount:</span><span id="discount">৳ 0.00</span></div>
-          <div class="flex justify-between font-medium"><span>Total:</span><span id="grandTotal">৳ 0.00</span></div>
+
+      <!-- Step 2: Address -->
+      <div id="step2" class="tab-content">
+        <h2 class="text-2xl font-bold text-primary mb-6">ডেলিভারি ঠিকানা</h2>
+        <form id="addressForm" class="space-y-4">
+          <div>
+            <label for="locationType" class="block text-neutral font-medium mb-1">অবস্থান নির্বাচন করুন *</label>
+            <select id="locationType" name="locationType" required 
+                    class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-accent">
+              <option value="">-- নির্বাচন করুন --</option>
+              <option value="rajshahi-city">রাজশাহী সিটি কর্পোরেশন</option>
+              <option value="other">অন্যান্য স্থান</option>
+            </select>
+          </div>
+          
+          <div>
+            <label for="fullAddress" class="block text-neutral font-medium mb-1">সম্পূর্ণ ঠিকানা *</label>
+            <textarea id="fullAddress" name="fullAddress" rows="3" required 
+                      class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-accent"></textarea>
+            <p class="text-sm text-neutral mt-1">বাড়ি নম্বর, রোড নম্বর, এলাকা, ল্যান্ডমার্ক ইত্যাদি উল্লেখ করুন</p>
+          </div>
+          
+          <div class="flex justify-between">
+            <button type="button" onclick="prevStep()" 
+                    class="border border-primary text-primary px-6 py-3 rounded hover:bg-gray-50 transition">
+              <i class="fas fa-arrow-left mr-2"></i> পূর্ববর্তী ধাপ
+            </button>
+            <button type="button" onclick="nextStep(3)" 
+                    class="bg-primary text-white px-6 py-3 rounded hover:bg-secondary transition">
+              পরবর্তী ধাপ <i class="fas fa-arrow-right ml-2"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Step 3: Payment -->
+      <div id="step3" class="tab-content">
+        <h2 class="text-2xl font-bold text-primary mb-6">পেমেন্ট পদ্ধতি</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Order Summary -->
+          <div class="bg-gray-50 p-6 rounded-lg">
+            <h3 class="font-bold text-lg text-primary mb-4">অর্ডার সারাংশ</h3>
+            
+            <div class="space-y-2 mb-4">
+              <div class="flex justify-between">
+                <span class="text-neutral">সাবটোটাল:</span>
+                <span id="checkoutSubtotal" class="font-medium">৳0.00</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-neutral">ডেলিভারি চার্জ:</span>
+                <span id="checkoutDelivery" class="font-medium">৳0.00</span>
+              </div>
+              <div class="border-t pt-2 flex justify-between font-bold">
+                <span class="text-primary">মোট:</span>
+                <span id="checkoutTotal" class="text-primary">৳0.00</span>
+              </div>
+            </div>
+            
+            <div id="deliveryInfo" class="text-sm text-neutral">
+              <p><i class="fas fa-info-circle mr-2 text-accent"></i> রাজশাহী সিটি কর্পোরেশনের জন্য ডেলিভারি চার্জ ফ্রি</p>
+            </div>
+          </div>
+          
+          <!-- Payment Methods -->
+          <div>
+            <div class="space-y-4">
+              <div class="border rounded-lg p-4">
+                <label class="flex items-center cursor-pointer">
+                  <input type="radio" name="paymentMethod" value="bkash" class="mr-3">
+                  <div class="flex-1">
+                    <h4 class="font-medium">bKash</h4>
+                    <p class="text-sm text-neutral mt-1">bKash এ পেমেন্ট করুন</p>
+                  </div>
+                  <img src="images/bkash.png" alt="bKash" class="h-8">
+                </label>
+                
+                <div id="bkashDetails" class="mt-4 pl-7 hidden">
+                  <p class="text-sm text-neutral mb-2">অনুগ্রহ করে নিচের নম্বরে পেমেন্ট করুন:</p>
+                  <p class="font-medium mb-2">bKash মার্চেন্ট: 01XXXXXXXXX</p>
+                  <div>
+                    <label for="bkashNumber" class="block text-neutral font-medium mb-1">আপনার bKash নম্বর</label>
+                    <input type="tel" id="bkashNumber" class="w-full p-2 border rounded">
+                  </div>
+                  <div class="mt-2">
+                    <label for="bkashTrxID" class="block text-neutral font-medium mb-1">ট্রানজেকশন আইডি</label>
+                    <input type="text" id="bkashTrxID" class="w-full p-2 border rounded">
+                  </div>
+                </div>
+              </div>
+              
+              <div class="border rounded-lg p-4">
+                <label class="flex items-center cursor-pointer">
+                  <input type="radio" name="paymentMethod" value="nagad" class="mr-3">
+                  <div class="flex-1">
+                    <h4 class="font-medium">Nagad</h4>
+                    <p class="text-sm text-neutral mt-1">Nagad এ পেমেন্ট করুন</p>
+                  </div>
+                  <img src="images/nagad.png" alt="Nagad" class="h-8">
+                </label>
+                
+                <div id="nagadDetails" class="mt-4 pl-7 hidden">
+                  <p class="text-sm text-neutral mb-2">অনুগ্রহ করে নিচের নম্বরে পেমেন্ট করুন:</p>
+                  <p class="font-medium mb-2">Nagad মার্চেন্ট: 01YYYYYYYYY</p>
+                  <div>
+                    <label for="nagadNumber" class="block text-neutral font-medium mb-1">আপনার Nagad নম্বর</label>
+                    <input type="tel" id="nagadNumber" class="w-full p-2 border rounded">
+                  </div>
+                  <div class="mt-2">
+                    <label for="nagadTrxID" class="block text-neutral font-medium mb-1">ট্রানজেকশন আইডি</label>
+                    <input type="text" id="nagadTrxID" class="w-full p-2 border rounded">
+                  </div>
+                </div>
+              </div>
+              
+              <div class="border rounded-lg p-4">
+                <label class="flex items-center cursor-pointer">
+                  <input type="radio" name="paymentMethod" value="cod" class="mr-3" checked>
+                  <div class="flex-1">
+                    <h4 class="font-medium">ক্যাশ অন ডেলিভারি</h4>
+                    <p class="text-sm text-neutral mt-1">পণ্য ডেলিভারির সময় পেমেন্ট করুন</p>
+                  </div>
+                  <i class="fas fa-money-bill-wave text-2xl text-green-500"></i>
+                </label>
+              </div>
+            </div>
+            
+            <div class="flex justify-between mt-6">
+              <button type="button" onclick="prevStep()" 
+                      class="border border-primary text-primary px-6 py-3 rounded hover:bg-gray-50 transition">
+                <i class="fas fa-arrow-left mr-2"></i> পূর্ববর্তী ধাপ
+              </button>
+              <button type="button" onclick="nextStep(4)" 
+                      class="bg-primary text-white px-6 py-3 rounded hover:bg-secondary transition">
+                পরবর্তী ধাপ <i class="fas fa-arrow-right ml-2"></i>
+              </button>
+            </div>
+          </div>
         </div>
-        <button onclick="submitOrder()"
-          class="w-full mt-6 bg-primary text-white py-4 rounded hover:bg-secondary transition">Confirm Order</button>
-        <p class="text-center mt-4 text-sm text-gray-600">Payment details will be confirmed within 3 business days.</p>
+      </div>
+
+      <!-- Step 4: Confirmation -->
+      <div id="step4" class="tab-content">
+        <h2 class="text-2xl font-bold text-primary mb-6">অর্ডার নিশ্চিতকরণ</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Order Summary -->
+          <div>
+            <div class="bg-gray-50 p-6 rounded-lg mb-6">
+              <h3 class="font-bold text-lg text-primary mb-4">অর্ডার সারাংশ</h3>
+              
+              <div id="orderItems" class="space-y-4 mb-4">
+                <!-- Order items will be loaded here -->
+              </div>
+              
+              <div class="space-y-2">
+                <div class="flex justify-between">
+                  <span class="text-neutral">সাবটোটাল:</span>
+                  <span id="confirmSubtotal" class="font-medium">৳0.00</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-neutral">ডেলিভারি চার্জ:</span>
+                  <span id="confirmDelivery" class="font-medium">৳0.00</span>
+                </div>
+                <div class="border-t pt-2 flex justify-between font-bold">
+                  <span class="text-primary">মোট:</span>
+                  <span id="confirmTotal" class="text-primary">৳0.00</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="bg-gray-50 p-6 rounded-lg">
+              <h3 class="font-bold text-lg text-primary mb-4">ডেলিভারি তথ্য</h3>
+              <div id="deliveryAddress" class="text-neutral">
+                <!-- Delivery address will be loaded here -->
+              </div>
+            </div>
+          </div>
+          
+          <!-- Payment Summary -->
+          <div>
+            <div class="bg-gray-50 p-6 rounded-lg mb-6">
+              <h3 class="font-bold text-lg text-primary mb-4">পেমেন্ট তথ্য</h3>
+              <div id="paymentMethod" class="text-neutral">
+                <!-- Payment method will be loaded here -->
+              </div>
+            </div>
+            
+            <div class="bg-green-50 border-l-4 border-green-500 p-4 mb-6">
+              <div class="flex">
+                <div class="flex-shrink-0">
+                  <i class="fas fa-check-circle text-green-500"></i>
+                </div>
+                <div class="ml-3">
+                  <p class="text-sm text-green-700">
+                    আপনার অর্ডারটি সম্পন্ন হলে একটি কনফার্মেশন ইমেইল এবং এসএমএস পাবেন
+                  </p>
+                </div>
+              </div>
+            </div>
+            
+            <div class="flex flex-col sm:flex-row justify-between gap-4">
+              <button type="button" onclick="prevStep()" 
+                      class="border border-primary text-primary px-6 py-3 rounded hover:bg-gray-50 transition">
+                <i class="fas fa-arrow-left mr-2"></i> পূর্ববর্তী ধাপ
+              </button>
+              <button type="button" onclick="submitOrder()" 
+                      class="bg-green-500 text-white px-6 py-3 rounded hover:bg-green-600 transition">
+                অর্ডার কনফার্ম করুন <i class="fas fa-check-circle ml-2"></i>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
+  </main>
 
-  <script src="scripts/checkout.js"></script>
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <!-- Scripts -->
   <script src="scripts/main.js"></script>
   <script src="scripts/navbar_footer.js"></script>
-  <script src="scripts/app.js"></script>
-  <script src="scripts/products.js"></script>
-  <script src="scripts/product_info.js"></script>
-  <script src="scripts/search.js"></script>
-  <script src="scripts/user_data.js"></script>
+  <script src="scripts/checkout.js"></script>
 </body>
-
 </html>
