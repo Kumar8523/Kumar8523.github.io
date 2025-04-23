@@ -120,67 +120,6 @@ class ProductManager {
     };
   }
 
-  setupEventListeners() {
-    // Search
-    const searchInput = document.getElementById('mainSearch');
-    if (searchInput) {
-      searchInput.addEventListener('input', () => {
-        this.filterProducts();
-      });
-    }
-
-    // Category Filter
-    const categoryFilter = document.getElementById('categoryFilter');
-    if (categoryFilter) {
-      categoryFilter.addEventListener('change', () => {
-        this.filterProducts();
-      });
-    }
-
-    // Sort Options
-    const sortOptions = document.getElementById('sortOptions');
-    if (sortOptions) {
-      sortOptions.addEventListener('change', () => {
-        this.sortProducts();
-        this.renderProducts();
-      });
-    }
-  }
-
-  filterProducts() {
-    const searchTerm = document.getElementById('mainSearch')?.value.toLowerCase() || '';
-    const category = document.getElementById('categoryFilter')?.value || 'all';
-
-    this.filteredProducts = this.products.filter(product => {
-      const matchesSearch = product.name.toLowerCase().includes(searchTerm) || 
-                          product.description.toLowerCase().includes(searchTerm);
-      const matchesCategory = category === 'all' || product.category === category;
-      return matchesSearch && matchesCategory;
-    });
-
-    this.sortProducts();
-    this.renderProducts();
-  }
-
-  sortProducts() {
-    const sortOption = document.getElementById('sortOptions')?.value || 'default';
-
-    switch (sortOption) {
-      case 'price-asc':
-        this.filteredProducts.sort((a, b) => a.price - b.price);
-        break;
-      case 'price-desc':
-        this.filteredProducts.sort((a, b) => b.price - a.price);
-        break;
-      case 'rating':
-        this.filteredProducts.sort((a, b) => (b.rating || 0) - (a.rating || 0));
-        break;
-      default:
-        // Default sorting (by ID or as they come)
-        break;
-    }
-  }
-
   addToCart(productId, event) {
     event.preventDefault();
     event.stopPropagation();
@@ -220,36 +159,6 @@ class ProductManager {
     this.showToast('পণ্যটি কার্টে যোগ করা হয়েছে', 'success');
   }
 
-  updateCartCount() {
-    const count = this.cart.reduce((sum, item) => sum + item.quantity, 0);
-    document.querySelectorAll('.cart-count').forEach(el => {
-      el.textContent = count;
-      el.style.display = count > 0 ? 'flex' : 'none';
-    });
-  }
-
-  showEmptyState(show) {
-    const grid = document.getElementById('productGrid');
-    const emptyState = document.getElementById('emptyState');
-    
-    if (show) {
-      grid.innerHTML = '';
-      emptyState.classList.remove('hidden');
-    } else {
-      emptyState.classList.add('hidden');
-    }
-  }
-
-  showErrorState() {
-    const grid = document.getElementById('productGrid');
-    if (grid) {
-      grid.innerHTML = `
-        <div class="col-span-full text-center py-12 text-red-500">
-          <i class="fas fa-exclamation-triangle"></i> পণ্য লোড করতে সমস্যা হয়েছে
-        </div>`;
-    }
-  }
-
   showToast(message, type = 'success') {
     const toast = document.createElement('div');
     toast.className = `fixed bottom-4 right-4 px-6 py-3 rounded-lg shadow-lg z-50 ${
@@ -269,6 +178,8 @@ class ProductManager {
       setTimeout(() => toast.remove(), 300);
     }, 5000);
   }
+
+  // ... (rest of the methods remain the same)
 }
 
 // Global variable
