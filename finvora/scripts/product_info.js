@@ -1,4 +1,7 @@
-// product_info.js - Updated with new theme and features
+document.addEventListener('DOMContentLoaded', () => {
+  const productDetail = new ProductDetail();
+  productDetail.init();
+});
 
 class ProductDetail {
   constructor() {
@@ -6,14 +9,16 @@ class ProductDetail {
     this.productData = null;
     this.relatedProducts = [];
     this.currentTab = 'description';
-    this.init();
+    this.cart = JSON.parse(localStorage.getItem('cart')) || [];
   }
 
   async init() {
     this.getProductIdFromURL();
     await this.loadProductData();
-    this.renderProductDetails();
-    this.setupEventListeners();
+    if (this.productData) {
+      this.renderProductDetails();
+      this.setupEventListeners();
+    }
   }
 
   getProductIdFromURL() {
@@ -39,8 +44,8 @@ class ProductDetail {
       // Load related products
       if (this.productData.relatedProducts && this.productData.relatedProducts.length > 0) {
         this.relatedProducts = data.products.filter(p => 
-          this.productData.relatedProducts.includes(p.id)
-        );
+          this.productData.relatedProducts.includes(p.id) && p.id !== this.productId
+        ).slice(0, 4);
       }
     } catch (error) {
       console.error('Error loading product data:', error);
@@ -49,8 +54,6 @@ class ProductDetail {
   }
 
   renderProductDetails() {
-    if (!this.productData) return;
-
     // Basic Info
     document.getElementById('productTitle').textContent = this.productData.name;
     
@@ -72,7 +75,10 @@ class ProductDetail {
     // Stock Status
     const stockStatus = document.getElementById('stockStatus');
     if (this.productData.stock > 0) {
-      stockStatus.innerHTML = `<i class="fas fa-check-circle mr-1"></i> স্টকে আছে (${this.productData.stock} পিস)`;
+      stockStatus.innerHTML = `
+        <i class="fas fa-check-circle mr-1"></i> 
+        স্টকে আছে ${this.productData.stock > 1 ? `(${this.productData.stock} পিস)` : ''}
+      `;
       stockStatus.className = 'text-green-600 font-medium';
     } else {
       stockStatus.innerHTML = '<i class="fas fa-times-circle mr-1"></i> স্টকে নেই';
@@ -96,7 +102,7 @@ class ProductDetail {
       mainImage.src = this.productData.images[0];
       thumbnailContainer.innerHTML = this.productData.images.map((img, idx) => `
         <div class="image-gallery-thumbnail ${idx === 0 ? 'active' : ''}" 
-             onclick="changeMainImage('${img}')">
+             onclick="productDetail.changeMainImage('${img}', this)">
           <img src="${img}" class="w-full h-20 object-cover" alt="Thumbnail ${idx + 1}">
         </div>
       `).join('');
@@ -148,17 +154,17 @@ class ProductDetail {
           <div class="flex text-yellow-400 mr-2">
             ${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}
           </div>
-          <span class="font-medium">${review.user.name}</span>
-          ${review.user.verified ? `
+          <span class="font-medium">${review.user || 'অজানা ব্যবহারকারী'}</span>
+          ${review.verified ? `
             <span class="ml-2 text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
               <i class="fas fa-check-circle mr-1"></i> যাচাইকৃত ক্রেতা
             </span>` : ''}
+          ${review.date ? `
+            <span class="ml-auto text-xs text-gray-400">
+              ${new Date(review.date).toLocaleDateString('bn-BD')}
+            </span>` : ''}
         </div>
         <p class="text-neutral mt-2">${review.comment}</p>
-        ${review.date ? `
-          <div class="text-xs text-gray-400 mt-2">
-            ${new Date(review.date).toLocaleDateString('bn-BD')}
-          </div>` : ''}
       </div>
     `).join('');
   }
@@ -215,6 +221,15 @@ class ProductDetail {
         this.submitReview();
       });
     }
+
+    // Add to Cart Button
+    const addToCartBtn = document.querySelector('button[onclick="addToCart()"]');
+    if (addToCartBtn) {
+      addToCartBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.addToCart();
+      });
+    }
   }
 
   switchTab(tabName) {
@@ -258,20 +273,88 @@ class ProductDetail {
     const comment = document.getElementById('reviewComment').value.trim();
 
     if (rating === 0) {
-      alert('দয়া করে রেটিং প্রদান করুন');
+      this.showToast('দয়া করে রেটিং প্রদান করুন', 'error');
       return;
     }
 
     if (!comment) {
-      alert('দয়া করে আপনার মন্তব্য লিখুন');
+      this.showToast('দয়া করে আপনার মন্তব্য লিখুন', 'error');
       return;
     }
 
     // In a real app, you would send this to your backend
     console.log('Review submitted:', { rating, comment });
-    alert('আপনার রিভিউ জমা দেওয়া হয়েছে! ধন্যবাদ।');
+    this.showToast('আপনার রিভিউ জমা দেওয়া হয়েছে! ধন্যবাদ।');
     document.getElementById('reviewForm').reset();
     this.setRating(0);
+  }
+
+  addToCart() {
+    if (!this.productData) return;
+
+    if (this.productData.stock <= 0) {
+      this.showToast('এই পণ্যটি স্টকে নেই', 'error');
+      return;
+    }
+
+    const existingItem = this.cart.find(item => item.productId === this.productId);
+    
+    if (existingItem) {
+      if (existingItem.quantity >= this.productData.stock) {
+        this.showToast(`সর্বোচ্চ ${this.productData.stock} টি অর্ডার করা যাবে`, 'error');
+        return;
+      }
+      existingItem.quantity += 1;
+    } else {
+      this.cart.push({
+        productId: this.productId,
+        name: this.productData.name,
+        price: this.productData.price,
+        image: this.productData.images[0],
+        maxStock: this.productData.stock,
+        quantity: 1
+      });
+    }
+
+    localStorage.setItem('cart', JSON.stringify(this.cart));
+    this.showToast('পণ্যটি কার্টে যোগ করা হয়েছে', 'success');
+    this.updateCartCount();
+  }
+
+  updateCartCount() {
+    const count = this.cart.reduce((sum, item) => sum + item.quantity, 0);
+    document.querySelectorAll('.cart-count').forEach(el => {
+      el.textContent = count;
+      el.style.display = count > 0 ? 'flex' : 'none';
+    });
+  }
+
+  changeMainImage(src, element) {
+    document.getElementById('mainImage').src = src;
+    document.querySelectorAll('.image-gallery-thumbnail').forEach(thumb => {
+      thumb.classList.remove('active');
+    });
+    element.classList.add('active');
+  }
+
+  showToast(message, type = 'success') {
+    const toast = document.createElement('div');
+    toast.className = `fixed bottom-4 right-4 px-6 py-3 rounded-lg shadow-lg z-50 ${
+      type === 'success' ? 'bg-green-500' : 'bg-red-500'
+    } text-white flex items-center animate-fade-in`;
+    
+    toast.innerHTML = `
+      <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'} mr-2"></i>
+      <span>${message}</span>
+    `;
+
+    document.body.appendChild(toast);
+
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+      toast.classList.add('animate-fade-out');
+      setTimeout(() => toast.remove(), 300);
+    }, 5000);
   }
 
   showErrorState(message) {
@@ -288,44 +371,5 @@ class ProductDetail {
   }
 }
 
-// Global functions
-window.changeMainImage = function(src) {
-  document.getElementById('mainImage').src = src;
-  document.querySelectorAll('.image-gallery-thumbnail').forEach(thumb => {
-    thumb.classList.remove('active');
-  });
-  event.currentTarget.classList.add('active');
-};
-
-window.addToCart = function() {
-  // Implementation from products.js
-  showToast('পণ্য কার্টে যোগ করা হয়েছে', 'success');
-};
-
-window.shareProduct = function() {
-  if (navigator.share) {
-    navigator.share({
-      title: document.getElementById('productTitle').textContent,
-      text: 'Finvora থেকে এই পণ্যটি দেখুন',
-      url: window.location.href
-    }).catch(err => {
-      console.log('Error sharing:', err);
-    });
-  } else {
-    // Fallback for browsers that don't support Web Share API
-    navigator.clipboard.writeText(window.location.href).then(() => {
-      showToast('লিংক কপি করা হয়েছে!', 'success');
-    }).catch(err => {
-      showToast('শেয়ার করতে সমস্যা হয়েছে', 'error');
-    });
-  }
-};
-
-function showToast(message, type = 'success') {
-  // Toast implementation from previous version
-}
-
-// Initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-  new ProductDetail();
-});
+// Global variable
+const productDetail = new ProductDetail();
