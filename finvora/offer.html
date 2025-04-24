@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>বিশেষ অফার | Finvora</title>
+  
+  <!-- Shared Head Content -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1a365d',
+            secondary: '#2c5282',
+            accent: '#4299e1',
+            neutral: '#4a5568',
+            offer: '#e53e3e'
+          },
+          fontFamily: {
+            bangla: ['Hind Siliguri', 'Noto Sans Bengali', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;700&family=Noto+Sans+Bengali:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    body {
+      font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif;
+      background-color: #f7fafc;
+      padding-top: 4rem;
+    }
+    .offer-card {
+      transition: all 0.3s ease;
+      border-left: 4px solid #e53e3e;
+    }
+    .offer-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+    .countdown {
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body class="bangla-font antialiased">
+  <!-- Navigation -->
+  <div id="navbar"></div>
+
+  <!-- Offers Section -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="text-center mb-12">
+      <h1 class="text-3xl font-bold text-primary mb-2">বিশেষ অফারসমূহ</h1>
+      <p class="text-neutral max-w-2xl mx-auto">সীমিত সময়ের জন্য বিশেষ ডিসকাউন্ট ও প্রোমোশন</p>
+    </div>
+
+    <!-- Active Offers -->
+    <div class="mb-12">
+      <h2 class="text-2xl font-bold text-primary mb-6 flex items-center">
+        <i class="fas fa-bolt text-offer mr-2"></i> চলমান অফার
+      </h2>
+      <div id="activeOffers" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Active offers will be loaded here -->
+      </div>
+    </div>
+
+    <!-- Expired Offers -->
+    <div class="mb-12">
+      <h2 class="text-2xl font-bold text-neutral mb-6 flex items-center">
+        <i class="fas fa-clock-rotate-left text-gray-400 mr-2"></i> মেয়াদোত্তীর্ণ অফার
+      </h2>
+      <div id="expiredOffers" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Expired offers will be loaded here -->
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <!-- Scripts -->
+  <script src="scripts/main.js"></script>
+  <script src="scripts/navbar_footer.js"></script>
+  <script src="scripts/offer.js"></script>
+</body>
+</html>
