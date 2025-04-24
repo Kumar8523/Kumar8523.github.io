@@ -1,9 +1,12 @@
-// cart.js - Cart Page Functionality
+// cart.js - Simplified version
+document.addEventListener('DOMContentLoaded', () => {
+  const cartManager = new CartManager();
+  cartManager.init();
+});
 
 class CartManager {
   constructor() {
     this.cart = [];
-    this.init();
   }
 
   init() {
@@ -79,23 +82,16 @@ class CartManager {
 
   updateOrderSummary() {
     const subtotal = this.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-    const deliveryCharge = 150; // Default delivery charge
-    const grandTotal = subtotal + deliveryCharge;
-
     document.getElementById('subtotal').textContent = `৳${subtotal.toFixed(2)}`;
-    document.getElementById('deliveryCharge').textContent = `৳${deliveryCharge.toFixed(2)}`;
-    document.getElementById('grandTotal').textContent = `৳${grandTotal.toFixed(2)}`;
+    document.getElementById('grandTotal').textContent = `৳${subtotal.toFixed(2)}`;
   }
 
   setupEventListeners() {
-    // Checkout button
     document.getElementById('checkoutBtn')?.addEventListener('click', () => {
-      // Save cart data to session storage for checkout page
+      // Save cart data for checkout page
       sessionStorage.setItem('checkoutData', JSON.stringify({
         cart: this.cart,
-        subtotal: this.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0),
-        deliveryCharge: 150,
-        grandTotal: this.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0) + 150
+        subtotal: this.cart.reduce((sum, item) => sum + (item.price * item.quantity), 0)
       }));
     });
   }
@@ -128,8 +124,3 @@ window.removeItem = function(index) {
   cartManager.saveCart();
   cartManager.renderCartItems();
 };
-
-// Initialize when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-  new CartManager();
-});
