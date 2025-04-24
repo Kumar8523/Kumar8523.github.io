@@ -1,3 +1,4 @@
+// products.js - Enhanced version
 document.addEventListener('DOMContentLoaded', () => {
   const productManager = new ProductManager();
   productManager.init();
@@ -34,13 +35,7 @@ class ProductManager {
     const grid = document.getElementById('productGrid');
     if (!grid) return;
 
-    if (this.filteredProducts.length === 0) {
-      this.showEmptyState(true);
-      return;
-    }
-
     grid.innerHTML = this.filteredProducts.map(product => this.createProductCard(product)).join('');
-    this.showEmptyState(false);
   }
 
   createProductCard(product) {
@@ -54,9 +49,7 @@ class ProductManager {
     return `
       <div class="product-card bg-white rounded-lg shadow overflow-hidden" 
            data-product-id="${product.id}" 
-           data-category="${product.category}"
-           data-price="${product.price}"
-           data-rating="${product.rating || 0}">
+           data-category="${product.category}">
         <div class="relative">
           <a href="product_info.html?id=${product.id}">
             <img src="${product.images[0]}" alt="${product.name}"
@@ -83,10 +76,8 @@ class ProductManager {
               ` : ''}
             </div>
             <div class="flex items-center">
-              <div class="text-yellow-400 mr-1">
-                ${'★'.repeat(Math.round(product.rating || 0))}${'☆'.repeat(5 - Math.round(product.rating || 0))}
-              </div>
-              <span class="text-xs text-neutral">(${product.reviews?.length || 0})</span>
+              ${'★'.repeat(Math.round(product.rating || 0))}${'☆'.repeat(5 - Math.round(product.rating || 0))}
+              <span class="text-xs text-neutral ml-1">(${product.reviews?.length || 0})</span>
             </div>
           </div>
           <button onclick="productManager.addToCart(${product.id}, event)" 
@@ -108,7 +99,7 @@ class ProductManager {
       };
     } else if (stock < 5) {
       return {
-        text: `মাত্র ${stock} টি`,
+        text: `শেষ ${stock} টি`,
         class: 'bg-yellow-500',
         badge: true
       };
@@ -126,28 +117,30 @@ class ProductManager {
 
     const product = this.products.find(p => p.id === productId);
     if (!product) {
-      this.showToast('পণ্যটি পাওয়া যায়নি', 'error');
+      this.showPopup('পণ্যটি পাওয়া যায়নি', 'error');
       return;
     }
 
     if (product.stock <= 0) {
-      this.showToast('এই পণ্যটি স্টকে নেই', 'error');
+      this.showPopup('এই পণ্যটি স্টকে নেই', 'error');
       return;
     }
 
-    const existingItem = this.cart.find(item => item.productId === productId);
+    const existingItem = this.cart.find(item => item.id === productId);
     
     if (existingItem) {
       if (existingItem.quantity >= product.stock) {
-        this.showToast(`সর্বোচ্চ ${product.stock} টি অর্ডার করা যাবে`, 'error');
+        this.showPopup(`সর্বোচ্চ ${product.stock} টি অর্ডার করা যাবে`, 'error');
         return;
       }
       existingItem.quantity += 1;
     } else {
       this.cart.push({
-        productId,
+        id: productId,
         name: product.name,
-        price: product.price,
+        price: product.discount > 0 ? 
+          (product.price * (1 - product.discount/100)) : 
+          product.price,
         image: product.images[0],
         maxStock: product.stock,
         quantity: 1
@@ -156,30 +149,98 @@ class ProductManager {
 
     localStorage.setItem('cart', JSON.stringify(this.cart));
     this.updateCartCount();
-    this.showToast('পণ্যটি কার্টে যোগ করা হয়েছে', 'success');
+    this.showPopup('পণ্যটি কার্টে যোগ করা হয়েছে', 'success');
   }
 
-  showToast(message, type = 'success') {
-    const toast = document.createElement('div');
-    toast.className = `fixed bottom-4 right-4 px-6 py-3 rounded-lg shadow-lg z-50 ${
-      type === 'success' ? 'bg-green-500' : 'bg-red-500'
-    } text-white flex items-center animate-fade-in`;
+  showPopup(message, type = 'success') {
+    const popup = document.createElement('div');
+    popup.className = `fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+      bg-white shadow-xl rounded-lg p-6 z-50 max-w-sm w-full text-center animate-fade-in`;
     
-    toast.innerHTML = `
-      <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'} mr-2"></i>
-      <span>${message}</span>
+    popup.innerHTML = `
+      <div class="mb-4">
+        <i class="fas ${type === 'success' ? 'fa-check-circle text-green-500' : 'fa-exclamation-circle text-red-500'} text-4xl"></i>
+      </div>
+      <h3 class="text-lg font-medium mb-2">${message}</h3>
+      <button onclick="this.parentElement.remove()" 
+              class="mt-4 bg-primary text-white px-4 py-2 rounded hover:bg-secondary transition">
+        ঠিক আছে
+      </button>
     `;
 
-    document.body.appendChild(toast);
-
-    // Auto remove after 5 seconds
+    document.body.appendChild(popup);
+    
+    // Auto remove after 3 seconds
     setTimeout(() => {
-      toast.classList.add('animate-fade-out');
-      setTimeout(() => toast.remove(), 300);
-    }, 5000);
+      popup.classList.add('animate-fade-out');
+      setTimeout(() => popup.remove(), 300);
+    }, 3000);
   }
 
-  // ... (rest of the methods remain the same)
+  updateCartCount() {
+    const count = this.cart.reduce((sum, item) => sum + item.quantity, 0);
+    document.querySelectorAll('.cart-count').forEach(el => {
+      el.textContent = count;
+      el.style.display = count > 0 ? 'flex' : 'none';
+    });
+  }
+
+  setupEventListeners() {
+    // Search and filter functionality
+    document.getElementById('mainSearch')?.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase();
+      this.filteredProducts = this.products.filter(product => 
+        product.name.toLowerCase().includes(query)
+      );
+      this.renderProducts();
+    });
+
+    document.getElementById('categoryFilter')?.addEventListener('change', (e) => {
+      const category = e.target.value;
+      this.filteredProducts = category === 'all' 
+        ? [...this.products] 
+        : this.products.filter(product => product.category === category);
+      this.renderProducts();
+    });
+
+    document.getElementById('sortOptions')?.addEventListener('change', (e) => {
+      const sortBy = e.target.value;
+      this.sortProducts(sortBy);
+      this.renderProducts();
+    });
+  }
+
+  sortProducts(sortBy) {
+    switch(sortBy) {
+      case 'price-asc':
+        this.filteredProducts.sort((a, b) => a.price - b.price);
+        break;
+      case 'price-desc':
+        this.filteredProducts.sort((a, b) => b.price - a.price);
+        break;
+      case 'rating':
+        this.filteredProducts.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+        break;
+      default:
+        // Default sorting (original order)
+        this.filteredProducts = [...this.products];
+    }
+  }
+
+  showErrorState() {
+    const grid = document.getElementById('productGrid');
+    if (grid) {
+      grid.innerHTML = `
+        <div class="col-span-full text-center py-12 text-red-500">
+          <i class="fas fa-exclamation-triangle text-3xl mb-2"></i>
+          <p>পণ্য লোড করতে সমস্যা হয়েছে</p>
+          <button onclick="location.reload()" class="mt-4 text-accent hover:underline">
+            <i class="fas fa-sync-alt mr-1"></i> আবার চেষ্টা করুন
+          </button>
+        </div>
+      `;
+    }
+  }
 }
 
 // Global variable
