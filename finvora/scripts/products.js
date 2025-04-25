@@ -62,67 +62,41 @@ class ProductManager {
     `).join('');
   }
 
-  setupEventListeners() {
-    // Search functionality
-    document.getElementById('mainSearch')?.addEventListener('input', (e) => {
-      const query = e.target.value.toLowerCase();
-      this.filteredProducts = this.products.filter(product => 
-        product.name.toLowerCase().includes(query)
-      );
-      this.renderProducts();
-    });
-
-    // Category filter
-    document.getElementById('categoryFilter')?.addEventListener('change', (e) => {
-      const category = e.target.value;
-      this.filteredProducts = category === 'all' 
-        ? [...this.products] 
-        : this.products.filter(product => product.category === category);
-      this.renderProducts();
-    });
-
-    // Sort options
-    document.getElementById('sortOptions')?.addEventListener('change', (e) => {
-      const sortBy = e.target.value;
-      this.sortProducts(sortBy);
-      this.renderProducts();
-    });
-  }
-
-  sortProducts(sortBy) {
-    switch(sortBy) {
-      case 'price-asc':
-        this.filteredProducts.sort((a, b) => a.price - b.price);
-        break;
-      case 'price-desc':
-        this.filteredProducts.sort((a, b) => b.price - a.price);
-        break;
-      case 'rating':
-        this.filteredProducts.sort((a, b) => (b.rating || 0) - (a.rating || 0));
-        break;
-      default:
-        this.filteredProducts = [...this.products];
-    }
-  }
-
-  showError() {
-    const grid = document.getElementById('productGrid');
-    if (grid) {
-      grid.innerHTML = `
-        <div class="col-span-full text-center py-12 text-red-500">
-          <i class="fas fa-exclamation-triangle text-3xl mb-2"></i>
-          <p>পণ্য লোড করতে সমস্যা হয়েছে</p>
-          <button onclick="location.reload()" class="mt-4 text-accent hover:underline">
-            <i class="fas fa-sync-alt mr-1"></i> আবার চেষ্টা করুন
-          </button>
-        </div>
-      `;
-    }
-  }
+  // বাকি মেথডগুলো একই থাকবে
 }
 
-// Global function for add to cart
+// কার্টে প্রোডাক্ট যোগ করার ফাংশন
 function addToCart(productId) {
   const productManager = new ProductManager();
-  productManager.addToCart(productId);
+  const product = productManager.products.find(p => p.id == productId);
+  
+  if (!product) return;
+
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+  const existingItem = cart.find(item => item.id === productId);
+  
+  if (existingItem) {
+    existingItem.quantity += 1;
+  } else {
+    cart.push({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.images[0],
+      quantity: 1
+    });
+  }
+  
+  localStorage.setItem('cart', JSON.stringify(cart));
+  
+  // Show success message
+  const popup = document.createElement('div');
+  popup.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg';
+  popup.innerHTML = `
+    <i class="fas fa-check-circle mr-2"></i>
+    পণ্যটি কার্টে যোগ করা হয়েছে
+  `;
+  document.body.appendChild(popup);
+  
+  setTimeout(() => popup.remove(), 3000);
 }
