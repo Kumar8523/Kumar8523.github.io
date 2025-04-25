@@ -1,4 +1,4 @@
-// faq.js - Direct loading version
+// faq.js - HTML embedded version
 document.addEventListener('DOMContentLoaded', () => {
   const faqManager = new FAQManager();
   faqManager.init();
@@ -6,24 +6,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
 class FAQManager {
   constructor() {
-    this.faqs = [];
+    this.faqs = [
+      {
+        id: 1,
+        category: "order",
+        question: "আমি কিভাবে অর্ডার করতে পারি?",
+        answer: "আপনি আমাদের ওয়েবসাইট বা মোবাইল অ্যাপ থেকে পণ্য নির্বাচন করে কার্টে যোগ করতে পারেন এবং চেকআউট প্রক্রিয়া সম্পন্ন করে অর্ডার করতে পারেন।"
+      },
+      {
+        id: 2,
+        category: "delivery",
+        question: "ডেলিভারি কতদিনে পাবো?",
+        answer: "সাধারণত ঢাকার ভিতরে ১-৩ কার্যদিবস এবং ঢাকার বাইরে ৩-৭ কার্যদিবসের মধ্যে ডেলিভারি সম্পন্ন হয়।"
+      },
+      {
+        id: 3,
+        category: "payment",
+        question: "পেমেন্টের পদ্ধতি গুলো কি কি?",
+        answer: "আপনি বিকাশ, নগদ, রকেট, কার্ড পেমেন্ট এবং ক্যাশ অন ডেলিভারি (COD) পদ্ধতিতে পেমেন্ট করতে পারেন।"
+      },
+      {
+        id: 4,
+        category: "return",
+        question: "পণ্য রিটার্ন করতে চাইলে কি করব?",
+        answer: "আপনি অর্ডার করার ৭ দিনের মধ্যে পণ্য রিটার্ন করতে পারেন। আমাদের কাস্টমার সার্ভিসে যোগাযোগ করে রিটার্ন প্রক্রিয়া শুরু করুন।"
+      },
+      {
+        id: 5,
+        category: "order",
+        question: "অর্ডার ক্যানসেল করতে চাইলে কি করব?",
+        answer: "অর্ডার শিপ হওয়ার আগে আপনি আপনার অ্যাকাউন্ট থেকে অর্ডার ক্যানসেল করতে পারবেন অথবা আমাদের কাস্টমার কেয়ারে ফোন করে ক্যানসেল করতে পারবেন।"
+      }
+    ];
     this.activeCategory = 'all';
   }
 
-  async init() {
-    await this.loadFAQs();
+  init() {
     this.renderFAQs();
     this.setupEventListeners();
-  }
-
-  async loadFAQs() {
-    try {
-      const response = await fetch('scripts/faqs.json');
-      this.faqs = await response.json();
-    } catch (error) {
-      console.error('Error loading FAQs:', error);
-      this.showErrorState();
-    }
   }
 
   renderFAQs() {
@@ -33,6 +53,16 @@ class FAQManager {
     const filteredFAQs = this.activeCategory === 'all' 
       ? this.faqs 
       : this.faqs.filter(faq => faq.category === this.activeCategory);
+
+    if (filteredFAQs.length === 0) {
+      container.innerHTML = `
+        <div class="text-center py-12 text-neutral">
+          <i class="fas fa-info-circle text-3xl mb-2"></i>
+          <p>এই ক্যাটাগরিতে কোনো FAQ পাওয়া যায়নি</p>
+        </div>
+      `;
+      return;
+    }
 
     container.innerHTML = filteredFAQs.map(faq => `
       <div class="faq-item bg-white shadow-md" data-id="${faq.id}">
@@ -99,20 +129,5 @@ class FAQManager {
     });
 
     this.renderFAQs();
-  }
-
-  showErrorState() {
-    const container = document.getElementById('faqContainer');
-    if (container) {
-      container.innerHTML = `
-        <div class="text-center py-12 text-red-500">
-          <i class="fas fa-exclamation-triangle text-3xl mb-2"></i>
-          <p>FAQ লোড করতে সমস্যা হয়েছে</p>
-          <button onclick="location.reload()" class="mt-4 text-accent hover:underline">
-            <i class="fas fa-sync-alt mr-1"></i> আবার চেষ্টা করুন
-          </button>
-        </div>
-      `;
-    }
   }
 }
