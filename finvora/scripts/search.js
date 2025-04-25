@@ -1,151 +1,91 @@
 class ProductSearch {
   constructor() {
     this.products = [];
-    this.searchIndex = [];
     this.searchHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
-    this.init();
   }
 
   async init() {
     await this.loadProducts();
-    this.buildSearchIndex();
     this.setupSearchHandlers();
-    this.processURLParams();
-    this.setupSearchHistory();
   }
 
   async loadProducts() {
     try {
       const response = await fetch('scripts/products.json');
-      if (!response.ok) throw new Error('Failed to load products');
       const data = await response.json();
       this.products = data.products;
-      this.attachDOMReferences();
     } catch (error) {
-      console.error('Search initialization failed:', error);
-      this.showErrorState();
+      console.error('Error loading products:', error);
     }
-  }
-
-  attachDOMReferences() {
-    this.products.forEach(product => {
-      product.domElement = document.querySelector(`[data-product-id="${product.id}"]`);
-    });
-  }
-
-  buildSearchIndex() {
-    this.searchIndex = this.products.map(product => ({
-      id: product.id,
-      name: product.name.toLowerCase(),
-      category: product.category.toLowerCase(),
-      description: product.description?.toLowerCase() || '',
-      tags: product.tags?.join(' ') || '',
-      sku: product.sku?.toLowerCase() || ''
-    }));
   }
 
   setupSearchHandlers() {
-    // Global search forms
-    document.querySelectorAll('form[data-role="search"]').forEach(form => {
-      form.addEventListener('submit', e => this.handleSearchSubmit(e));
+    // Navbar search form
+    const navSearchForm = document.querySelector('nav form[action="products.html"]');
+    if (navSearchForm) {
+      const searchInput = navSearchForm.querySelector('input[name="search"]');
+      
+      // Live search suggestions
+      searchInput.addEventListener('input', this.debounce(() => {
+        this.showSuggestions(searchInput.value);
+      }, 300));
+      
+      // Form submission
+      navSearchForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        this.searchProducts(searchInput.value);
+      });
+    }
+
+    // Close suggestions when clicking outside
+    document.addEventListener('click', (e) => {
+      const suggestions = document.getElementById('searchSuggestions');
+      if (suggestions && !e.target.closest('.search-container')) {
+        suggestions.classList.add('hidden');
+      }
     });
-
-    // Live search input
-    const liveSearchInput = document.getElementById('liveSearch');
-    if (liveSearchInput) {
-      liveSearchInput.addEventListener('input', 
-        this.debounce(() => this.handleLiveSearch(liveSearchInput.value), 300));
-    }
   }
 
-  handleSearchSubmit(e) {
-    e.preventDefault();
-    const form = e.target;
-    const input = form.querySelector('input[name="search"]');
-    const searchTerm = input.value.trim();
-    
-    if (searchTerm) {
-      this.saveSearchHistory(searchTerm);
-      
-      const url = new URL(window.location.origin + '/products.html');
-      url.searchParams.set('search', encodeURIComponent(searchTerm));
-      
-      const category = form.querySelector('select[name="category"]')?.value;
-      if (category) url.searchParams.set('category', category);
-      
-      window.location.href = url.toString();
-    }
-  }
-
-  handleLiveSearch(term) {
+  showSuggestions(searchTerm) {
     const suggestionsContainer = document.getElementById('searchSuggestions');
     if (!suggestionsContainer) return;
 
-    if (term.length < 2) {
+    if (searchTerm.length < 2) {
       suggestionsContainer.innerHTML = '';
       suggestionsContainer.classList.add('hidden');
       return;
     }
 
-    const suggestions = this.getSearchSuggestions(term);
-    this.displaySuggestions(suggestions, term);
+    const suggestions = this.getSuggestions(searchTerm);
+    this.displaySuggestions(suggestions, searchTerm);
   }
 
-  getSearchSuggestions(term) {
-    const lowerTerm = term.toLowerCase();
-    return this.searchIndex
-      .filter(item => 
-        item.name.includes(lowerTerm) || 
-        item.tags.includes(lowerTerm) ||
-        item.sku.includes(lowerTerm)
+  getSuggestions(searchTerm) {
+    const term = searchTerm.toLowerCase();
+    return this.products
+      .filter(product => 
+        product.name.toLowerCase().includes(term) ||
+        (product.description && product.description.toLowerCase().includes(term))
       )
-      .slice(0, 5)
-      .map(item => ({
-        id: item.id,
-        text: this.products.find(p => p.id === item.id).name,
-        category: item.category
-      }));
+      .slice(0, 5);
   }
 
-  displaySuggestions(suggestions, term) {
+  displaySuggestions(suggestions, searchTerm) {
     const container = document.getElementById('searchSuggestions');
     if (!container) return;
 
     if (suggestions.length === 0) {
-      container.innerHTML = '<div class="p-3 text-gray-500">No matching products found</div>';
+      container.innerHTML = '<div class="p-3 text-gray-500">কোনো মিল পাওয়া যায়নি</div>';
       container.classList.remove('hidden');
       return;
     }
 
-    container.innerHTML = suggestions.map(item => `
-      <a href="product_info.html?id=${item.id}" class="block p-3 hover:bg-gray-100 border-b border-gray-200 last:border-b-0">
-        <div class="font-medium">${this.highlightText(item.text, term)}</div>
-        <div class="text-xs text-gray-500 capitalize">${item.category}</div>
+    container.innerHTML = suggestions.map(product => `
+      <a href="product_info.html?id=${product.id}" class="block p-3 hover:bg-gray-100 border-b border-gray-200 last:border-b-0">
+        <div class="font-medium">${this.highlightText(product.name, searchTerm)}</div>
+        <div class="text-xs text-gray-500">${product.category}</div>
       </a>
     `).join('');
-
-    // Add search history
-    if (this.searchHistory.length > 0) {
-      const historyItems = this.searchHistory
-        .filter(item => item.toLowerCase().includes(term.toLowerCase()))
-        .slice(0, 3);
-      
-      if (historyItems.length > 0) {
-        container.innerHTML += `
-          <div class="border-t border-gray-200 pt-2">
-            <div class="px-3 py-1 text-xs text-gray-500">Recent searches</div>
-            ${historyItems.map(item => `
-              <a href="products.html?search=${encodeURIComponent(item)}" class="block p-3 hover:bg-gray-100">
-                <div class="flex items-center">
-                  <i class="fas fa-history mr-2 text-gray-400"></i>
-                  <span>${item}</span>
-                </div>
-              </a>
-            `).join('')}
-          </div>
-        `;
-      }
-    }
 
     container.classList.remove('hidden');
   }
@@ -165,114 +105,31 @@ class ProductSearch {
     `;
   }
 
-  saveSearchHistory(term) {
-    if (!term) return;
-    
+  searchProducts(searchTerm) {
+    if (!searchTerm.trim()) return;
+
+    // Save to search history
+    this.saveSearchHistory(searchTerm);
+
+    // Redirect to products page with search query
+    window.location.href = `products.html?search=${encodeURIComponent(searchTerm)}`;
+  }
+
+  saveSearchHistory(searchTerm) {
+    if (!searchTerm.trim()) return;
+
     // Remove if already exists
-    this.searchHistory = this.searchHistory.filter(item => 
-      item.toLowerCase() !== term.toLowerCase()
+    this.searchHistory = this.searchHistory.filter(
+      item => item.toLowerCase() !== searchTerm.toLowerCase()
     );
-    
+
     // Add to beginning
-    this.searchHistory.unshift(term);
-    
-    // Keep only last 10 items
-    this.searchHistory = this.searchHistory.slice(0, 10);
-    
+    this.searchHistory.unshift(searchTerm);
+
+    // Keep only last 5 items
+    this.searchHistory = this.searchHistory.slice(0, 5);
+
     localStorage.setItem('searchHistory', JSON.stringify(this.searchHistory));
-  }
-
-  setupSearchHistory() {
-    const searchInputs = document.querySelectorAll('input[name="search"]');
-    searchInputs.forEach(input => {
-      input.addEventListener('focus', () => {
-        if (this.searchHistory.length === 0) return;
-        
-        const container = document.getElementById('searchSuggestions');
-        if (!container) return;
-        
-        container.innerHTML = `
-          <div class="px-3 py-1 text-xs text-gray-500">Recent searches</div>
-          ${this.searchHistory.map(item => `
-            <a href="products.html?search=${encodeURIComponent(item)}" class="block p-3 hover:bg-gray-100 border-b border-gray-200 last:border-b-0">
-              <div class="flex items-center">
-                <i class="fas fa-history mr-2 text-gray-400"></i>
-                <span>${item}</span>
-              </div>
-            </a>
-          `).join('')}
-        `;
-        container.classList.remove('hidden');
-      });
-    });
-  }
-
-  processURLParams() {
-    if (!window.location.pathname.includes('products.html')) return;
-    
-    const params = new URLSearchParams(window.location.search);
-    const searchTerm = params.get('search');
-    const category = params.get('category');
-    
-    if (searchTerm || category) {
-      this.filterProducts(searchTerm, category);
-      this.updateSearchUI(searchTerm, category);
-    }
-  }
-
-  filterProducts(searchTerm = '', category = 'all') {
-    const term = searchTerm?.toLowerCase() || '';
-    const cat = category.toLowerCase();
-    
-    this.products.forEach(product => {
-      const indexEntry = this.searchIndex.find(item => item.id === product.id);
-      const matchesSearch = !term || 
-        indexEntry.name.includes(term) || 
-        indexEntry.description.includes(term) ||
-        indexEntry.tags.includes(term);
-      
-      const matchesCategory = cat === 'all' || 
-        indexEntry.category === cat;
-      
-      if (product.domElement) {
-        product.domElement.style.display = 
-          (matchesSearch && matchesCategory) ? 'block' : 'none';
-      }
-    });
-    
-    this.updateResultsCount();
-    this.toggleNoResultsMessage();
-  }
-
-  updateResultsCount() {
-    const visibleCount = this.products.filter(p => 
-      p.domElement?.style.display !== 'none').length;
-    
-    document.querySelectorAll('[data-role="results-count"]').forEach(el => {
-      el.textContent = `${visibleCount} products found`;
-    });
-  }
-
-  toggleNoResultsMessage() {
-    const visibleCount = this.products.filter(p => 
-      p.domElement?.style.display !== 'none').length;
-    
-    const messages = document.querySelectorAll('[data-role="no-results"]');
-    messages.forEach(msg => {
-      msg.style.display = visibleCount === 0 ? 'block' : 'none';
-    });
-  }
-
-  showErrorState() {
-    const containers = document.querySelectorAll('[data-role="search-results"]');
-    containers.forEach(container => {
-      container.innerHTML = `
-        <div class="col-span-full text-center py-12 text-red-500">
-          <i class="fas fa-exclamation-triangle mr-2"></i>
-          Failed to load search functionality. Please try again later.
-        </div>
-      `;
-    });
   }
 
   debounce(func, delay) {
@@ -288,22 +145,5 @@ class ProductSearch {
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-  new ProductSearch();
-
-  // Close suggestions when clicking outside
-  document.addEventListener('click', (e) => {
-    const suggestions = document.getElementById('searchSuggestions');
-    const searchInputs = document.querySelectorAll('input[name="search"]');
-    
-    if (suggestions && !suggestions.contains(e.target) {
-      let isInput = false;
-      searchInputs.forEach(input => {
-        if (input.contains(e.target)) isInput = true;
-      });
-      
-      if (!isInput) {
-        suggestions.classList.add('hidden');
-      }
-    }
-  });
+  new ProductSearch().init();
 });
