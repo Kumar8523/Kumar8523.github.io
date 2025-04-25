@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>আমাদের সম্পর্কে | Finvora</title>
+  
+  <!-- Shared Head Content -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1a365d',
+            secondary: '#2c5282',
+            accent: '#4299e1',
+            neutral: '#4a5568'
+          },
+          fontFamily: {
+            bangla: ['Hind Siliguri', 'Noto Sans Bengali', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;700&family=Noto+Sans+Bengali:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    body {
+      font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif;
+      background-color: #f7fafc;
+      padding-top: 4rem;
+    }
+    .founder-card:hover .founder-social {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .founder-social {
+      transition: all 0.3s ease;
+      transform: translateY(1rem);
+      opacity: 0;
+    }
+    .section-padding {
+      padding: 5rem 0;
+    }
+    .timeline-item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: -2rem;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 2rem;
+      background-color: #4299e1;
+    }
+  </style>
+</head>
+<body class="bangla-font antialiased">
+  <!-- Navigation -->
+  <div id="navbar"></div>
+
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-r from-primary to-secondary text-white py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">আমাদের গল্প</h1>
+      <p class="text-xl text-accent max-w-3xl mx-auto">অ্যাকুরিয়াম প্রেমীদের জন্য একটি বিশ্বস্ত নাম</p>
+    </div>
+  </section>
+
+  <!-- Our Story -->
+  <section class="section-padding bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <div>
+          <h2 class="text-3xl font-bold text-primary mb-6">আমাদের যাত্রা</h2>
+          <div class="space-y-4 text-neutral">
+            <p>২০১৫ সালে একটি ছোট্ট দোকান থেকে যাত্রা শুরু করে আজ ফিনভোরা বাংলাদেশের অ্যাকুরিয়াম শিল্পে একটি পরিচিত নাম। আমাদের লক্ষ্য ছিলো সবসময় মানসম্মত প্রোডাক্ট এবং সেরা সেবা প্রদান করা।</p>
+            <p>আজ আমরা গর্বের সাথে বলতে পারি যে, দেশের সবচেয়ে বড় অ্যাকুরিয়াম ফিশ সরবরাহকারীদের মধ্যে আমরা অন্যতম। আমাদের রয়েছে নিজস্ব ব্রিডিং ফার্ম এবং এক্সপোর্ট লাইসেন্স।</p>
+          </div>
+          
+          <div class="mt-8 grid grid-cols-2 gap-4">
+            <div class="bg-gray-50 p-4 rounded-lg text-center">
+              <p class="text-3xl font-bold text-primary mb-2">১৫০০+</p>
+              <p class="text-neutral">সন্তুষ্ট গ্রাহক</p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg text-center">
+              <p class="text-3xl font-bold text-primary mb-2">৫০+</p>
+              <p class="text-neutral">মাছের প্রজাতি</p>
+            </div>
+          </div>
+        </div>
+        <img src="images/about-story.jpg" alt="Our Story" class="rounded-lg shadow-xl w-full h-auto">
+      </div>
+    </div>
+  </section>
+
+  <!-- Mission & Vision -->
+  <section class="section-padding bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-8">
+      <div class="bg-primary text-white p-8 rounded-xl">
+        <div class="flex items-center mb-4">
+          <div class="bg-accent p-3 rounded-full mr-4">
+            <i class="fas fa-bullseye text-white text-xl"></i>
+          </div>
+          <h3 class="text-2xl font-bold">আমাদের মিশন</h3>
+        </div>
+        <p class="text-gray-200">উচ্চমানের প্রযুক্তি ও যত্নশীল ব্যবস্থাপনার মাধ্যমে অ্যাকুরিয়াম শিল্পে নতুন মাত্রা যোগ করা। আমরা প্রতিশ্রুতিবদ্ধ পরিবেশবান্ধব উপায়ে মাছ উৎপাদন ও সরবরাহের মাধ্যমে সৌন্দর্যপ্রেমী মানুষদের ঘরে ঘরে জীবন্ত রঙ ছড়িয়ে দিতে।</p>
+      </div>
+      
+      <div class="bg-white p-8 rounded-xl shadow">
+        <div class="flex items-center mb-4">
+          <div class="bg-accent p-3 rounded-full mr-4">
+            <i class="fas fa-eye text-white text-xl"></i>
+          </div>
+          <h3 class="text-2xl font-bold text-primary">আমাদের ভিশন</h3>
+        </div>
+        <p class="text-neutral">আমরা ফিনভোরাকে গড়ে তুলতে চাই এমন একটি নাম হিসেবে, যা বিশ্বের সবচেয়ে বড় অ্যাকুরিয়াম মাছ সরবরাহকারী ব্র্যান্ড হবে। বাংলাদেশের প্রতিটি শহর থেকে শুরু করে পৃথিবীর প্রতিটি দেশে থাকবে ফিনভোরার নিজস্ব শাখা।</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Timeline -->
+  <section class="section-padding bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-primary text-center mb-12">আমাদের যাত্রাপথ</h2>
+      
+      <div class="relative">
+        <div class="hidden md:block absolute left-1/2 top-0 bottom-0 w-1 bg-accent transform -translate-x-1/2"></div>
+        
+        <div class="space-y-16">
+          <!-- Timeline Item 1 -->
+          <div class="timeline-item relative grid md:grid-cols-2 gap-8 items-center">
+            <div class="md:text-right md:pr-8">
+              <p class="text-accent font-bold">২০১৫</p>
+              <h3 class="text-xl font-bold text-primary">যাত্রা শুরু</h3>
+              <p class="text-neutral">ঢাকার একটি ছোট্ট দোকান থেকে আমাদের যাত্রা শুরু</p>
+            </div>
+            <div class="hidden md:block"></div>
+            <div class="md:col-start-2 md:pl-8">
+              <div class="bg-gray-50 p-6 rounded-lg">
+                <p>প্রথম বছরে আমরা ৫০টি মাছের প্রজাতি নিয়ে কাজ শুরু করি এবং ২০০+ গ্রাহককে সেবা প্রদান করি।</p>
+              </div>
+            </div>
+          </div>
+          
+          
+          <!-- Timeline Item 3 -->
+          <div class="timeline-item relative grid md:grid-cols-2 gap-8 items-center">
+            <div class="md:text-right md:pr-8">
+              <p class="text-accent font-bold">২০২০</p>
+              <h3 class="text-xl font-bold text-primary">ব্রিডিং ফার্ম স্থাপন</h3>
+              <p class="text-neutral">নিজস্ব ব্রিডিং ফার্ম স্থাপন</p>
+            </div>
+            <div class="hidden md:block"></div>
+            <div class="md:col-start-2 md:pl-8">
+              <div class="bg-gray-50 p-6 rounded-lg">
+                <p>১০,০০০ বর্গফুট জায়গায় আমাদের নিজস্ব ব্রিডিং ফার্ম স্থাপন করা হয় যেখানে ১০০+ প্রজাতির মাছ ব্রিড করা হয়।</p>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Team Section -->
+  <section class="section-padding bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-3xl font-bold text-primary text-center mb-12">আমাদের টিম</h2>
+      
+      <div class="grid md:grid-cols-3 gap-8">
+        <!-- Founder 1 -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden founder-card">
+          <img src="img/shaharier.jpg" alt="Md. Shaharier" class="w-full h-64 object-cover">
+          <div class="p-6">
+            <h3 class="text-xl font-bold text-primary">মো. শাহারিয়ার</h3>
+            <p class="text-accent mb-4">প্রতিষ্ঠাতা ও সিইও</p>
+            <p class="text-neutral mb-4">অ্যাকুরিয়াম ফিশ নিয়ে কাজ করার ১+ বছরের অভিজ্ঞতা।</p>
+            <div class="founder-social flex space-x-4">
+              <a href="https://web.facebook.com/shahriar.murshed.7" class="text-gray-500 hover:text-accent"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="text-gray-500 hover:text-accent"><i class="fab fa-linkedin-in"></i></a>
+              <a href="#" class="text-gray-500 hover:text-accent"><i class="fab fa-twitter"></i></a>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Founder 2 -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden founder-card">
+          <img src="img/aditya.jpg" alt="Aditya Banerjee" class="w-full h-64 object-cover">
+          <div class="p-6">
+            <h3 class="text-xl font-bold text-primary">অদিত্য ব্যানার্জী</h3>
+            <p class="text-accent mb-4">সহ-প্রতিষ্ঠাতা</p>
+            <p class="text-neutral mb-4">অ্যাকুরিয়াম ডিজাইন ও ইকোসিস্টেম বিশেষজ্ঞ। ৩+ বছরের অভিজ্ঞতা নিয়ে কাজ করছেন।</p>
+            <div class="founder-social flex space-x-4">
+              <a href="#" class="text-gray-500 hover:text-accent"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="text-gray-500 hover:text-accent"><i class="fab fa-twitter"></i></a>
+              <a href="https://www.instagram.com/cubingclassroom30/" class="text-gray-500 hover:text-accent"><i class="fab fa-instagram"></i></a>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <!-- Scripts -->
+  <script src="scripts/main.js"></script>
+  <script src="scripts/navbar_footer.js"></script>
+  <script src="scripts/app.js"></script>
+  
+  <script>
+    // About page specific JS
+    document.addEventListener('DOMContentLoaded', () => {
+      // Team card hover effect
+      const founderCards = document.querySelectorAll('.founder-card');
+      founderCards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+          card.querySelector('.founder-social').style.opacity = '1';
+          card.querySelector('.founder-social').style.transform = 'translateY(0)';
+        });
+        card.addEventListener('mouseleave', () => {
+          card.querySelector('.founder-social').style.opacity = '0';
+          card.querySelector('.founder-social').style.transform = 'translateY(1rem)';
+        });
+      });
+      
+      // Mobile timeline adjustment
+      if (window.innerWidth < 768) {
+        const timelineItems = document.querySelectorAll('.timeline-item');
+        timelineItems.forEach(item => {
+          item.classList.remove('grid', 'md:grid-cols-2');
+          item.querySelector('div:first-child').classList.add('mb-4');
+        });
+      }
+    });
+  </script>
+</body>
+</html>

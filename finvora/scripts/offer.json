@@ -1,0 +1,47 @@
+{
+  "offers": [
+    {
+      "id": 1,
+      "title": "গ্রীষ্মকালীন সেল",
+      "description": "সমস্ত মাছের উপর ২০% ছাড়",
+      "discount": 20,
+      "image": "images/offers/summer-sale.jpg",
+      "startDate": "2023-06-01T00:00:00",
+      "endDate": "2023-06-30T23:59:59",
+      "products": [1, 5, 10],
+      "active": true
+    },
+    {
+      "id": 2,
+      "title": "নতুন গ্রাহক ডিসকাউন্ট",
+      "description": "প্রথম অর্ডারে ১৫% ছাড়",
+      "discount": 15,
+      "image": "images/offers/new-customer.jpg",
+      "startDate": "2023-06-15T00:00:00",
+      "endDate": "2023-07-15T23:59:59",
+      "code": "NEW15",
+      "active": true
+    },
+    {
+      "id": 3,
+      "title": "বর্ষা স্পেশাল",
+      "description": "সিলেক্টেড প্রোডাক্টে ৩০% ছাড়",
+      "discount": 30,
+      "image": "images/offers/monsoon-offer.jpg",
+      "startDate": "2023-07-01T00:00:00",
+      "endDate": "2023-07-31T23:59:59",
+      "products": [2, 3, 7],
+      "active": true
+    },
+    {
+      "id": 4,
+      "title": "ইদ উৎসব অফার",
+      "description": "সমস্ত অর্ডারে ১০% ছাড়",
+      "discount": 10,
+      "image": "images/offers/eid-offer.jpg",
+      "startDate": "2023-04-10T00:00:00",
+      "endDate": "2023-04-20T23:59:59",
+      "active": false
+    }
+  ]
+}

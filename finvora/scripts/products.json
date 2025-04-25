@@ -1,0 +1,239 @@
+{
+    "products": [
+        {
+            "id": 1,
+            "name": "Red Molly Fish",
+            "price": 200,
+            "stock": 15,
+            "discount": 10,
+            "images": [
+              "products/1/1.jpg",
+            "products/1/2.jpg",
+            "products/1/3.jpg"
+            ],
+            "category": "fish",
+            "description": "Healthy and vibrant Red Molly fish perfect for home aquariums",
+            "specs": {
+              "size": "2-3 cm",
+              "lifespan": "3-5 years",
+              "temperature": "22-28°C"
+            },
+            "rating": 4.5,
+            "reviews": [
+              {
+                "user": "রাহিম",
+                "rating": 5,
+                "comment": "অসাধারণ রঙ এবং সুস্থ মাছ পেয়েছি",
+                "date": "2023-05-15"
+              }
+            ],
+            "relatedProducts": [2, 5]
+          },
+        {
+            "id": 2,
+            "name": "Mixed Breed Guppy Fish",
+            "price": 100,
+            "stock": true,
+            "discount": 0,
+            "images": [
+                "products/2/1.jpg",
+                "products/2/2.jpg",
+                "products/2/3.jpg"
+            ],
+            "category": "fish",
+            "description": "🌿 We have quite a few mixed breed guppy in stock. Feel free to contact us if you need any.🌿",
+            "rating": 4.3,
+            "trending": false,
+            "reviews": [
+                {
+                    "user": "Salma",
+                    "rating": 4,
+                    "comment": "Kids loved them!",
+                    "verified": true
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "name": "Mixed Breed Guppy",
+            "price": 80,
+            "stock": true,
+            "discount": 0,
+            "images": [
+                "products/3/1.jpg"
+            ],
+            "category": "fish",
+            "description": "🌿 We have quite a few mixed breed guppy in stock. Feel free to contact us if you need any.🌿",
+            "rating": 4.8,
+            "trending": false,
+            "reviews": [
+                {
+                    "user": "Anika",
+                    "rating": 5,
+                    "comment": "Perfect harmony in my tank!",
+                    "verified": true
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "name": "Mixed Breed Guppy Fish",
+            "price": 80,
+            "stock": true,
+            "discount": 0,
+            "images": [
+                "products/4/1.jpg",
+                "products/4/2.jpg"
+            ],
+            "category": "fish",
+            "description": "🌿 We have quite a few mixed breed guppy in stock. Feel free to contact us if you need any.🌿",
+            "rating": 4.2,
+            "trending": false,
+            "reviews": [
+                {
+                    "user": "Jamal",
+                    "rating": 4,
+                    "comment": "Fish ate it immediately.",
+                    "verified": true
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "name": "Gold Dust Molly Fish",
+            "price": 150,
+            "stock": true,
+            "discount": 0,
+            "images": [
+                "products/5/1.jpg",
+                "products/5/2.jpg",
+                "products/5/3.jpg"
+            ],
+            "category": "fish",
+            "description": "🌿 We have quite a few Molly fish in stock. Feel free to contact us if you need any.🌿",
+            "rating": 4.5,
+            "trending": false,
+            "reviews": [
+                {
+                    "user": "Farhana",
+                    "rating": 5,
+                    "comment": "Cichlids love these pellets.",
+                    "verified": true
+                }
+            ]
+        },
+        {
+            "id": 6,
+            "name": "Beautiful Guppy Fishes",
+            "price": 140,
+            "stock": true,
+            "discount": 0,
+            "images": [
+                "products/6/1.jpg"
+            ],
+            "category": "fish",
+            "description": "We have an amazing collection of beautiful guppy fishes😍",
+            "rating": 4.0,
+            "trending": false,
+            "reviews": [
+                {
+                    "user": "Niloy",
+                    "rating": 4,
+                    "comment": "Great substrate for plants.",
+                    "verified": true
+                }
+            ]
+        },
+        {
+            "id": 7,
+            "name": "Guppy Fry",
+            "price": 10,
+            "stock": true,
+            "discount": 0,
+            "images": [
+                "products/7/1.jpg"
+            ],
+            "category": "fish",
+            "description": "We have baby guppies 🐠 available! \n🔹 Age: 1 week \n🔹 Price: Only 10 Taka per piece!",
+            "rating": 4.6,
+            "trending": false,
+            "reviews": [
+                {
+                    "user": "Rehana",
+                    "rating": 5,
+                    "comment": "Plants are thriving now.",
+                    "verified": true
+                }
+            ]
+        },
+        {
+            "id": 8,
+            "name": "Gold Dust Molly Fish",
+            "price": 150,
+            "stock": true,
+            "discount": 0,
+            "images": [
+                "products/8/1.jpg",
+                "products/8/2.jpg"
+            ],
+            "category": "fish",
+            "description": "🌿 Healthy & Beautiful Gold Dust Molly Fish Available! 🌿 \n✅ Healthy & Active \n✅ Easy to Maintain \n✅ Perfect for Home Aquariums \n150 Taka per pair",
+            "rating": 4.4,
+            "trending": false,
+            "reviews": [
+                {
+                    "user": "Taslima",
+                    "rating": 4,
+                    "comment": "Plants look greener.",
+                    "verified": true
+                }
+            ]
+        },
+        {
+            "id": 9,
+            "name": "Black Molly Fish",
+            "price": 150,
+            "stock": true,
+            "discount": 0,
+            "images": [
+                "products/9/1.jpg"
+            ],
+            "category": "fish",
+            "description": "🌿 Healthy & Beautiful Black Molly Fish Available! 🌿 \n✅ Pure Black & Active \n✅ Easy to Maintain \n✅ Perfect for Home Aquariums \n💰 Price: 150 Taka per pair",
+            "rating": 4.3,
+            "trending": false,
+            "reviews": [
+                {
+                    "user": "Mizan",
+                    "rating": 4,
+                    "comment": "Works perfectly.",
+                    "verified": true
+                }
+            ]
+        },
+        {
+            "id": 10,
+            "name": "White Molly Fish",
+            "price": 150,
+            "stock": true,
+            "discount": 0,
+            "images": [
+                "products/10/1.jpg",
+                "products/10/2.jpg",
+                "products/10/3.jpg"
+            ],
+            "category": "fish",
+            "description": "🌿 Healthy & Beautiful White Molly Fish Available! 🌿 \n✅ Pure White & Active \n✅ Easy to Maintain \n✅ Perfect for Home Aquariums \n💰 Price: 150 Taka per pair",
+            "rating": 4.7,
+            "trending": true,
+            "reviews": [
+                {
+                    "user": "Salim",
+                    "rating": 5,
+                    "comment": "Water safe in seconds.",
+                    "verified": true
+                }
+            ]
+        }
+    ]
+}

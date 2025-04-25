@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>পণ্য তালিকা | Finvora</title>
+  
+  <!-- Shared Head Content -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#1a365d',
+            secondary: '#2c5282',
+            accent: '#4299e1',
+            neutral: '#4a5568'
+          },
+          fontFamily: {
+            bangla: ['Hind Siliguri', 'Noto Sans Bengali', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;700&family=Noto+Sans+Bengali:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    body {
+      font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif;
+      background-color: #f7fafc;
+      padding-top: 4rem;
+    }
+    .product-card {
+      transition: all 0.3s ease;
+    }
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    }
+    .price-badge {
+      top: 0.5rem;
+      right: 0.5rem;
+    }
+    .stock-badge {
+      bottom: 0.5rem;
+      left: 0.5rem;
+    }
+  </style>
+</head>
+<body class="bangla-font antialiased">
+  <!-- Navigation -->
+  <div id="navbar"></div>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Page Header -->
+    <div class="mb-8 text-center">
+      <h1 class="text-3xl font-bold text-primary mb-2">আমাদের পণ্য সমূহ</h1>
+      <p class="text-neutral max-w-2xl mx-auto">বিভিন্ন ধরনের অ্যাকুরিয়াম মাছ এবং আনুষাঙ্গিক পণ্যের সংগ্রহ</p>
+    </div>
+
+    <!-- Search and Filters -->
+    <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+      <div class="grid md:grid-cols-3 gap-4">
+        <!-- Search -->
+        <div class="relative">
+          <input type="text" id="mainSearch" placeholder="পণ্য খুঁজুন..." 
+                 class="w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-accent focus:border-accent">
+          <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+        </div>
+        
+        <!-- Category Filter -->
+        <select id="categoryFilter" class="border rounded-lg px-4 py-2 focus:ring-2 focus:ring-accent focus:border-accent">
+          <option value="all">সকল ক্যাটাগরি</option>
+          <option value="fish">মাছ</option>
+          <option value="fish-food">মাছের খাবার</option>
+          <option value="aquarium-accessories">অ্যাকুরিয়াম আনুষাঙ্গিক</option>
+        </select>
+        
+        <!-- Sort Options -->
+        <select id="sortOptions" class="border rounded-lg px-4 py-2 focus:ring-2 focus:ring-accent focus:border-accent">
+          <option value="default">সর্ট করুন</option>
+          <option value="price-asc">দাম: কম থেকে বেশি</option>
+          <option value="price-desc">দাম: বেশি থেকে কম</option>
+          <option value="rating">রেটিং</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Products Grid -->
+    <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <!-- Products will be loaded by JavaScript -->
+    </div>
+
+    <!-- Empty State -->
+    <div id="emptyState" class="hidden col-span-full text-center py-12">
+      <i class="fas fa-search text-3xl text-neutral mb-4"></i>
+      <h3 class="text-xl font-medium text-primary mb-2">কোনো পণ্য পাওয়া যায়নি</h3>
+      <p class="text-neutral">আপনার অনুসন্ধানের সাথে মিলে এমন কোনো পণ্য পাওয়া যায়নি</p>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <!-- Scripts -->
+  <script src="scripts/main.js"></script>
+  <script src="scripts/navbar_footer.js"></script>
+  <script src="scripts/products.js"></script>
+  
+  <script>
+    // Simple add to cart function
+    function addToCart(productId) {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const existingItem = cart.find(item => item.id === productId);
+      
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        // In a real app, we would get product details from products array
+        cart.push({
+          id: productId,
+          quantity: 1
+        });
+      }
+      
+      localStorage.setItem('cart', JSON.stringify(cart));
+      
+      // Show success message
+      const popup = document.createElement('div');
+      popup.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg';
+      popup.innerHTML = `
+        <i class="fas fa-check-circle mr-2"></i>
+        পণ্যটি কার্টে যোগ করা হয়েছে
+      `;
+      document.body.appendChild(popup);
+      
+      setTimeout(() => popup.remove(), 3000);
+    }
+  </script>
+</body>
+</html>
