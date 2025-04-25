@@ -20,6 +20,7 @@ class ProductDetail {
     if (this.productData) {
       this.renderProduct();
       this.setupEventListeners();
+      this.setupTabs();
     }
   }
 
@@ -66,8 +67,26 @@ class ProductDetail {
     // Description
     document.getElementById('productDescription').textContent = this.productData.description || 'কোনো বিবরণ নেই';
 
+    // Specifications
+    this.renderSpecs();
+
     // Reviews
     this.renderReviews();
+
+    // Related products
+    this.renderRelatedProducts();
+  }
+
+  renderSpecs() {
+    const specsContainer = document.querySelector('#specsTab .specs-grid');
+    if (!specsContainer || !this.productData.specs) return;
+
+    specsContainer.innerHTML = Object.entries(this.productData.specs).map(([key, value]) => `
+      <div class="bg-gray-50 p-4 rounded-lg">
+        <h4 class="font-medium text-neutral mb-1">${key}</h4>
+        <p class="text-primary">${value}</p>
+      </div>
+    `).join('');
   }
 
   renderReviews() {
@@ -92,11 +111,96 @@ class ProductDetail {
     `).join('');
   }
 
+  renderRelatedProducts() {
+    const container = document.getElementById('relatedProducts');
+    if (!container || !this.productData.relatedProducts) return;
+
+    const relatedProducts = this.productData.relatedProducts.map(id => 
+      this.getProductById(id)
+    ).filter(Boolean);
+
+    if (relatedProducts.length === 0) return;
+
+    container.innerHTML = relatedProducts.map(product => `
+      <div class="bg-white rounded-lg shadow overflow-hidden">
+        <a href="product_info.html?id=${product.id}">
+          <img src="${product.images[0]}" alt="${product.name}" class="w-full h-48 object-cover">
+        </a>
+        <div class="p-4">
+          <a href="product_info.html?id=${product.id}" class="block">
+            <h3 class="font-medium text-lg mb-2 text-primary hover:text-accent">${product.name}</h3>
+          </a>
+          <div class="flex justify-between items-center">
+            <span class="text-xl font-bold text-primary">৳${product.price.toFixed(2)}</span>
+            <div class="text-yellow-400">
+              ${'★'.repeat(Math.round(product.rating || 0))}${'☆'.repeat(5 - Math.round(product.rating || 0))}
+            </div>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  getProductById(id) {
+    // এই মেথডটি JSON ডাটা থেকে প্রোডাক্ট খুঁজে দেবে
+    // বাস্তব应用中可能需要访问全局 products 数据或再次从服务器获取
+    return this.productData.relatedProducts ? 
+      this.products?.find(p => p.id === id) : null;
+  }
+
   setupEventListeners() {
     // Review form submission
     document.getElementById('reviewForm')?.addEventListener('submit', (e) => {
       e.preventDefault();
       this.submitReview();
+    });
+
+    // Rating stars
+    document.querySelectorAll('.rating-stars .fa-star').forEach(star => {
+      star.addEventListener('click', () => {
+        const rating = parseInt(star.dataset.rating);
+        this.setRating(rating);
+      });
+    });
+  }
+
+  setupTabs() {
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        // Remove active class from all buttons and contents
+        tabButtons.forEach(btn => btn.classList.remove('active', 'border-accent', 'text-accent'));
+        tabContents.forEach(content => content.classList.add('hidden'));
+
+        // Add active class to clicked button
+        button.classList.add('active', 'border-accent', 'text-accent');
+
+        // Show corresponding content
+        const tabName = button.textContent.trim();
+        if (tabName === 'বিবরণ') {
+          document.getElementById('descriptionTab').classList.remove('hidden');
+        } else if (tabName === 'স্পেসিফিকেশন') {
+          document.getElementById('specsTab').classList.remove('hidden');
+        } else if (tabName.includes('রিভিউ')) {
+          document.getElementById('reviewsTab').classList.remove('hidden');
+        }
+      });
+    });
+  }
+
+  setRating(rating) {
+    document.getElementById('reviewRating').value = rating;
+    const stars = document.querySelectorAll('.rating-stars .fa-star');
+    stars.forEach((star, index) => {
+      if (index < rating) {
+        star.classList.add('text-yellow-400');
+        star.classList.remove('text-gray-300');
+      } else {
+        star.classList.remove('text-yellow-400');
+        star.classList.add('text-gray-300');
+      }
     });
   }
 
@@ -112,6 +216,7 @@ class ProductDetail {
     // In a real app, this would send to your backend
     alert('রিভিউ জমা দেওয়া হয়েছে!');
     document.getElementById('reviewForm').reset();
+    this.setRating(0);
   }
 
   showError(message) {
@@ -143,7 +248,11 @@ function addToCart() {
   const productId = new URLSearchParams(window.location.search).get('id');
   if (!productId) return;
 
-  // Simple cart add functionality
+  const productDetail = new ProductDetail();
+  const product = productDetail.productData;
+
+  if (!product) return;
+
   let cart = JSON.parse(localStorage.getItem('cart')) || [];
   const existingItem = cart.find(item => item.id == productId);
 
@@ -151,10 +260,10 @@ function addToCart() {
     existingItem.quantity += 1;
   } else {
     cart.push({
-      id: productId,
-      name: document.getElementById('productTitle').textContent,
-      price: parseFloat(document.getElementById('discountedPrice').textContent.replace('৳', '')),
-      image: document.getElementById('mainImage').src,
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: product.images[0],
       quantity: 1
     });
   }
