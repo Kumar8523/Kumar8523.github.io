@@ -1,4 +1,3 @@
-// faq.js - HTML embedded version
 document.addEventListener('DOMContentLoaded', () => {
   const faqManager = new FAQManager();
   faqManager.init();
@@ -30,12 +29,6 @@ class FAQManager {
         category: "return",
         question: "পণ্য রিটার্ন করতে চাইলে কি করব?",
         answer: "আপনি অর্ডার করার ৭ দিনের মধ্যে পণ্য রিটার্ন করতে পারেন। আমাদের কাস্টমার সার্ভিসে যোগাযোগ করে রিটার্ন প্রক্রিয়া শুরু করুন।"
-      },
-      {
-        id: 5,
-        category: "order",
-        question: "অর্ডার ক্যানসেল করতে চাইলে কি করব?",
-        answer: "অর্ডার শিপ হওয়ার আগে আপনি আপনার অ্যাকাউন্ট থেকে অর্ডার ক্যানসেল করতে পারবেন অথবা আমাদের কাস্টমার কেয়ারে ফোন করে ক্যানসেল করতে পারবেন।"
       }
     ];
     this.activeCategory = 'all';
@@ -54,16 +47,6 @@ class FAQManager {
       ? this.faqs 
       : this.faqs.filter(faq => faq.category === this.activeCategory);
 
-    if (filteredFAQs.length === 0) {
-      container.innerHTML = `
-        <div class="text-center py-12 text-neutral">
-          <i class="fas fa-info-circle text-3xl mb-2"></i>
-          <p>এই ক্যাটাগরিতে কোনো FAQ পাওয়া যায়নি</p>
-        </div>
-      `;
-      return;
-    }
-
     container.innerHTML = filteredFAQs.map(faq => `
       <div class="faq-item bg-white shadow-md" data-id="${faq.id}">
         <button class="faq-question w-full px-6 py-4 flex justify-between items-center text-left">
@@ -80,18 +63,15 @@ class FAQManager {
   }
 
   setupEventListeners() {
-    // FAQ toggle
     document.addEventListener('click', (e) => {
       if (e.target.closest('.faq-question')) {
         this.toggleFAQ(e.target.closest('.faq-item'));
       }
-    });
-
-    // Category filter
-    document.querySelectorAll('.faq-category-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        this.filterByCategory(btn.dataset.category);
-      });
+      
+      if (e.target.closest('.faq-category-btn')) {
+        const category = e.target.closest('.faq-category-btn').dataset.category;
+        this.filterByCategory(category);
+      }
     });
   }
 
@@ -99,7 +79,6 @@ class FAQManager {
     const isActive = faqItem.classList.contains('active');
     const answer = faqItem.querySelector('.faq-answer');
     
-    // Close all other FAQs
     document.querySelectorAll('.faq-item').forEach(item => {
       if (item !== faqItem) {
         item.classList.remove('active');
@@ -107,7 +86,6 @@ class FAQManager {
       }
     });
 
-    // Toggle current FAQ
     if (isActive) {
       faqItem.classList.remove('active');
       answer.style.maxHeight = null;
@@ -120,7 +98,6 @@ class FAQManager {
   filterByCategory(category) {
     this.activeCategory = category;
     
-    // Update active button
     document.querySelectorAll('.faq-category-btn').forEach(btn => {
       btn.classList.toggle('bg-accent', btn.dataset.category === category);
       btn.classList.toggle('text-white', btn.dataset.category === category);
