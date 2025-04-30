@@ -1,0 +1,18 @@
+{
+    "backgroundImage": "assets/images/hero-bg.jpg",
+    "title": "ত্রিসপ্তক সঙ্গীত বিদ্যালয়",
+    "subtitle": "সুরের মহিমায় জীবনকে রাঙিয়ে তুলুন",
+    "description": "শাস্ত্রীয় সঙ্গীত, রবীন্দ্র সঙ্গীত, নজরুল সঙ্গীত ও আধুনিক সঙ্গীতের প্রশিক্ষণ কেন্দ্র",
+    "buttons": [
+        {
+            "text": "কোর্স দেখুন",
+            "url": "#courses",
+            "isPrimary": true
+        },
+        {
+            "text": "যোগাযোগ করুন",
+            "url": "#contact",
+            "isPrimary": false
+        }
+    ]
+}

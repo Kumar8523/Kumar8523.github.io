@@ -1,0 +1,36 @@
+{
+    "title": "গ্যালারি",
+    "subtitle": "আমাদের কার্যক্রমের কিছু মুহূর্ত",
+    "images": [
+        {
+            "src": "assets/images/gallery1.jpg",
+            "alt": "বার্ষিক সঙ্গীতানুষ্ঠান",
+            "caption": "বার্ষিক সঙ্গীতানুষ্ঠান ২০২২"
+        },
+        {
+            "src": "assets/images/gallery2.jpg",
+            "alt": "ছাত্রছাত্রীদের পরিবেশনা",
+            "caption": "ছাত্রছাত্রীদের পরিবেশনা"
+        },
+        {
+            "src": "assets/images/gallery3.jpg",
+            "alt": "কর্মশালা",
+            "caption": "সঙ্গীত কর্মশালা"
+        },
+        {
+            "src": "assets/images/gallery4.jpg",
+            "alt": "শিক্ষকদের সাথে ছাত্রছাত্রী",
+            "caption": "শিক্ষকদের সাথে ছাত্রছাত্রী"
+        },
+        {
+            "src": "assets/images/gallery5.jpg",
+            "alt": "প্রদর্শনী",
+            "caption": "সাংস্কৃতিক প্রদর্শনী"
+        },
+        {
+            "src": "assets/images/gallery6.jpg",
+            "alt": "পুরস্কার বিতরণী",
+            "caption": "পুরস্কার বিতরণী অনুষ্ঠান"
+        }
+    ]
+}

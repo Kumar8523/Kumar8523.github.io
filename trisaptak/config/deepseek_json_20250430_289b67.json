@@ -1,0 +1,50 @@
+{
+    "title": "আমাদের শিক্ষকবৃন্দ",
+    "subtitle": "অভিজ্ঞ ও প্রশিক্ষিত সঙ্গীত শিক্ষক",
+    "teachers": [
+        {
+            "name": "ড. সুমন চৌধুরী",
+            "specialization": "শাস্ত্রীয় সঙ্গীত",
+            "bio": "কলকাতা বিশ্ববিদ্যালয় থেকে সঙ্গীতে ডক্টরেট ডিগ্রীপ্রাপ্ত",
+            "image": "assets/images/teacher1.jpg",
+            "social": {
+                "facebook": "#",
+                "youtube": "#",
+                "instagram": "#"
+            }
+        },
+        {
+            "name": "শ্রীমতি মৌসুমী রায়",
+            "specialization": "রবীন্দ্র সঙ্গীত",
+            "bio": "বিশিষ্ট রবীন্দ্র সঙ্গীত শিল্পী ও প্রশিক্ষক",
+            "image": "assets/images/teacher2.jpg",
+            "social": {
+                "facebook": "#",
+                "youtube": "#",
+                "instagram": "#"
+            }
+        },
+        {
+            "name": "শ্রী অরিন্দম দাস",
+            "specialization": "নজরুল সঙ্গীত",
+            "bio": "জাতীয় পর্যায়ের নজরুল সঙ্গীত শিল্পী",
+            "image": "assets/images/teacher3.jpg",
+            "social": {
+                "facebook": "#",
+                "youtube": "#",
+                "instagram": "#"
+            }
+        },
+        {
+            "name": "শ্রী অনিমেষ পাল",
+            "specialization": "আধুনিক সঙ্গীত",
+            "bio": "প্রখ্যাত আধুনিক গানের শিল্পী ও সুরকার",
+            "image": "assets/images/teacher4.jpg",
+            "social": {
+                "facebook": "#",
+                "youtube": "#",
+                "instagram": "#"
+            }
+        }
+    ]
+}
