@@ -1,0 +1,84 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Neon Tetra - School of 6",
+      "category": "fish",
+      "price": 24.99,
+      "description": "Vibrant schooling fish perfect for community aquariums.",
+      "image": "https://images.unsplash.com/photo-1560275531-0665286c92ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+      "stock": 15,
+      "rating": 4.8
+    },
+    {
+      "id": 2,
+      "name": "Betta Splendens - Male",
+      "category": "fish",
+      "price": 12.99,
+      "description": "Beautiful male betta with vibrant colors and flowing fins.",
+      "image": "https://images.unsplash.com/photo-1560275531-0665286c92ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+      "stock": 8,
+      "rating": 4.9
+    },
+    {
+      "id": 3,
+      "name": "Premium Flake Food",
+      "category": "food",
+      "price": 9.99,
+      "description": "Nutritionally complete diet for all tropical fish.",
+      "image": "https://images.unsplash.com/photo-1551649001-7a2e1d4e2294?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+      "stock": 42,
+      "rating": 4.7
+    },
+    {
+      "id": 4,
+      "name": "Aquarium Gravel - Blue",
+      "category": "accessories",
+      "price": 14.99,
+      "description": "5lb bag of vibrant blue aquarium gravel.",
+      "image": "https://images.unsplash.com/photo-1551649000-87e34b9f1efc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+      "stock": 23,
+      "rating": 4.5
+    },
+    {
+      "id": 5,
+      "name": "20 Gallon Aquarium Kit",
+      "category": "equipment",
+      "price": 129.99,
+      "description": "Complete aquarium kit with filter, light, and heater.",
+      "image": "https://images.unsplash.com/photo-1551649000-87e34b9f1efc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+      "stock": 7,
+      "rating": 4.9
+    },
+    {
+      "id": 6,
+      "name": "Live Aquarium Plants Bundle",
+      "category": "plants",
+      "price": 19.99,
+      "description": "Assortment of 5 easy-to-grow aquatic plants.",
+      "image": "https://images.unsplash.com/photo-1551649000-87e34b9f1efc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+      "stock": 14,
+      "rating": 4.6
+    },
+    {
+      "id": 7,
+      "name": "Guppy - Assorted Colors",
+      "category": "fish",
+      "price": 3.99,
+      "description": "Hardy and colorful livebearers, sold individually.",
+      "image": "https://images.unsplash.com/photo-1560275531-0665286c92ae?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+      "stock": 35,
+      "rating": 4.7
+    },
+    {
+      "id": 8,
+      "name": "Algae Wafers",
+      "category": "food",
+      "price": 5.99,
+      "description": "Sinking wafers perfect for bottom feeders.",
+      "image": "https://images.unsplash.com/photo-1551649001-7a2e1d4e2294?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+      "stock": 28,
+      "rating": 4.8
+    }
+  ]
+}
