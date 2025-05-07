@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Premium aquarium supplies, tropical fish, and fish food. Your one-stop shop for all aquarium needs with fast shipping and expert advice.">
+  <meta name="keywords" content="aquarium, fish, tropical fish, fish food, aquarium accessories, fish tank, aquatic plants">
+  <title>AquaWorld - Premium Aquarium Supplies</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <style>
+    .hero-bg {
+      background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1452570053594-1b985d6ea890?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+      background-size: cover;
+      background-position: center;
+    }
+  </style>
+</head>
+<body class="font-sans bg-gray-50">
+  <!-- Navigation -->
+  <nav class="bg-primary-dark text-white shadow-lg">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+      <a href="index.html" class="text-2xl font-bold">AquaWorld</a>
+      <div class="hidden md:flex space-x-6">
+        <a href="index.html" class="hover:text-accent-light">Home</a>
+        <a href="#products" class="hover:text-accent-light">Products</a>
+        <a href="about.html" class="hover:text-accent-light">About</a>
+        <a href="contact.html" class="hover:text-accent-light">Contact</a>
+      </div>
+      <div class="flex items-center space-x-4">
+        <button class="relative">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+          <span class="absolute -top-2 -right-2 bg-accent text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+        </button>
+        <button class="md:hidden">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero-bg text-white py-20">
+    <div class="container mx-auto px-4 text-center">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">Premium Aquarium Supplies</h1>
+      <p class="text-xl mb-8">Everything you need for your underwater world</p>
+      <a href="#products" class="bg-accent hover:bg-accent-dark text-white font-bold py-3 px-6 rounded-lg transition duration-300">Shop Now</a>
+    </div>
+  </section>
+
+  <!-- Featured Products -->
+  <section id="products" class="py-16 bg-white">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center mb-12 text-primary-dark">Our Products</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="featured-products">
+        <!-- Products will be loaded from JSON via JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories -->
+  <section class="py-16 bg-gray-100">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center mb-12 text-primary-dark">Shop by Category</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105">
+          <img src="https://images.unsplash.com/photo-1560275619-4662e36fa65c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Tropical Fish" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-2">Tropical Fish</h3>
+            <p class="text-gray-600 mb-4">Colorful and vibrant species for your aquarium</p>
+            <a href="#" class="text-primary hover:text-primary-dark font-semibold">Browse Fish</a>
+          </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105">
+          <img src="https://images.unsplash.com/photo-1551649001-7a2e1d4e2294?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Fish Food" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-2">Fish Food</h3>
+            <p class="text-gray-600 mb-4">Premium nutrition for healthy, happy fish</p>
+            <a href="#" class="text-primary hover:text-primary-dark font-semibold">Browse Food</a>
+          </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105">
+          <img src="https://images.unsplash.com/photo-1551649000-87e34b9f1efc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Aquarium Accessories" class="w-full h-48 object-cover">
+          <div class="p-6">
+            <h3 class="text-xl font-bold mb-2">Accessories</h3>
+            <p class="text-gray-600 mb-4">Everything to enhance your aquarium setup</p>
+            <a href="#" class="text-primary hover:text-primary-dark font-semibold">Browse Accessories</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="py-16 bg-primary text-white">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center mb-12">What Our Customers Say</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-primary-dark p-6 rounded-lg">
+          <div class="flex items-center mb-4">
+            <div class="text-yellow-400">
+              ★★★★★
+            </div>
+          </div>
+          <p class="mb-4">"The fish arrived healthy and vibrant. Excellent packaging and fast shipping!"</p>
+          <p class="font-semibold">- Sarah J.</p>
+        </div>
+        <div class="bg-primary-dark p-6 rounded-lg">
+          <div class="flex items-center mb-4">
+            <div class="text-yellow-400">
+              ★★★★★
+            </div>
+          </div>
+          <p class="mb-4">"Great selection of aquarium accessories. Found everything I needed in one place."</p>
+          <p class="font-semibold">- Michael T.</p>
+        </div>
+        <div class="bg-primary-dark p-6 rounded-lg">
+          <div class="flex items-center mb-4">
+            <div class="text-yellow-400">
+              ★★★★★
+            </div>
+          </div>
+          <p class="mb-4">"Customer service is outstanding. They helped me choose the perfect fish for my tank."</p>
+          <p class="font-semibold">- Emily R.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-12">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div>
+          <h3 class="text-xl font-bold mb-4">AquaWorld</h3>
+          <p>Your premium source for aquarium supplies, tropical fish, and expert advice.</p>
+        </div>
+        <div>
+          <h4 class="font-bold mb-4">Quick Links</h4>
+          <ul class="space-y-2">
+            <li><a href="index.html" class="hover:text-accent-light">Home</a></li>
+            <li><a href="#products" class="hover:text-accent-light">Products</a></li>
+            <li><a href="about.html" class="hover:text-accent-light">About Us</a></li>
+            <li><a href="contact.html" class="hover:text-accent-light">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold mb-4">Categories</h4>
+          <ul class="space-y-2">
+            <li><a href="#" class="hover:text-accent-light">Tropical Fish</a></li>
+            <li><a href="#" class="hover:text-accent-light">Fish Food</a></li>
+            <li><a href="#" class="hover:text-accent-light">Aquarium Accessories</a></li>
+            <li><a href="#" class="hover:text-accent-light">Tanks & Equipment</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold mb-4">Contact Us</h4>
+          <p>123 Aquarium Way</p>
+          <p>Marine City, MC 12345</p>
+          <p>Phone: (123) 456-7890</p>
+          <p>Email: info@aquaworld.com</p>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 mt-8 pt-8 text-center">
+        <p>&copy; 2023 AquaWorld. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Load products from JSON
+    document.addEventListener('DOMContentLoaded', function() {
+      fetch('products/products.json')
+        .then(response => response.json())
+        .then(data => {
+          const featuredProducts = document.getElementById('featured-products');
+          data.products.slice(0, 6).forEach(product => {
+            featuredProducts.innerHTML += `
+              <div class="bg-white rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105">
+                <img src="${product.image}" alt="${product.name}" class="w-full h-48 object-cover">
+                <div class="p-6">
+                  <h3 class="text-xl font-bold mb-2">${product.name}</h3>
+                  <p class="text-gray-600 mb-4">${product.description}</p>
+                  <div class="flex justify-between items-center">
+                    <span class="text-lg font-bold text-primary-dark">$${product.price}</span>
+                    <button class="bg-primary hover:bg-primary-dark text-white font-bold py-2 px-4 rounded transition duration-300 add-to-cart" data-id="${product.id}">
+                      Add to Cart
+                    </button>
+                  </div>
+                </div>
+              </div>
+            `;
+          });
+
+          // Add event listeners to cart buttons
+          document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', function() {
+              const productId = this.getAttribute('data-id');
+              const product = data.products.find(p => p.id == productId);
+              addToCart(product);
+            });
+          });
+        })
+        .catch(error => console.error('Error loading products:', error));
+    });
+
+    // Simple cart functionality
+    function addToCart(product) {
+      // In a real app, you would save to localStorage or send to server
+      console.log('Added to cart:', product);
+      alert(`${product.name} added to cart!`);
+      // Here you would also send the order to Google Sheets via the Apps Script endpoint
+      // sendOrderToGoogleSheets(product);
+    }
+
+    // Function to send order to Google Sheets
+    function sendOrderToGoogleSheets(orderData) {
+      const scriptUrl = 'YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL';
+      
+      axios.post(scriptUrl, orderData)
+        .then(response => {
+          console.log('Order submitted:', response.data);
+        })
+        .catch(error => {
+          console.error('Error submitting order:', error);
+        });
+    }
+  </script>
+</body>
+</html>
