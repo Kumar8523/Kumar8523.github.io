@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Thank you for your order at AquaWorld. Your order has been placed successfully.">
+  <title>Order Confirmation - AquaWorld</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body class="font-sans bg-gray-50">
+  <!-- Navigation -->
+  <nav class="bg-primary-dark text-white shadow-lg">
+    <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+      <a href="index.html" class="text-2xl font-bold">AquaWorld</a>
+      <div class="hidden md:flex space-x-6">
+        <a href="index.html" class="hover:text-accent-light">Home</a>
+        <a href="products.html" class="hover:text-accent-light">Products</a>
+        <a href="about.html" class="hover:text-accent-light">About</a>
+        <a href="contact.html" class="hover:text-accent-light">Contact</a>
+      </div>
+      <div class="flex items-center space-x-4">
+        <a href="cart.html" class="relative">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+          <span id="cart-count" class="absolute -top-2 -right-2 bg-accent text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+        </a>
+        <button class="md:hidden" id="mobile-menu-button">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="hidden md:hidden bg-primary-dark text-white py-4 px-4">
+    <div class="flex flex-col space-y-3">
+      <a href="index.html" class="hover:text-accent-light">Home</a>
+      <a href="products.html" class="hover:text-accent-light">Products</a>
+      <a href="about.html" class="hover:text-accent-light">About</a>
+      <a href="contact.html" class="hover:text-accent-light">Contact</a>
+    </div>
+  </div>
+
+  <!-- Thank You Content -->
+  <section class="py-16">
+    <div class="container mx-auto px-4 max-w-4xl text-center">
+      <div class="bg-white rounded-lg shadow-md overflow-hidden p-8">
+        <div class="mb-6">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <h1 class="text-3xl md:text-4xl font-bold mb-4 text-primary-dark">Thank You for Your Order!</h1>
+        <p class="text-lg text-gray-600 mb-6">Your order has been placed successfully. We'll process it shortly and notify you once it's shipped.</p>
+        
+        <div id="order-details" class="bg-gray-50 rounded-lg p-6 text-left mb-6">
+          <!-- Order details will be loaded here -->
+        </div>
+        
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="products.html" class="bg-primary hover:bg-primary-dark text-white font-bold py-3 px-6 rounded-lg transition duration-300">
+            Continue Shopping
+          </a>
+          <a href="index.html" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-3 px-6 rounded-lg transition duration-300">
+            Back to Home
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-gray-900 text-white py-12">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div>
+          <h3 class="text-xl font-bold mb-4">AquaWorld</h3>
+          <p>Your premium source for aquarium supplies, tropical fish, and expert advice.</p>
+        </div>
+        <div>
+          <h4 class="font-bold mb-4">Quick Links</h4>
+          <ul class="space-y-2">
+            <li><a href="index.html" class="hover:text-accent-light">Home</a></li>
+            <li><a href="products.html" class="hover:text-accent-light">Products</a></li>
+            <li><a href="about.html" class="hover:text-accent-light">About Us</a></li>
+            <li><a href="contact.html" class="hover:text-accent-light">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold mb-4">Categories</h4>
+          <ul class="space-y-2">
+            <li><a href="products.html?category=fish" class="hover:text-accent-light">Tropical Fish</a></li>
+            <li><a href="products.html?category=food" class="hover:text-accent-light">Fish Food</a></li>
+            <li><a href="products.html?category=accessories" class="hover:text-accent-light">Aquarium Accessories</a></li>
+            <li><a href="products.html?category=equipment" class="hover:text-accent-light">Tanks & Equipment</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-bold mb-4">Contact Us</h4>
+          <p>123 Aquarium Way</p>
+          <p>Rajshahi 6000, Bangladesh</p>
+          <p>Phone: +880 1234 567890</p>
+          <p>Email: info@aquaworld.com</p>
+        </div>
+      </div>
+      <div class="border-t border-gray-800 mt-8 pt-8 text-center">
+        <p>&copy; 2023 AquaWorld. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Cart functionality
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    
+    function updateCartCount() {
+      const count = cart.reduce((total, item) => total + item.quantity, 0);
+      document.getElementById('cart-count').textContent = count;
+    }
+    
+    // Mobile menu toggle
+    document.getElementById('mobile-menu-button').addEventListener('click', function() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    });
+    
+    // Display order details
+    document.addEventListener('DOMContentLoaded', function() {
+      updateCartCount();
+      
+      const orderData = JSON.parse(localStorage.getItem('currentOrder'));
+      const orderDetails = document.getElementById('order-details');
+      
+      if (!orderData) {
+        window.location.href = 'index.html';
+        return;
+      }
+      
+      // Generate a random order number
+      const orderNumber = 'AQUA-' + Math.floor(100000 + Math.random() * 900000);
+      
+      orderDetails.innerHTML = `
+        <div class="mb-4">
+          <h3 class="font-bold text-lg mb-2">Order #${orderNumber}</h3>
+          <p class="text-gray-600">Placed on ${new Date(orderData.timestamp).toLocaleString()}</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div>
+            <h4 class="font-bold mb-2">Shipping Information</h4>
+            <p class="text-gray-600">${orderData.customer.firstName} ${orderData.customer.lastName}</p>
+            <p class="text-gray-600">${orderData.customer.address}</p>
+            <p class="text-gray-600">${orderData.customer.thana}, ${orderData.customer.district}</p>
+            <p class="text-gray-600">${orderData.customer.phone}</p>
+            <p class="text-gray-600">${orderData.customer.email}</p>
+          </div>
+          
+          <div>
+            <h4 class="font-bold mb-2">Payment Method</h4>
+            <p class="text-gray-600 capitalize">${orderData.payment.method.replace('-', ' ')}</p>
+            ${orderData.payment.method === 'bkash' ? `
+              <p class="text-gray-600">bKash Number: ${orderData.payment.details.number}</p>
+              <p class="text-gray-600">Transaction ID: ${orderData.payment.details.transaction}</p>
+            ` : orderData.payment.method === 'nagad' ? `
+              <p class="text-gray-600">Nagad Number: ${orderData.payment.details.number}</p>
+              <p class="text-gray-600">Transaction ID: ${orderData.payment.details.transaction}</p>
+            ` : ''}
+          </div>
+        </div>
+        
+        <div class="border-t border-gray-200 pt-4">
+          <h4 class="font-bold mb-2">Order Summary</h4>
+          ${orderData.items.map(item => `
+            <div class="flex justify-between py-2">
+              <span class="text-gray-600">${item.quantity} × ${item.name}</span>
+              <span class="text-gray-800">৳${(item.price * item.quantity).toFixed(2)}</span>
+            </div>
+          `).join('')}
+          
+          <div class="border-t border-gray-200 my-2"></div>
+          
+          <div class="flex justify-between py-2">
+            <span class="text-gray-600">Subtotal</span>
+            <span class="text-gray-800">৳${orderData.subtotal.toFixed(2)}</span>
+          </div>
+          
+          <div class="flex justify-between py-2">
+            <span class="text-gray-600">Delivery</span>
+            <span class="text-gray-800">${orderData.delivery === 0 ? 'FREE' : '৳' + orderData.delivery.toFixed(2)}</span>
+          </div>
+          
+          <div class="flex justify-between py-2 font-bold">
+            <span>Total</span>
+            <span>৳${orderData.total.toFixed(2)}</span>
+          </div>
+        </div>
+      `;
+    });
+  </script>
+</body>
+</html>
