@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finvora - পণ্য সমূহ</title>
+    <meta name="description" content="বাংলাদেশের সেরা অ্যাকুরিয়াম মাছ, মাছের খাবার এবং আনুষাঙ্গিক পণ্য ক্রয় করুন">
+    <!-- Preconnect to external resources -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    
+    <!-- Tailwind with custom config -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#1a365d',
+              secondary: '#2c5282',
+              accent: '#4299e1',
+              neutral: '#4a5568'
+            },
+            fontFamily: {
+              bangla: ['Hind Siliguri', 'Noto Sans Bengali', 'sans-serif'],
+            },
+            boxShadow: {
+              card: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+              'card-hover': '0 10px 25px rgba(0, 0, 0, 0.1)'
+            }
+          }
+        }
+      }
+    </script>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;700&family=Noto+Sans+Bengali:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+      body { 
+        font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif;
+        background-color: #f7fafc;
+      }
+      .product-card {
+        transition: all 0.3s ease;
+      }
+      .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      }
+      .nav-blur {
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+    </style>
+</head>
+<body class="bangla-font antialiased text-gray-800 pt-16">
+  <!-- Navigation -->
+  <div id="navbar"></div>
+
+  <!-- Product Listing Section -->
+  <section class="py-12 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+        <div>
+          <h1 class="text-3xl font-bold text-primary">আমাদের পণ্য সমূহ</h1>
+          <p class="text-neutral mt-2">প্রিমিয়াম কোয়ালিটির অ্যাকুরিয়াম পণ্য</p>
+        </div>
+        
+        <div class="mt-4 md:mt-0 flex items-center space-x-4">
+          <div class="relative">
+            <select id="sort-by" class="appearance-none bg-white border border-gray-300 rounded-full pl-4 pr-8 py-2 focus:outline-none focus:ring-2 focus:ring-accent">
+              <option value="default">সর্ট করুন</option>
+              <option value="price-low">দাম: কম থেকে বেশি</option>
+              <option value="price-high">দাম: বেশি থেকে কম</option>
+              <option value="rating">রেটিং</option>
+              <option value="newest">নতুন পণ্য</option>
+            </select>
+            <i class="fas fa-chevron-down absolute right-3 top-3 text-gray-400 pointer-events-none"></i>
+          </div>
+        </div>
+      </div>
+      
+      <div class="flex flex-col md:flex-row gap-8">
+        <!-- Filters -->
+        <div class="w-full md:w-64 bg-white p-6 rounded-lg shadow-sm h-fit sticky top-24">
+          <h3 class="font-bold text-lg mb-4 text-primary">ফিল্টার</h3>
+          
+          <!-- Categories -->
+          <div class="mb-6">
+            <h4 class="font-medium mb-3 text-neutral">ক্যাটাগরি</h4>
+            <ul class="space-y-2">
+              <li>
+                <a href="products.html?category=all" class="flex items-center justify-between hover:text-accent">
+                  <span>সব পণ্য</span>
+                  <span class="bg-gray-100 text-xs px-2 py-1 rounded-full" id="all-count">0</span>
+                </a>
+              </li>
+              <li>
+                <a href="products.html?category=fish" class="flex items-center justify-between hover:text-accent">
+                  <span>মাছ</span>
+                  <span class="bg-gray-100 text-xs px-2 py-1 rounded-full" id="fish-count">0</span>
+                </a>
+              </li>
+              <li>
+                <a href="products.html?category=fish-food" class="flex items-center justify-between hover:text-accent">
+                  <span>মাছের খাবার</span>
+                  <span class="bg-gray-100 text-xs px-2 py-1 rounded-full" id="food-count">0</span>
+                </a>
+              </li>
+              <li>
+                <a href="products.html?category=aquarium-accessories" class="flex items-center justify-between hover:text-accent">
+                  <span>অ্যাকুরিয়াম আনুষাঙ্গিক</span>
+                  <span class="bg-gray-100 text-xs px-2 py-1 rounded-full" id="accessories-count">0</span>
+                </a>
+              </li>
+              <li>
+                <a href="products.html?category=plants" class="flex items-center justify-between hover:text-accent">
+                  <span>অ্যাকুরিয়াম প্লান্ট</span>
+                  <span class="bg-gray-100 text-xs px-2 py-1 rounded-full" id="plants-count">0</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+          
+          <!-- Price Range -->
+          <div class="mb-6">
+            <h4 class="font-medium mb-3 text-neutral">দামের রেঞ্জ</h4>
+            <div class="space-y-2">
+              <div class="flex items-center">
+                <input type="radio" id="price-all" name="price-range" class="mr-2" checked>
+                <label for="price-all">সব</label>
+              </div>
+              <div class="flex items-center">
+                <input type="radio" id="price-1" name="price-range" class="mr-2">
+                <label for="price-1">৳০ - ৳৫০০</label>
+              </div>
+              <div class="flex items-center">
+                <input type="radio" id="price-2" name="price-range" class="mr-2">
+                <label for="price-2">৳৫০০ - ৳১০০০</label>
+              </div>
+              <div class="flex items-center">
+                <input type="radio" id="price-3" name="price-range" class="mr-2">
+                <label for="price-3">৳১০০০ - ৳৫০০০</label>
+              </div>
+              <div class="flex items-center">
+                <input type="radio" id="price-4" name="price-range" class="mr-2">
+                <label for="price-4">৳৫০০০+</label>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Stock Availability -->
+          <div>
+            <h4 class="font-medium mb-3 text-neutral">স্টক অবস্থা</h4>
+            <div class="flex items-center">
+              <input type="checkbox" id="in-stock" class="mr-2">
+              <label for="in-stock">শুধু স্টকে আছে এমন পণ্য</label>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Products Grid -->
+        <div class="flex-1">
+          <!-- Search Results Info -->
+          <div class="bg-white p-4 rounded-lg shadow-sm mb-6 flex justify-between items-center">
+            <p class="text-neutral" id="results-info">সব পণ্য দেখানো হচ্ছে</p>
+            <div class="flex items-center">
+              <span class="mr-2 text-neutral">প্রদর্শন:</span>
+              <select id="per-page" class="border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-accent">
+                <option value="12">১২</option>
+                <option value="24">২৪</option>
+                <option value="36">৩৬</option>
+              </select>
+            </div>
+          </div>
+          
+          <!-- Products -->
+          <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Loading skeleton -->
+            <div class="space-y-6">
+              <div class="bg-gray-200 rounded-lg h-64 animate-pulse"></div>
+              <div class="h-4 bg-gray-200 rounded w-3/4 animate-pulse"></div>
+              <div class="h-4 bg-gray-200 rounded w-1/2 animate-pulse"></div>
+            </div>
+            <div class="space-y-6">
+              <div class="bg-gray-200 rounded-lg h-64 animate-pulse"></div>
+              <div class="h-4 bg-gray-200 rounded w-3/4 animate-pulse"></div>
+              <div class="h-4 bg-gray-200 rounded w-1/2 animate-pulse"></div>
+            </div>
+            <div class="space-y-6">
+              <div class="bg-gray-200 rounded-lg h-64 animate-pulse"></div>
+              <div class="h-4 bg-gray-200 rounded w-3/4 animate-pulse"></div>
+              <div class="h-4 bg-gray-200 rounded w-1/2 animate-pulse"></div>
+            </div>
+          </div>
+          
+          <!-- Pagination -->
+          <div class="mt-10 flex justify-center">
+            <nav class="flex items-center space-x-2">
+              <button class="px-3 py-1 rounded border text-neutral hover:bg-gray-100">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+              <button class="px-3 py-1 rounded border bg-primary text-white">1</button>
+              <button class="px-3 py-1 rounded border text-neutral hover:bg-gray-100">2</button>
+              <button class="px-3 py-1 rounded border text-neutral hover:bg-gray-100">3</button>
+              <span class="px-2 text-neutral">...</span>
+              <button class="px-3 py-1 rounded border text-neutral hover:bg-gray-100">10</button>
+              <button class="px-3 py-1 rounded border text-neutral hover:bg-gray-100">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <!-- Scripts -->
+  <script src="scripts/main.js"></script>
+  <script src="scripts/navbar_footer.js"></script>
+  <script src="scripts/products.js"></script>
+  
+  <script>
+    // Load products from JSON
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const response = await fetch('productData/products.json');
+        const data = await response.json();
+        
+        // Update category counts
+        document.getElementById('all-count').textContent = data.products.length;
+        document.getElementById('fish-count').textContent = data.products.filter(p => p.category === 'fish').length;
+        document.getElementById('food-count').textContent = data.products.filter(p => p.category === 'fish-food').length;
+        document.getElementById('accessories-count').textContent = data.products.filter(p => p.category === 'aquarium-accessories').length;
+        document.getElementById('plants-count').textContent = data.products.filter(p => p.category === 'plants').length;
+        
+        // Get URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const category = urlParams.get('category') || 'all';
+        const search = urlParams.get('search') || '';
+        
+        // Filter products
+        let filteredProducts = data.products;
+        
+        if (category !== 'all') {
+          filteredProducts = filteredProducts.filter(p => p.category === category);
+        }
+        
+        if (search) {
+          filteredProducts = filteredProducts.filter(p => 
+            p.name.toLowerCase().includes(search.toLowerCase()) || 
+            p.description.toLowerCase().includes(search.toLowerCase())
+          );
+        }
+        
+        // Update results info
+        document.getElementById('results-info').textContent = 
+          `${filteredProducts.length} টি পণ্য পাওয়া গেছে ${category === 'all' ? '' : 'এই ক্যাটাগরিতে'}`;
+        
+        // Render products
+        const container = document.getElementById('products-grid');
+        if (container) {
+          container.innerHTML = filteredProducts.map(product => `
+            <div class="product-card bg-white rounded-lg overflow-hidden shadow-sm">
+              <div class="relative">
+                <a href="product_info.html?id=${product.id}">
+                  <img src="${product.images[0]}" alt="${product.name}" class="w-full h-64 object-cover">
+                </a>
+                ${product.discount ? `
+                  <span class="absolute top-2 right-2 bg-accent text-white text-xs font-bold px-2 py-1 rounded">
+                    ${product.discount}% ছাড়
+                  </span>
+                ` : ''}
+                <button class="absolute bottom-2 right-2 bg-white/90 hover:bg-white text-primary p-2 rounded-full shadow-md">
+                  <i class="fas fa-heart"></i>
+                </button>
+              </div>
+              
+              <div class="p-4">
+                <div class="flex justify-between items-start mb-1">
+                  <a href="product_info.html?id=${product.id}" class="font-medium text-neutral hover:text-accent">
+                    ${product.name}
+                  </a>
+                  <div class="flex items-center text-yellow-400 text-xs">
+                    <i class="fas fa-star"></i>
+                    <span class="ml-1 text-gray-600">${product.rating}</span>
+                  </div>
+                </div>
+                
+                <p class="text-sm text-gray-500 mb-2">${product.shortDescription}</p>
+                
+                <div class="flex justify-between items-center">
+                  <div>
+                    ${product.discount ? `
+                      <span class="text-gray-400 line-through mr-2">৳${product.originalPrice}</span>
+                      <span class="font-bold text-accent">৳${product.price}</span>
+                    ` : `
+                      <span class="font-bold text-accent">৳${product.price}</span>
+                    `}
+                  </div>
+                  ${product.stock > 0 ? `
+                    <button class="add-to-cart bg-primary hover:bg-secondary text-white px-3 py-1 rounded-full text-sm" 
+                            data-id="${product.id}">
+                      <i class="fas fa-shopping-cart mr-1"></i> অর্ডার
+                    </button>
+                  ` : `
+                    <span class="text-red-500 text-sm">স্টকে নেই</span>
+                  `}
+                </div>
+                
+                ${product.stock > 0 && product.stock < 10 ? `
+                  <div class="mt-2 text-xs text-red-500">
+                    শেষ ${product.stock} টি পণ্য
+                  </div>
+                ` : ''}
+              </div>
+            </div>
+          `).join('');
+        }
+        
+        // Add event listeners for add to cart buttons
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+          button.addEventListener('click', function() {
+            const productId = this.getAttribute('data-id');
+            const product = data.products.find(p => p.id === productId);
+            
+            if (product) {
+              addToCart(product);
+              updateCartCount();
+              this.innerHTML = '<i class="fas fa-check mr-1"></i> যোগ হয়েছে';
+              this.classList.remove('bg-primary', 'hover:bg-secondary');
+              this.classList.add('bg-green-500', 'hover:bg-green-600');
+              
+              setTimeout(() => {
+                this.innerHTML = '<i class="fas fa-shopping-cart mr-1"></i> অর্ডার';
+                this.classList.remove('bg-green-500', 'hover:bg-green-600');
+                this.classList.add('bg-primary', 'hover:bg-secondary');
+              }, 2000);
+            }
+          });
+        });
+        
+      } catch (error) {
+        console.error('Error loading products:', error);
+        const container = document.getElementById('products-grid');
+        if (container) {
+          container.innerHTML = `
+            <div class="col-span-full text-center py-12 text-red-500">
+              <i class="fas fa-exclamation-triangle"></i> পণ্য লোড করতে সমস্যা হয়েছে
+            </div>`;
+        }
+      }
+    });
+    
+    // Cart functions
+    function addToCart(product) {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const existingItem = cart.find(item => item.id === product.id);
+      
+      if (existingItem) {
+        existingItem.quantity += 1;
+      } else {
+        cart.push({
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          image: product.images[0],
+          quantity: 1
+        });
+      }
+      
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }
+    
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+      
+      document.querySelectorAll('.cart-count').forEach(element => {
+        element.textContent = totalItems;
+      });
+    }
+  </script>
+</body>
+</html>
