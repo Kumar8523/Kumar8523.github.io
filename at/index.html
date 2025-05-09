@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finvora - Premium Aquarium Fish</title>
+    <meta name="description" content="বাংলাদেশের সেরা অ্যাকুরিয়াম মাছ ও আনুষাঙ্গিক পণ্য - Finvora">
+    <!-- Preconnect to external resources -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    
+    <!-- Tailwind with custom config -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#1a365d',
+              secondary: '#2c5282',
+              accent: '#4299e1',
+              neutral: '#4a5568'
+            },
+            fontFamily: {
+              bangla: ['Hind Siliguri', 'Noto Sans Bengali', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;700&family=Noto+Sans+Bengali:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+      body { 
+        font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif;
+        background-color: #f7fafc;
+      }
+      
+      .hero-gradient {
+        background: linear-gradient(135deg, rgba(26, 54, 93, 0.9) 0%, rgba(66, 153, 225, 0.8) 100%);
+      }
+      
+      .card-hover {
+        transition: all 0.3s ease;
+      }
+      .card-hover:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      }
+      
+      .nav-blur {
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+    </style>
+</head>
+<body class="bangla-font antialiased text-gray-800">
+  <!-- Navigation -->
+  <div id="navbar"></div>
+
+  <!-- Hero Section -->
+  <section class="hero-gradient text-white min-h-screen flex items-center pt-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="max-w-2xl">
+        <span class="uppercase tracking-widest text-sm mb-4 inline-block text-accent">Finvora Aquatics</span>
+        <h1 class="text-4xl md:text-5xl font-bold mb-6 leading-tight">প্রিমিয়াম অ্যাকুরিয়াম ফিশের জন্য আপনার বিশ্বস্ত সঙ্গী</h1>
+        <p class="text-lg mb-8 opacity-90">বাংলাদেশের সেরা কোয়ালিটির অ্যাকুরিয়াম মাছ এবং আনুষাঙ্গিক পণ্য</p>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <a href="products.html" class="bg-accent text-white px-8 py-3 rounded-full font-medium inline-block hover:bg-secondary transition duration-300 text-center">
+            পণ্য দেখুন <i class="fas fa-chevron-right ml-2"></i>
+          </a>
+          <a href="about.html" class="bg-white text-primary px-8 py-3 rounded-full font-medium inline-block hover:bg-gray-100 transition duration-300 text-center">
+            আমাদের সম্পর্কে
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Collections -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-primary">আমাদের কালেকশন</h2>
+        <p class="text-neutral mt-2 max-w-2xl mx-auto">বিভিন্ন ধরনের অ্যাকুরিয়াম মাছ এবং আনুষাঙ্গিক পণ্যের সংগ্রহ</p>
+      </div>
+      
+      <div id="collections-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Loading skeleton -->
+        <div class="text-center py-12">
+          <i class="fas fa-spinner fa-spin text-3xl text-accent"></i>
+          <p class="mt-2 text-neutral">লোড হচ্ছে...</p>
+        </div>
+      </div>
+      
+      <div class="text-center mt-10">
+        <a href="products.html" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-full text-white bg-primary hover:bg-secondary transition">
+          সব পণ্য দেখুন
+          <i class="fas fa-arrow-right ml-2"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-primary">গ্রাহকদের মতামত</h2>
+        <p class="text-neutral mt-2">আমাদের গ্রাহকরা কি বলছেন</p>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <div class="flex items-center mb-4">
+            <img src="img/testimonial-1.jpg" alt="User 1" class="w-12 h-12 rounded-full mr-4 object-cover">
+            <div>
+              <h3 class="font-medium">Hasin Arik</h3>
+              <div class="flex text-yellow-400">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+              </div>
+            </div>
+          </div>
+          <p class="text-gray-600">"ফিনভোরার মাছগুলো খুবই সুন্দর এবং স্বাস্থ্যবান। ডেলিভারিও খুব দ্রুত পেয়েছি।"</p>
+        </div>
+        
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <div class="flex items-center mb-4">
+            <img src="img/testimonial-2.jpg" alt="User 2" class="w-12 h-12 rounded-full mr-4 object-cover">
+            <div>
+              <h3 class="font-medium">Tahmina Akter</h3>
+              <div class="flex text-yellow-400">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+              </div>
+            </div>
+          </div>
+          <p class="text-gray-600">"অ্যাকুরিয়াম সেটআপের জন্য যে পরামর্শ পেয়েছি তা খুবই সহায়ক ছিল। ধন্যবাদ Finvora টিমকে!"</p>
+        </div>
+        
+        <div class="bg-white p-6 rounded-lg shadow-md">
+          <div class="flex items-center mb-4">
+            <img src="img/testimonial-3.jpg" alt="User 3" class="w-12 h-12 rounded-full mr-4 object-cover">
+            <div>
+              <h3 class="font-medium">Rafiqul Islam</h3>
+              <div class="flex text-yellow-400">
+                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+              </div>
+            </div>
+          </div>
+          <p class="text-gray-600">"৩ বছর ধরে Finvora থেকে মাছ কিনছি। কখনোই কোন সমস্যা হয়নি। সত্যিই বিশ্বস্ত একটি দোকান।"</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats Section -->
+  <section class="py-16 bg-primary text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div class="p-4">
+          <p class="text-4xl font-bold mb-2">1500+</p>
+          <p class="text-accent">সন্তুষ্ট গ্রাহক</p>
+        </div>
+        <div class="p-4">
+          <p class="text-4xl font-bold mb-2">50+</p>
+          <p class="text-accent">মাছের প্রজাতি</p>
+        </div>
+        <div class="p-4">
+          <p class="text-4xl font-bold mb-2">100%</p>
+          <p class="text-accent">জীবন্ত গ্যারান্টি</p>
+        </div>
+        <div class="p-4">
+          <p class="text-4xl font-bold mb-2">24/7</p>
+          <p class="text-accent">সাপোর্ট</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <!-- Scripts -->
+  <script src="scripts/main.js"></script>
+  <script src="scripts/navbar_footer.js"></script>
+  
+  <script>
+    // Load featured collections
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const response = await fetch('productData/products.json');
+        const data = await response.json();
+        const trendingProducts = data.products.filter(p => p.trending).slice(0, 4);
+        
+        const container = document.getElementById('collections-container');
+        if (container) {
+          container.innerHTML = trendingProducts.map(product => `
+            <a href="product_info.html?id=${product.id}" class="card-hover group">
+              <div class="bg-gray-100 rounded-lg overflow-hidden h-80 relative">
+                <img src="${product.images[0]}" alt="${product.name}" 
+                     class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-6">
+                  <div>
+                    <h3 class="text-xl font-bold text-white">${product.name}</h3>
+                    <p class="text-accent font-medium">৳${product.price}</p>
+                  </div>
+                </div>
+                ${product.discount ? `
+                  <span class="absolute top-2 right-2 bg-accent text-white text-xs font-bold px-2 py-1 rounded">
+                    ${product.discount}% ছাড়
+                  </span>
+                ` : ''}
+              </div>
+            </a>
+          `).join('');
+        }
+      } catch (error) {
+        console.error('Error loading collections:', error);
+        const container = document.getElementById('collections-container');
+        if (container) {
+          container.innerHTML = `
+            <div class="col-span-full text-center py-12 text-red-500">
+              <i class="fas fa-exclamation-triangle"></i> কালেকশন লোড করতে সমস্যা হয়েছে
+            </div>`;
+        }
+      }
+    });
+  </script>
+</body>
+</html>
