@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finvora - আপনার কার্ট</title>
+    <meta name="description" content="আপনার Finvora কার্টে থাকা পণ্যগুলো দেখুন এবং চেকআউট সম্পন্ন করুন">
+    <!-- Preconnect to external resources -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    
+    <!-- Tailwind with custom config -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#1a365d',
+              secondary: '#2c5282',
+              accent: '#4299e1',
+              neutral: '#4a5568',
+              danger: '#e53e3e'
+            },
+            fontFamily: {
+              bangla: ['Hind Siliguri', 'Noto Sans Bengali', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;700&family=Noto+Sans+Bengali:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+      body { 
+        font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif;
+        background-color: #f7fafc;
+      }
+      .nav-blur {
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+      .empty-cart {
+        background-image: url('img/empty-cart.svg');
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+      }
+    </style>
+</head>
+<body class="bangla-font antialiased text-gray-800 pt-16">
+  <!-- Navigation -->
+  <div id="navbar"></div>
+
+  <!-- Cart Section -->
+  <section class="py-12 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h1 class="text-3xl font-bold text-primary mb-8">আপনার কার্ট</h1>
+      
+      <div id="cart-container" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Cart Items -->
+        <div class="lg:col-span-2">
+          <div id="cart-items" class="space-y-4">
+            <!-- Loading skeleton -->
+            <div class="flex items-center border-b border-gray-200 pb-4">
+              <div class="bg-gray-200 rounded w-24 h-24 animate-pulse mr-4"></div>
+              <div class="flex-1 space-y-2">
+                <div class="h-4 bg-gray-200 rounded w-3/4 animate-pulse"></div>
+                <div class="h-4 bg-gray-200 rounded w-1/2 animate-pulse"></div>
+                <div class="h-4 bg-gray-200 rounded w-1/4 animate-pulse"></div>
+              </div>
+            </div>
+            <div class="flex items-center border-b border-gray-200 pb-4">
+              <div class="bg-gray-200 rounded w-24 h-24 animate-pulse mr-4"></div>
+              <div class="flex-1 space-y-2">
+                <div class="h-4 bg-gray-200 rounded w-3/4 animate-pulse"></div>
+                <div class="h-4 bg-gray-200 rounded w-1/2 animate-pulse"></div>
+                <div class="h-4 bg-gray-200 rounded w-1/4 animate-pulse"></div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-6 flex justify-between items-center">
+            <a href="products.html" class="text-accent hover:underline">
+              <i class="fas fa-arrow-left mr-2"></i> পণ্য ব্রাউজ করতে চান?
+            </a>
+            <button id="clear-cart" class="text-danger hover:text-red-700">
+              <i class="fas fa-trash mr-1"></i> কার্ট খালি করুন
+            </button>
+          </div>
+        </div>
+        
+        <!-- Order Summary -->
+        <div class="lg:col-span-1">
+          <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
+            <h2 class="text-xl font-bold text-primary mb-4">অর্ডার সামারি</h2>
+            
+            <div id="order-summary" class="space-y-4">
+              <div class="flex justify-between">
+                <span class="text-neutral">সাবটোটাল</span>
+                <span id="subtotal" class="font-medium">৳0</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-neutral">ডেলিভারি চার্জ</span>
+                <span id="delivery" class="font-medium">৳80</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-neutral">ডিসকাউন্ট</span>
+                <span id="discount" class="font-medium text-green-600">-৳0</span>
+              </div>
+              <div class="border-t border-gray-200 pt-4 flex justify-between">
+                <span class="text-neutral font-bold">মোট</span>
+                <span id="total" class="text-xl font-bold text-primary">৳0</span>
+              </div>
+              
+              <div class="mt-6">
+                <div class="mb-4">
+                  <label class="block text-neutral font-medium mb-1">প্রোমো কোড</label>
+                  <div class="flex">
+                    <input type="text" id="promo-code" placeholder="প্রোমো কোড" 
+                           class="flex-1 px-4 py-2 border border-gray-300 rounded-l focus:outline-none focus:ring-1 focus:ring-accent focus:border-accent">
+                    <button id="apply-promo" class="bg-primary hover:bg-secondary text-white px-4 py-2 rounded-r">
+                      প্রয়োগ করুন
+                    </button>
+                  </div>
+                  <p id="promo-message" class="text-sm mt-1 hidden"></p>
+                </div>
+                
+                <button id="checkout-btn" class="w-full bg-accent hover:bg-secondary text-white py-3 rounded font-medium transition duration-300">
+                  চেকআউট করুন
+                </button>
+                
+                <p class="text-xs text-neutral mt-2 text-center">
+                  <i class="fas fa-lock mr-1"></i> আপনার তথ্য সুরক্ষিত থাকবে
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-6 bg-gray-50 p-6 rounded-lg shadow-sm">
+            <h3 class="font-bold text-neutral mb-3">পেমেন্ট মেথড</h3>
+            <div class="space-y-3">
+              <div class="flex items-center">
+                <input type="radio" id="cod" name="payment" class="mr-2" checked>
+                <label for="cod" class="flex items-center">
+                  <i class="fas fa-money-bill-wave mr-2 text-green-600"></i>
+                  ক্যাশ অন ডেলিভারি (COD)
+                </label>
+              </div>
+              <div class="flex items-center">
+                <input type="radio" id="bkash" name="payment" class="mr-2">
+                <label for="bkash" class="flex items-center">
+                  <i class="fas fa-mobile-alt mr-2 text-purple-600"></i>
+                  বিকাশ
+                </label>
+              </div>
+              <div class="flex items-center">
+                <input type="radio" id="card" name="payment" class="mr-2">
+                <label for="card" class="flex items-center">
+                  <i class="fas fa-credit-card mr-2 text-blue-600"></i>
+                  ক্রেডিট/ডেবিট কার্ড
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <!-- Checkout Modal -->
+  <div id="checkout-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-lg shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+      <div class="p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h3 class="text-xl font-bold text-primary">চেকআউট</h3>
+          <button id="close-modal" class="text-neutral hover:text-primary">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        
+        <form id="checkout-form" class="space-y-4">
+          <div>
+            <label class="block text-neutral font-medium mb-1">আপনার নাম *</label>
+            <input type="text" name="name" required 
+                   class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-accent focus:border-accent">
+          </div>
+          
+          <div>
+            <label class="block text-neutral font-medium mb-1">ইমেইল *</label>
+            <input type="email" name="email" required 
+                   class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-accent focus:border-accent">
+          </div>
+          
+          <div>
+            <label class="block text-neutral font-medium mb-1">ফোন নম্বর *</label>
+            <input type="tel" name="phone" required 
+                   class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-accent focus:border-accent">
+          </div>
+          
+          <div>
+            <label class="block text-neutral font-medium mb-1">ঠিকানা *</label>
+            <textarea name="address" rows="3" required 
+                      class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-accent focus:border-accent"></textarea>
+          </div>
+          
+          <div>
+            <label class="block text-neutral font-medium mb-1">পেমেন্ট মেথড</label>
+            <div class="border border-gray-300 rounded p-2">
+              <div class="flex items-center mb-2">
+                <input type="radio" id="modal-cod" name="modal-payment" value="COD" class="mr-2" checked>
+                <label for="modal-cod">ক্যাশ অন ডেলিভারি (COD)</label>
+              </div>
+              <div class="flex items-center mb-2">
+                <input type="radio" id="modal-bkash" name="modal-payment" value="Bkash" class="mr-2">
+                <label for="modal-bkash">বিকাশ</label>
+              </div>
+              <div class="flex items-center">
+                <input type="radio" id="modal-card" name="modal-payment" value="Card" class="mr-2">
+                <label for="modal-card">ক্রেডিট/ডেবিট কার্ড</label>
+              </div>
+            </div>
+          </div>
+          
+          <div class="border-t border-gray-200 pt-4">
+            <div class="flex justify-between mb-1">
+              <span class="text-neutral">সাবটোটাল</span>
+              <span id="modal-subtotal" class="font-medium">৳0</span>
+            </div>
+            <div class="flex justify-between mb-1">
+              <span class="text-neutral">ডেলিভারি চার্জ</span>
+              <span id="modal-delivery" class="font-medium">৳80</span>
+            </div>
+            <div class="flex justify-between mb-1">
+              <span class="text-neutral">ডিসকাউন্ট</span>
+              <span id="modal-discount" class="font-medium text-green-600">-৳0</span>
+            </div>
+            <div class="flex justify-between font-bold text-lg mt-2">
+              <span class="text-neutral">মোট</span>
+              <span id="modal-total" class="text-primary">৳0</span>
+            </div>
+          </div>
+          
+          <button type="submit" class="w-full bg-primary hover:bg-secondary text-white py-3 rounded font-medium mt-4">
+            অর্ডার কনফার্ম করুন
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="scripts/main.js"></script>
+  <script src="scripts/navbar_footer.js"></script>
+  
+  <script>
+    // Global variables
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let appliedPromo = null;
+    
+    // Initialize cart
+    document.addEventListener('DOMContentLoaded', () => {
+      renderCartItems();
+      updateOrderSummary();
+      
+      // Load promo codes from products
+      loadPromoCodes();
+      
+      // Event listeners
+      document.getElementById('clear-cart').addEventListener('click', clearCart);
+      document.getElementById('apply-promo').addEventListener('click', applyPromoCode);
+      document.getElementById('checkout-btn').addEventListener('click', openCheckoutModal);
+      document.getElementById('close-modal').addEventListener('click', closeCheckoutModal);
+      
+      // Form submission
+      document.getElementById('checkout-form').addEventListener('submit', submitOrder);
+    });
+    
+    // Render cart items
+    function renderCartItems() {
+      const container = document.getElementById('cart-items');
+      
+      if (cart.length === 0) {
+        container.innerHTML = `
+          <div class="empty-cart text-center py-16">
+            <i class="fas fa-shopping-cart text-5xl text-gray-300 mb-4"></i>
+            <h3 class="text-xl font-medium text-neutral mb-2">আপনার কার্ট খালি</h3>
+            <p class="text-neutral mb-4">আপনার কার্টে কোন পণ্য নেই</p>
+            <a href="products.html" class="inline-block bg-primary hover:bg-secondary text-white px-6 py-2 rounded font-medium">
+              পণ্য ব্রাউজ করুন
+            </a>
+          </div>
+        `;
+        document.getElementById('checkout-btn').disabled = true;
+        return;
+      }
+      
+      container.innerHTML = cart.map(item => `
+        <div class="flex items-center border-b border-gray-200 pb-4" data-id="${item.id}">
+          <div class="w-24 h-24 rounded overflow-hidden mr-4">
+            <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover">
+          </div>
+          <div class="flex-1">
+            <h3 class="font-medium text-neutral">${item.name}</h3>
+            <p class="text-accent font-medium mb-2">৳${item.price}</p>
+            <div class="flex items-center">
+              <button class="quantity-btn px-2 py-1 border border-gray-300 rounded-l hover:bg-gray-100" 
+                      onclick="updateCartItemQuantity('${item.id}', -1)">
+                <i class="fas fa-minus"></i>
+              </button>
+              <input type="number" value="${item.quantity}" min="1" 
+                     class="w-12 text-center border-t border-b border-gray-300 focus:outline-none"
+                     onchange="updateCartItemInput('${item.id}', this.value)">
+              <button class="quantity-btn px-2 py-1 border border-gray-300 rounded-r hover:bg-gray-100" 
+                      onclick="updateCartItemQuantity('${item.id}', 1)">
+                <i class="fas fa-plus"></i>
+              </button>
+              <button class="ml-4 text-danger hover:text-red-700" 
+                      onclick="removeCartItem('${item.id}')">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+          <div class="text-right">
+            <p class="font-medium">৳${item.price * item.quantity}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    // Update order summary
+    function updateOrderSummary() {
+      const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      const delivery = subtotal > 2000 ? 0 : 80;
+      const discount = appliedPromo ? subtotal * (appliedPromo.discount / 100) : 0;
+      const total = subtotal + delivery - discount;
+      
+      document.getElementById('subtotal').textContent = `৳${subtotal.toFixed(2)}`;
+      document.getElementById('delivery').textContent = `৳${delivery.toFixed(2)}`;
+      document.getElementById('discount').textContent = `-৳${discount.toFixed(2)}`;
+      document.getElementById('total').textContent = `৳${total.toFixed(2)}`;
+      
+      // Update modal summary
+      document.getElementById('modal-subtotal').textContent = `৳${subtotal.toFixed(2)}`;
+      document.getElementById('modal-delivery').textContent = `৳${delivery.toFixed(2)}`;
+      document.getElementById('modal-discount').textContent = `-৳${discount.toFixed(2)}`;
+      document.getElementById('modal-total').textContent = `৳${total.toFixed(2)}`;
+    }
+    
+    // Update cart item quantity
+    function updateCartItemQuantity(id, change) {
+      const item = cart.find(item => item.id === id);
+      if (!item) return;
+      
+      item.quantity += change;
+      
+      // Remove if quantity is zero
+      if (item.quantity < 1) {
+        cart = cart.filter(item => item.id !== id);
+      }
+      
+      saveCart();
+      renderCartItems();
+      updateOrderSummary();
+      updateCartCount();
+    }
+    
+    // Update cart item from input
+    function updateCartItemInput(id, value) {
+      const quantity = parseInt(value) || 1;
+      const item = cart.find(item => item.id === id);
+      if (!item) return;
+      
+      item.quantity = quantity;
+      saveCart();
+      updateOrderSummary();
+      updateCartCount();
+    }
+    
+    // Remove cart item
+    function removeCartItem(id) {
+      cart = cart.filter(item => item.id !== id);
+      saveCart();
+      renderCartItems();
+      updateOrderSummary();
+      updateCartCount();
+    }
+    
+    // Clear cart
+    function clearCart() {
+      if (confirm('আপনি কি নিশ্চিত আপনার কার্ট খালি করতে চান?')) {
+        cart = [];
+        saveCart();
+        renderCartItems();
+        updateOrderSummary();
+        updateCartCount();
+      }
+    }
+    
+    // Save cart to localStorage
+    function saveCart() {
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }
+    
+    // Update cart count in navbar
+    function updateCartCount() {
+      const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+      document.querySelectorAll('.cart-count').forEach(element => {
+        element.textContent = totalItems;
+      });
+    }
+    
+    // Load promo codes from products
+    function loadPromoCodes() {
+      fetch('productData/products.json')
+        .then(response => response.json())
+        .then(data => {
+          const allPromos = data.products.flatMap(product => 
+            product.promoCodes ? product.promoCodes.map(promo => ({
+              ...promo,
+              productId: product.id
+            })) : []
+          );
+          
+          // Store promos for later use
+          window.promoCodes = allPromos;
+        })
+        .catch(error => console.error('Error loading promo codes:', error));
+    }
+    
+    // Apply promo code
+    function applyPromoCode() {
+      const codeInput = document.getElementById('promo-code');
+      const code = codeInput.value.trim();
+      const messageEl = document.getElementById('promo-message');
+      
+      if (!code) {
+        messageEl.textContent = 'প্রোমো কোড লিখুন';
+        messageEl.className = 'text-sm mt-1 text-danger';
+        messageEl.classList.remove('hidden');
+        return;
+      }
+      
+      const promo = window.promoCodes.find(p => p.code === code);
+      
+      if (!promo) {
+        messageEl.textContent = 'অবৈধ প্রোমো কোড';
+        messageEl.className = 'text-sm mt-1 text-danger';
+        messageEl.classList.remove('hidden');
+        appliedPromo = null;
+        updateOrderSummary();
+        return;
+      }
+      
+      // Check if promo applies to any product in cart
+      const appliesToCart = cart.some(item => item.id === promo.productId);
+      
+      if (!appliesToCart) {
+        messageEl.textContent = 'এই প্রোমো কোড আপনার কার্টের পণ্যের জন্য প্রযোজ্য নয়';
+        messageEl.className = 'text-sm mt-1 text-danger';
+        messageEl.classList.remove('hidden');
+        appliedPromo = null;
+        updateOrderSummary();
+        return;
+      }
+      
+      appliedPromo = promo;
+      messageEl.textContent = `${promo.discount}% ছাড় প্রয়োগ করা হয়েছে!`;
+      messageEl.className = 'text-sm mt-1 text-green-600';
+      messageEl.classList.remove('hidden');
+      updateOrderSummary();
+    }
+    
+    // Open checkout modal
+    function openCheckoutModal() {
+      if (cart.length === 0) return;
+      
+      const modal = document.getElementById('checkout-modal');
+      modal.classList.remove('hidden');
+      document.body.classList.add('overflow-hidden');
+    }
+    
+    // Close checkout modal
+    function closeCheckoutModal() {
+      const modal = document.getElementById('checkout-modal');
+      modal.classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+    }
+    
+    // Submit order
+    function submitOrder(e) {
+      e.preventDefault();
+      
+      const form = e.target;
+      const formData = new FormData(form);
+      const orderData = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        phone: formData.get('phone'),
+        address: formData.get('address'),
+        paymentMethod: formData.get('modal-payment'),
+        items: cart,
+        subtotal: parseFloat(document.getElementById('modal-subtotal').textContent.replace('৳', '')),
+        delivery: parseFloat(document.getElementById('modal-delivery').textContent.replace('৳', '')),
+        discount: parseFloat(document.getElementById('modal-discount').textContent.replace('-৳', '') || 0),
+        total: parseFloat(document.getElementById('modal-total').textContent.replace('৳', ''))
+      };
+      
+      // Here you would typically send the order to your server
+      // For demo purposes, we'll just show a success message
+      console.log('Order submitted:', orderData);
+      
+      // Show success message
+      alert(`আপনার অর্ডার #ORD-${Math.floor(1000 + Math.random() * 9000)} সফলভাবে সম্পন্ন হয়েছে!`);
+      
+      // Clear cart and close modal
+      cart = [];
+      saveCart();
+      closeCheckoutModal();
+      renderCartItems();
+      updateOrderSummary();
+      updateCartCount();
+      
+      // Reset form
+      form.reset();
+    }
+  </script>
+</body>
+</html>
