@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finvora - যোগাযোগ</title>
+    <meta name="description" content="Finvora এর সাথে যোগাযোগ করুন - বাংলাদেশের সেরা অ্যাকুরিয়াম মাছ ও আনুষাঙ্গিক পণ্যের সরবরাহকারী">
+    <!-- Preconnect to external resources -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    
+    <!-- Tailwind with custom config -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#1a365d',
+              secondary: '#2c5282',
+              accent: '#4299e1',
+              neutral: '#4a5568'
+            },
+            fontFamily: {
+              bangla: ['Hind Siliguri', 'Noto Sans Bengali', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;700&family=Noto+Sans+Bengali:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+      body { 
+        font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif;
+        background-color: #f7fafc;
+      }
+      .contact-hero {
+        background: linear-gradient(rgba(26, 54, 93, 0.8), rgba(26, 54, 93, 0.8)), url('img/contact-bg.jpg');
+        background-size: cover;
+        background-position: center;
+      }
+      .nav-blur {
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+      #map {
+        height: 400px;
+        width: 100%;
+      }
+    </style>
+</head>
+<body class="bangla-font antialiased text-gray-800 pt-16">
+  <!-- Navigation -->
+  <div id="navbar"></div>
+
+  <!-- Hero Section -->
+  <section class="contact-hero text-white py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h1 class="text-4xl md:text-5xl font-bold mb-4">আমাদের সাথে যোগাযোগ করুন</h1>
+      <p class="text-xl max-w-2xl mx-auto">আপনার যে কোন প্রশ্ন বা পরামর্শের জন্য আমরা সর্বদা প্রস্তুত</p>
+    </div>
+  </section>
+
+  <!-- Contact Content -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+        <!-- Contact Form -->
+        <div>
+          <h2 class="text-3xl font-bold text-primary mb-6">মেসেজ পাঠান</h2>
+          <form id="contactForm" class="space-y-6">
+            <div>
+              <label for="name" class="block text-neutral font-medium mb-1">আপনার নাম *</label>
+              <input type="text" id="name" name="name" required 
+                     class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent">
+            </div>
+            
+            <div>
+              <label for="email" class="block text-neutral font-medium mb-1">ইমেইল *</label>
+              <input type="email" id="email" name="email" required 
+                     class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent">
+            </div>
+            
+            <div>
+              <label for="phone" class="block text-neutral font-medium mb-1">ফোন নম্বর</label>
+              <input type="tel" id="phone" name="phone" 
+                     class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent">
+            </div>
+            
+            <div>
+              <label for="subject" class="block text-neutral font-medium mb-1">বিষয় *</label>
+              <select id="subject" name="subject" required 
+                      class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent">
+                <option value="" disabled selected>বিষয় নির্বাচন করুন</option>
+                <option value="general">সাধারণ প্রশ্ন</option>
+                <option value="order">অর্ডার সম্পর্কিত</option>
+                <option value="product">পণ্য সম্পর্কিত</option>
+                <option value="return">রিটার্ন/রিফান্ড</option>
+                <option value="other">অন্যান্য</option>
+              </select>
+            </div>
+            
+            <div>
+              <label for="message" class="block text-neutral font-medium mb-1">আপনার মেসেজ *</label>
+              <textarea id="message" name="message" rows="5" required 
+                        class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent"></textarea>
+            </div>
+            
+            <button type="submit" class="bg-primary hover:bg-secondary text-white px-6 py-3 rounded font-medium transition duration-300">
+              মেসেজ পাঠান <i class="fas fa-paper-plane ml-2"></i>
+            </button>
+          </form>
+          
+          <div id="formSuccess" class="hidden mt-4 p-4 bg-green-100 text-green-700 rounded">
+            <i class="fas fa-check-circle mr-2"></i> আপনার মেসেজ সফলভাবে পাঠানো হয়েছে। আমরা শীঘ্রই আপনার সাথে যোগাযোগ করব।
+          </div>
+        </div>
+        
+        <!-- Contact Info -->
+        <div>
+          <h2 class="text-3xl font-bold text-primary mb-6">যোগাযোগের তথ্য</h2>
+          
+          <div class="space-y-6">
+            <div class="flex items-start">
+              <div class="text-accent text-xl mt-1 mr-4">
+                <i class="fas fa-map-marker-alt"></i>
+              </div>
+              <div>
+                <h3 class="font-bold text-neutral mb-1">অফিসের ঠিকানা</h3>
+                <p>১২৩ অ্যাকুরিয়াম স্ট্রিট, ব্লক-বি, ঢাকা-১২১২, বাংলাদেশ</p>
+              </div>
+            </div>
+            
+            <div class="flex items-center">
+              <div class="text-accent text-xl mr-4">
+                <i class="fas fa-phone-alt"></i>
+              </div>
+              <div>
+                <h3 class="font-bold text-neutral mb-1">ফোন নম্বর</h3>
+                <p><a href="tel:+8801330104736" class="hover:text-accent">+880 1330-104736</a></p>
+                <p><a href="tel:+8809610104736" class="hover:text-accent">+880 9610-104736</a></p>
+              </div>
+            </div>
+            
+            <div class="flex items-center">
+              <div class="text-accent text-xl mr-4">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <div>
+                <h3 class="font-bold text-neutral mb-1">ইমেইল</h3>
+                <p><a href="mailto:info@finvora.com" class="hover:text-accent">info@finvora.com</a></p>
+                <p><a href="mailto:support@finvora.com" class="hover:text-accent">support@finvora.com</a></p>
+              </div>
+            </div>
+            
+            <div class="flex items-center">
+              <div class="text-accent text-xl mr-4">
+                <i class="fas fa-clock"></i>
+              </div>
+              <div>
+                <h3 class="font-bold text-neutral mb-1">কর্মঘন্টা</h3>
+                <p>শনি-বৃহস্পতিবার: সকাল ১০টা - রাত ৮টা</p>
+                <p>শুক্রবার: বন্ধ</p>
+              </div>
+            </div>
+            
+            <div class="flex items-center">
+              <div class="text-accent text-xl mr-4">
+                <i class="fas fa-headset"></i>
+              </div>
+              <div>
+                <h3 class="font-bold text-neutral mb-1">জরুরি সাপোর্ট</h3>
+                <p><a href="tel:+8801710104736" class="hover:text-accent">+880 1710-104736</a> (২৪/৭)</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-8">
+            <h3 class="font-bold text-neutral mb-4">সামাজিক যোগাযোগ মাধ্যম</h3>
+            <div class="flex space-x-4">
+              <a href="#" class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center hover:bg-secondary transition">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a href="#" class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center hover:bg-secondary transition">
+                <i class="fab fa-instagram"></i>
+              </a>
+              <a href="#" class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center hover:bg-secondary transition">
+                <i class="fab fa-youtube"></i>
+              </a>
+              <a href="#" class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center hover:bg-secondary transition">
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Map Section -->
+  <section class="py-0 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div id="map" class="rounded-lg shadow-md"></div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="text-3xl font-bold text-primary">সচরাচর জিজ্ঞাসিত প্রশ্ন</h2>
+        <p class="text-neutral mt-2">আপনার মনে হতে পারে এমন কিছু সাধারণ প্রশ্ন</p>
+      </div>
+      
+      <div class="max-w-3xl mx-auto space-y-4">
+        <div class="border border-gray-200 rounded-lg overflow-hidden">
+          <button class="faq-question w-full flex justify-between items-center p-4 bg-gray-50 hover:bg-gray-100">
+            <h3 class="text-left font-medium text-neutral">আমি কিভাবে অর্ডার করতে পারি?</h3>
+            <i class="fas fa-chevron-down text-accent transition-transform duration-300"></i>
+          </button>
+          <div class="faq-answer hidden p-4 bg-white">
+            <p class="text-neutral">আপনি আমাদের ওয়েবসাইট থেকে সরাসরি অর্ডার করতে পারেন অথবা আমাদের হটলাইনে কল করে অর্ডার দিতে পারেন। ওয়েবসাইটে অর্ডার করতে পণ্য নির্বাচন করে কার্টে যোগ করুন, তারপর চেকআউট পেজে আপনার তথ্য দিয়ে অর্ডার সম্পন্ন করুন।</p>
+          </div>
+        </div>
+        
+        <div class="border border-gray-200 rounded-lg overflow-hidden">
+          <button class="faq-question w-full flex justify-between items-center p-4 bg-gray-50 hover:bg-gray-100">
+            <h3 class="text-left font-medium text-neutral">ডেলিভারি চার্জ কত?</h3>
+            <i class="fas fa-chevron-down text-accent transition-transform duration-300"></i>
+          </button>
+          <div class="faq-answer hidden p-4 bg-white">
+            <p class="text-neutral">ঢাকা সিটির ভিতরে ডেলিভারি চার্জ ৮০ টাকা। অন্যান্য বিভাগীয় শহরের জন্য ১২০-১৫০ টাকা। ২০০০ টাকার বেশি অর্ডারে ঢাকা সিটির ভিতরে ফ্রি ডেলিভারি।</p>
+          </div>
+        </div>
+        
+        <div class="border border-gray-200 rounded-lg overflow-hidden">
+          <button class="faq-question w-full flex justify-between items-center p-4 bg-gray-50 hover:bg-gray-100">
+            <h3 class="text-left font-medium text-neutral">পেমেন্টের পদ্ধতি কি কি?</h3>
+            <i class="fas fa-chevron-down text-accent transition-transform duration-300"></i>
+          </button>
+          <div class="faq-answer hidden p-4 bg-white">
+            <p class="text-neutral">আমরা ক্যাশ অন ডেলিভারি (COD), বিকাশ, নগদ, রকেট এবং কার্ড পেমেন্ট (SSLCOMMERZ এর মাধ্যমে) গ্রহণ করি। অনলাইন পেমেন্টের ক্ষেত্রে ১.৫% এক্সট্রা চার্জ প্রযোজ্য।</p>
+          </div>
+        </div>
+        
+        <div class="border border-gray-200 rounded-lg overflow-hidden">
+          <button class="faq-question w-full flex justify-between items-center p-4 bg-gray-50 hover:bg-gray-100">
+            <h3 class="text-left font-medium text-neutral">মাছ মারা গেলে কি করব?</h3>
+            <i class="fas fa-chevron-down text-accent transition-transform duration-300"></i>
+          </button>
+          <div class="faq-answer hidden p-4 bg-white">
+            <p class="text-neutral">আমরা সকল মাছের জন্য ৭ দিনের লাইফ গ্যারান্টি প্রদান করি। ডেলিভারির ৭ দিনের মধ্যে মাছ মারা গেলে আমাদের সাথে যোগাযোগ করুন। মৃত মাছের ছবি ও ভিডিও আমাদের পাঠাতে হবে। আমরা যাচাই করে নতুন মাছ ডেলিভারি দিব অথবা রিফান্ড করব।</p>
+          </div>
+        </div>
+        
+        <div class="border border-gray-200 rounded-lg overflow-hidden">
+          <button class="faq-question w-full flex justify-between items-center p-4 bg-gray-50 hover:bg-gray-100">
+            <h3 class="text-left font-medium text-neutral">আমি কি শো-রুম থেকে সরাসরি কিনতে পারব?</h3>
+            <i class="fas fa-chevron-down text-accent transition-transform duration-300"></i>
+          </button>
+          <div class="faq-answer hidden p-4 bg-white">
+            <p class="text-neutral">হ্যাঁ, আপনি আমাদের শো-রুম থেকে সরাসরি পণ্য কিনতে পারবেন। আমাদের শো-রুমের ঠিকানা: ১২৩ অ্যাকুরিয়াম স্ট্রিট, ব্লক-বি, ঢাকা-১২১২। শো-রুম খোলার সময়: শনি-বৃহস্পতিবার সকাল ১০টা থেকে রাত ৮টা।</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="text-center mt-10">
+        <a href="faq.html" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-full text-white bg-primary hover:bg-secondary transition">
+          আরো প্রশ্ন দেখুন
+          <i class="fas fa-arrow-right ml-2"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <!-- Scripts -->
+  <script src="scripts/main.js"></script>
+  <script src="scripts/navbar_footer.js"></script>
+  
+  <!-- Google Maps API -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+  
+  <script>
+    // Initialize Google Map
+    function initMap() {
+      const location = { lat: 23.8103, lng: 90.4125 }; // Dhaka coordinates
+      const map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 15,
+        center: location,
+      });
+      new google.maps.Marker({
+        position: location,
+        map: map,
+        title: "Finvora Office",
+      });
+    }
+    
+    // Handle FAQ toggle
+    document.querySelectorAll('.faq-question').forEach(button => {
+      button.addEventListener('click', function() {
+        const answer = this.nextElementSibling;
+        const icon = this.querySelector('i');
+        
+        answer.classList.toggle('hidden');
+        icon.classList.toggle('transform');
+        icon.classList.toggle('rotate-180');
+      });
+    });
+    
+    // Handle contact form submission
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Here you would typically send the form data to your server
+      // For demo purposes, we'll just show the success message
+      document.getElementById('formSuccess').classList.remove('hidden');
+      this.reset();
+      
+      // Scroll to success message
+      document.getElementById('formSuccess').scrollIntoView({ behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
