@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Finvora - পণ্যের বিবরণ</title>
+    <meta name="description" content="Finvora - পণ্যের সম্পূর্ণ বিবরণ দেখুন">
+    <!-- Preconnect to external resources -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    
+    <!-- Tailwind with custom config -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#1a365d',
+              secondary: '#2c5282',
+              accent: '#4299e1',
+              neutral: '#4a5568',
+              danger: '#e53e3e'
+            },
+            fontFamily: {
+              bangla: ['Hind Siliguri', 'Noto Sans Bengali', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;700&family=Noto+Sans+Bengali:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+      body { 
+        font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif;
+        background-color: #f7fafc;
+      }
+      .image-gallery-thumbnail.active {
+        border: 2px solid #4299e1;
+      }
+      .nav-blur {
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+    </style>
+</head>
+<body class="bangla-font antialiased text-gray-800 pt-16">
+  <!-- Navigation -->
+  <div id="navbar"></div>
+
+  <!-- Product Details Section -->
+  <section class="py-12 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div id="product-container" class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <!-- Loading skeleton -->
+        <div class="space-y-6">
+          <div class="bg-gray-200 rounded-lg h-96 animate-pulse"></div>
+          <div class="grid grid-cols-4 gap-2">
+            <div class="bg-gray-200 h-20 animate-pulse"></div>
+            <div class="bg-gray-200 h-20 animate-pulse"></div>
+            <div class="bg-gray-200 h-20 animate-pulse"></div>
+            <div class="bg-gray-200 h-20 animate-pulse"></div>
+          </div>
+        </div>
+        <div class="space-y-6">
+          <div class="h-8 bg-gray-200 rounded w-3/4 animate-pulse"></div>
+          <div class="h-6 bg-gray-200 rounded w-1/2 animate-pulse"></div>
+          <div class="h-4 bg-gray-200 rounded w-full animate-pulse"></div>
+          <div class="h-4 bg-gray-200 rounded w-5/6 animate-pulse"></div>
+          <div class="h-4 bg-gray-200 rounded w-2/3 animate-pulse"></div>
+          <div class="h-12 bg-gray-200 rounded w-1/3 animate-pulse"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Product Tabs Section -->
+  <section class="py-12 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="border-b border-gray-200">
+        <nav class="flex -mb-px space-x-8">
+          <button id="description-tab" class="tab-button py-4 px-1 border-b-2 font-medium text-sm border-accent text-accent">
+            বিস্তারিত বিবরণ
+          </button>
+          <button id="specifications-tab" class="tab-button py-4 px-1 border-b-2 font-medium text-sm border-transparent text-neutral hover:text-primary hover:border-gray-300">
+            স্পেসিফিকেশন
+          </button>
+          <button id="reviews-tab" class="tab-button py-4 px-1 border-b-2 font-medium text-sm border-transparent text-neutral hover:text-primary hover:border-gray-300">
+            রিভিউ
+          </button>
+        </nav>
+      </div>
+      
+      <div id="tab-content" class="py-8">
+        <!-- Content will be loaded by JavaScript -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Products -->
+  <section class="py-12 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-2xl font-bold text-primary mb-8">সম্পর্কিত পণ্য</h2>
+      
+      <div id="related-products" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Loading skeleton -->
+        <div class="space-y-6">
+          <div class="bg-gray-200 rounded-lg h-64 animate-pulse"></div>
+          <div class="h-4 bg-gray-200 rounded w-3/4 animate-pulse"></div>
+          <div class="h-4 bg-gray-200 rounded w-1/2 animate-pulse"></div>
+        </div>
+        <div class="space-y-6">
+          <div class="bg-gray-200 rounded-lg h-64 animate-pulse"></div>
+          <div class="h-4 bg-gray-200 rounded w-3/4 animate-pulse"></div>
+          <div class="h-4 bg-gray-200 rounded w-1/2 animate-pulse"></div>
+        </div>
+        <div class="space-y-6">
+          <div class="bg-gray-200 rounded-lg h-64 animate-pulse"></div>
+          <div class="h-4 bg-gray-200 rounded w-3/4 animate-pulse"></div>
+          <div class="h-4 bg-gray-200 rounded w-1/2 animate-pulse"></div>
+        </div>
+        <div class="space-y-6">
+          <div class="bg-gray-200 rounded-lg h-64 animate-pulse"></div>
+          <div class="h-4 bg-gray-200 rounded w-3/4 animate-pulse"></div>
+          <div class="h-4 bg-gray-200 rounded w-1/2 animate-pulse"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <!-- Scripts -->
+  <script src="scripts/main.js"></script>
+  <script src="scripts/navbar_footer.js"></script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Get product ID from URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const productId = urlParams.get('id');
+      
+      if (!productId) {
+        window.location.href = 'products.html';
+        return;
+      }
+      
+      try {
+        // Load products data
+        const response = await fetch('productData/products.json');
+        const data = await response.json();
+        const product = data.products.find(p => p.id === productId);
+        
+        if (!product) {
+          window.location.href = 'products.html';
+          return;
+        }
+        
+        // Update page title
+        document.getElementById('page-title').textContent = `Finvora - ${product.name}`;
+        
+        // Render product details
+        const container = document.getElementById('product-container');
+        if (container) {
+          container.innerHTML = `
+            <!-- Image Gallery -->
+            <div class="product-gallery">
+              <div class="mb-4 rounded-lg overflow-hidden">
+                <img id="main-image" src="${product.images[0]}" alt="${product.name}" class="w-full h-96 object-cover cursor-zoom-in">
+              </div>
+              <div class="grid grid-cols-4 gap-2">
+                ${product.images.map((img, index) => `
+                  <div class="thumbnail ${index === 0 ? 'active' : ''} border-2 border-transparent rounded cursor-pointer">
+                    <img src="${img}" alt="${product.name} - Thumbnail ${index + 1}" 
+                         class="w-full h-20 object-cover"
+                         onclick="document.getElementById('main-image').src = '${img}'; 
+                                  document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+                                  this.parentElement.classList.add('active')">
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+            
+            <!-- Product Info -->
+            <div class="product-info">
+              <h1 class="text-3xl font-bold text-primary mb-2">${product.name}</h1>
+              
+              <div class="flex items-center mb-4">
+                <div class="flex text-yellow-400 mr-2">
+                  ${Array.from({length: 5}).map((_, i) => `
+                    <i class="fas fa-star${i < Math.floor(product.rating) ? '' : (i < product.rating ? '-half-alt' : '')}"></i>
+                  `).join('')}
+                </div>
+                <span class="text-neutral text-sm">${product.rating} (${product.reviews.length} রিভিউ)</span>
+                ${product.stock > 0 ? `
+                  <span class="ml-4 text-green-600 text-sm">
+                    <i class="fas fa-check-circle mr-1"></i> স্টকে আছে
+                  </span>
+                ` : `
+                  <span class="ml-4 text-red-500 text-sm">
+                    <i class="fas fa-times-circle mr-1"></i> স্টকে নেই
+                  </span>
+                `}
+              </div>
+              
+              <div class="mb-6">
+                ${product.discount ? `
+                  <div class="flex items-center">
+                    <span class="text-2xl font-bold text-accent mr-3">৳${product.price}</span>
+                    <span class="text-gray-400 line-through">৳${product.originalPrice}</span>
+                    <span class="ml-2 bg-accent text-white text-xs px-2 py-1 rounded">${product.discount}% ছাড়</span>
+                  </div>
+                ` : `
+                  <span class="text-2xl font-bold text-accent">৳${product.price}</span>
+                `}
+              </div>
+              
+              <p class="text-neutral mb-6">${product.shortDescription}</p>
+              
+              <div class="mb-6">
+                <div class="flex items-center mb-2">
+                  <span class="font-medium text-neutral mr-2">ক্যাটাগরি:</span>
+                  <a href="products.html?category=${product.category}" class="text-accent hover:underline">
+                    ${product.category === 'fish' ? 'মাছ' : 
+                     product.category === 'fish-food' ? 'মাছের খাবার' : 
+                     product.category === 'aquarium-accessories' ? 'অ্যাকুরিয়াম আনুষাঙ্গিক' : 
+                     'অ্যাকুরিয়াম প্লান্ট'}
+                  </a>
+                </div>
+                
+                ${product.specifications.size ? `
+                  <div class="flex items-center mb-2">
+                    <span class="font-medium text-neutral mr-2">সাইজ:</span>
+                    <span>${product.specifications.size}</span>
+                  </div>
+                ` : ''}
+                
+                ${product.stock > 0 && product.stock < 10 ? `
+                  <div class="text-sm text-danger mb-2">
+                    <i class="fas fa-exclamation-triangle mr-1"></i> শেষ ${product.stock} টি পণ্য
+                  </div>
+                ` : ''}
+              </div>
+              
+              <div class="flex flex-col sm:flex-row gap-4 mb-6">
+                ${product.stock > 0 ? `
+                  <div class="flex items-center border border-gray-300 rounded-full overflow-hidden">
+                    <button class="quantity-btn px-3 py-2 text-neutral hover:bg-gray-100" onclick="updateQuantity(-1)">-</button>
+                    <input type="number" id="quantity" value="1" min="1" max="${product.stock}" 
+                           class="w-12 text-center border-x border-gray-300 focus:outline-none">
+                    <button class="quantity-btn px-3 py-2 text-neutral hover:bg-gray-100" onclick="updateQuantity(1)">+</button>
+                  </div>
+                  <button id="add-to-cart" class="flex-1 bg-primary hover:bg-secondary text-white px-6 py-2 rounded-full font-medium transition duration-300" 
+                          onclick="addToCart('${product.id}')">
+                    <i class="fas fa-shopping-cart mr-2"></i> কার্টে যোগ করুন
+                  </button>
+                ` : `
+                  <button class="w-full bg-gray-300 text-gray-600 px-6 py-2 rounded-full font-medium cursor-not-allowed">
+                    স্টকে নেই
+                  </button>
+                `}
+              </div>
+              
+              ${product.promoCodes && product.promoCodes.length > 0 ? `
+                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6">
+                  <div class="flex items-start">
+                    <div class="text-yellow-400 mr-2">
+                      <i class="fas fa-tag"></i>
+                    </div>
+                    <div>
+                      <h3 class="font-bold text-neutral mb-1">প্রোমো কোড</h3>
+                      <p class="text-sm text-neutral mb-2">এই পণ্যের জন্য নিচের প্রোমো কোডগুলো ব্যবহার করুন:</p>
+                      <div class="space-y-2">
+                        ${product.promoCodes.map(promo => `
+                          <div class="flex items-center">
+                            <span class="bg-white border border-yellow-400 text-yellow-700 px-2 py-1 rounded text-sm mr-2">${promo.code}</span>
+                            <span class="text-sm text-neutral">${promo.discount}% ছাড় (${promo.validUntil} পর্যন্ত)</span>
+                          </div>
+                        `).join('')}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ` : ''}
+              
+              <div class="border-t border-gray-200 pt-4">
+                <div class="flex items-center mb-2">
+                  <i class="fas fa-shield-alt text-accent mr-2"></i>
+                  <span class="text-sm text-neutral">১০০% লাইফ গ্যারান্টি (মাছের জন্য)</span>
+                </div>
+                <div class="flex items-center mb-2">
+                  <i class="fas fa-truck text-accent mr-2"></i>
+                  <span class="text-sm text-neutral">ঢাকার ভিতরে ২৪ ঘন্টার মধ্যে ডেলিভারি</span>
+                </div>
+                <div class="flex items-center">
+                  <i class="fas fa-undo-alt text-accent mr-2"></i>
+                  <span class="text-sm text-neutral">৭ দিনের রিটার্ন পলিসি</span>
+                </div>
+              </div>
+            </div>
+          `;
+        }
+        
+        // Render tab content
+        renderTabContent('description');
+        
+        // Setup tab switching
+        document.querySelectorAll('.tab-button').forEach(button => {
+          button.addEventListener('click', function() {
+            const tabId = this.id.replace('-tab', '');
+            renderTabContent(tabId);
+            
+            // Update active tab
+            document.querySelectorAll('.tab-button').forEach(btn => {
+              btn.classList.remove('border-accent', 'text-accent');
+              btn.classList.add('border-transparent', 'text-neutral', 'hover:text-primary', 'hover:border-gray-300');
+            });
+            this.classList.remove('border-transparent', 'text-neutral', 'hover:text-primary', 'hover:border-gray-300');
+            this.classList.add('border-accent', 'text-accent');
+          });
+        });
+        
+        // Load related products
+        const relatedProducts = data.products
+          .filter(p => p.category === product.category && p.id !== product.id)
+          .slice(0, 4);
+        
+        const relatedContainer = document.getElementById('related-products');
+        if (relatedContainer && relatedProducts.length > 0) {
+          relatedContainer.innerHTML = relatedProducts.map(p => `
+            <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition">
+              <a href="product_info.html?id=${p.id}">
+                <div class="relative">
+                  <img src="${p.images[0]}" alt="${p.name}" class="w-full h-64 object-cover">
+                  ${p.discount ? `
+                    <span class="absolute top-2 right-2 bg-accent text-white text-xs font-bold px-2 py-1 rounded">
+                      ${p.discount}% ছাড়
+                    </span>
+                  ` : ''}
+                </div>
+                <div class="p-4">
+                  <h3 class="font-medium text-neutral hover:text-accent mb-1">${p.name}</h3>
+                  <div class="flex justify-between items-center">
+                    <div>
+                      ${p.discount ? `
+                        <span class="text-gray-400 line-through text-sm mr-1">৳${p.originalPrice}</span>
+                        <span class="font-bold text-accent">৳${p.price}</span>
+                      ` : `
+                        <span class="font-bold text-accent">৳${p.price}</span>
+                      `}
+                    </div>
+                    <div class="flex items-center text-yellow-400 text-xs">
+                      <i class="fas fa-star"></i>
+                      <span class="ml-1 text-gray-600">${p.rating}</span>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          `).join('');
+        } else if (relatedContainer) {
+          relatedContainer.innerHTML = `
+            <div class="col-span-full text-center py-8 text-neutral">
+              কোন সম্পর্কিত পণ্য পাওয়া যায়নি
+            </div>
+          `;
+        }
+        
+      } catch (error) {
+        console.error('Error loading product:', error);
+        window.location.href = 'products.html';
+      }
+    });
+    
+    function renderTabContent(tabId) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const productId = urlParams.get('id');
+      
+      fetch('productData/products.json')
+        .then(response => response.json())
+        .then(data => {
+          const product = data.products.find(p => p.id === productId);
+          if (!product) return;
+          
+          const tabContent = document.getElementById('tab-content');
+          if (!tabContent) return;
+          
+          switch(tabId) {
+            case 'description':
+              tabContent.innerHTML = `
+                <h3 class="text-xl font-bold text-primary mb-4">পণ্যের বিবরণ</h3>
+                <div class="prose max-w-none text-neutral">
+                  <p>${product.description}</p>
+                </div>
+              `;
+              break;
+              
+            case 'specifications':
+              tabContent.innerHTML = `
+                <h3 class="text-xl font-bold text-primary mb-4">স্পেসিফিকেশন</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  ${Object.entries(product.specifications).map(([key, value]) => `
+                    <div class="bg-gray-50 p-4 rounded">
+                      <h4 class="font-medium text-neutral mb-1">${key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}</h4>
+                      <p class="text-neutral">${value}</p>
+                    </div>
+                  `).join('')}
+                </div>
+              `;
+              break;
+              
+            case 'reviews':
+              tabContent.innerHTML = `
+                <h3 class="text-xl font-bold text-primary mb-4">গ্রাহক রিভিউ</h3>
+                ${product.reviews.length > 0 ? `
+                  <div class="space-y-6">
+                    ${product.reviews.map(review => `
+                      <div class="border-b border-gray-200 pb-6">
+                        <div class="flex items-center mb-3">
+                          <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center mr-3">
+                            <i class="fas fa-user text-gray-500"></i>
+                          </div>
+                          <div>
+                            <h4 class="font-medium text-neutral">${review.user}</h4>
+                            <div class="flex items-center">
+                              <div class="flex text-yellow-400 text-xs mr-2">
+                                ${Array.from({length: 5}).map((_, i) => `
+                                  <i class="fas fa-star${i < review.rating ? '' : '-empty'}"></i>
+                                `).join('')}
+                              </div>
+                              <span class="text-gray-500 text-sm">${review.date}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <p class="text-neutral">${review.comment}</p>
+                      </div>
+                    `).join('')}
+                  </div>
+                ` : `
+                  <div class="text-center py-8 text-neutral">
+                    <i class="fas fa-comment-slash text-3xl mb-2"></i>
+                    <p>এই পণ্যের জন্য কোন রিভিউ নেই</p>
+                  </div>
+                `}
+                
+                <div class="mt-8 border-t border-gray-200 pt-8">
+                  <h4 class="text-lg font-bold text-primary mb-4">রিভিউ লিখুন</h4>
+                  <form id="review-form" class="max-w-2xl">
+                    <div class="mb-4">
+                      <label class="block text-neutral font-medium mb-1">আপনার নাম</label>
+                      <input type="text" required class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent">
+                    </div>
+                    <div class="mb-4">
+                      <label class="block text-neutral font-medium mb-1">রেটিং</label>
+                      <div class="flex space-x-1">
+                        ${[1, 2, 3, 4, 5].map(i => `
+                          <i class="fas fa-star text-2xl text-gray-300 cursor-pointer hover:text-yellow-400" 
+                             onmouseover="highlightStars(${i})" 
+                             onmouseout="resetStars()" 
+                             onclick="setRating(${i})"></i>
+                        `).join('')}
+                      </div>
+                      <input type="hidden" id="rating-value" value="0">
+                    </div>
+                    <div class="mb-4">
+                      <label class="block text-neutral font-medium mb-1">আপনার রিভিউ</label>
+                      <textarea rows="4" required class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-accent focus:border-accent"></textarea>
+                    </div>
+                    <button type="submit" class="bg-primary hover:bg-secondary text-white px-6 py-2 rounded font-medium">
+                      রিভিউ সাবমিট করুন
+                    </button>
+                  </form>
+                </div>
+              `;
+              break;
+          }
+        });
+    }
+    
+    function updateQuantity(change) {
+      const quantityInput = document.getElementById('quantity');
+      let quantity = parseInt(quantityInput.value) + change;
+      const max = parseInt(quantityInput.max);
+      
+      if (quantity < 1) quantity = 1;
+      if (quantity > max) quantity = max;
+      
+      quantityInput.value = quantity;
+    }
+    
+    function addToCart(productId) {
+      const quantity = parseInt(document.getElementById('quantity').value);
+      
+      fetch('productData/products.json')
+        .then(response => response.json())
+        .then(data => {
+          const product = data.products.find(p => p.id === productId);
+          if (!product) return;
+          
+          let cart = JSON.parse(localStorage.getItem('cart')) || [];
+          const existingItem = cart.find(item => item.id === product.id);
+          
+          if (existingItem) {
+            // Check if we're not exceeding available stock
+            if (existingItem.quantity + quantity > product.stock) {
+              alert(`দুঃখিত, স্টকে শুধু ${product.stock} টি পণ্য আছে`);
+              return;
+            }
+            existingItem.quantity += quantity;
+          } else {
+            cart.push({
+              id: product.id,
+              name: product.name,
+              price: product.price,
+              image: product.images[0],
+              quantity: quantity
+            });
+          }
+          
+          localStorage.setItem('cart', JSON.stringify(cart));
+          updateCartCount();
+          
+          const addButton = document.getElementById('add-to-cart');
+          if (addButton) {
+            addButton.innerHTML = '<i class="fas fa-check mr-2"></i> যোগ হয়েছে';
+            addButton.classList.remove('bg-primary', 'hover:bg-secondary');
+            addButton.classList.add('bg-green-500', 'hover:bg-green-600');
+            
+            setTimeout(() => {
+              addButton.innerHTML = '<i class="fas fa-shopping-cart mr-2"></i> কার্টে যোগ করুন';
+              addButton.classList.remove('bg-green-500', 'hover:bg-green-600');
+              addButton.classList.add('bg-primary', 'hover:bg-secondary');
+            }, 2000);
+          }
+        });
+    }
+    
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+      
+      document.querySelectorAll('.cart-count').forEach(element => {
+        element.textContent = totalItems;
+      });
+    }
+    
+    // Review form functions
+    function highlightStars(count) {
+      const stars = document.querySelectorAll('#review-form .fa-star');
+      stars.forEach((star, index) => {
+        if (index < count) {
+          star.classList.add('text-yellow-400');
+          star.classList.remove('text-gray-300');
+        }
+      });
+    }
+    
+    function resetStars() {
+      const ratingValue = parseInt(document.getElementById('rating-value').value);
+      if (ratingValue > 0) {
+        highlightStars(ratingValue);
+      } else {
+        const stars = document.querySelectorAll('#review-form .fa-star');
+        stars.forEach(star => {
+          star.classList.add('text-gray-300');
+          star.classList.remove('text-yellow-400');
+        });
+      }
+    }
+    
+    function setRating(count) {
+      document.getElementById('rating-value').value = count;
+      highlightStars(count);
+    }
+  </script>
+</body>
+</html>
