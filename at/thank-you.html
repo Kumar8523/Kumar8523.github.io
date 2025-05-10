@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finvora - ধন্যবাদ</title>
+    <meta name="description" content="Finvora - আপনার অর্ডারের জন্য ধন্যবাদ">
+    <!-- Preconnect to external resources -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    
+    <!-- Tailwind with custom config -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#1a365d',
+              secondary: '#2c5282',
+              accent: '#4299e1',
+              neutral: '#4a5568'
+            },
+            fontFamily: {
+              bangla: ['Hind Siliguri', 'Noto Sans Bengali', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;700&family=Noto+Sans+Bengali:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+      body { 
+        font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif;
+        background-color: #f7fafc;
+      }
+      .nav-blur {
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+      .order-success {
+        background-color: #f0fdf4;
+        border-left: 4px solid #10b981;
+      }
+    </style>
+</head>
+<body class="bangla-font antialiased text-gray-800 pt-16">
+  <!-- Navigation -->
+  <div id="navbar"></div>
+
+  <!-- Thank You Section -->
+  <section class="py-12 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-8">
+        <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <i class="fas fa-check text-green-600 text-3xl"></i>
+        </div>
+        <h1 class="text-3xl font-bold text-primary mb-2">আপনার অর্ডার সফলভাবে সম্পন্ন হয়েছে!</h1>
+        <p class="text-neutral">আপনার অর্ডারটি আমরা পেয়েছি। আমাদের প্রতিনিধি শীঘ্রই আপনার সাথে যোগাযোগ করবে।</p>
+      </div>
+      
+      <div id="order-details" class="order-success p-6 rounded-lg mb-8">
+        <!-- Order details will be loaded here -->
+      </div>
+      
+      <div class="bg-gray-50 p-6 rounded-lg shadow-sm">
+        <h2 class="text-xl font-bold text-primary mb-4">পরবর্তী কী হবে?</h2>
+        <div class="space-y-4">
+          <div class="flex items-start">
+            <div class="bg-primary text-white rounded-full w-8 h-8 flex items-center justify-center mr-4 flex-shrink-0">
+              1
+            </div>
+            <div>
+              <h3 class="font-medium text-neutral mb-1">অর্ডার কনফার্মেশন</h3>
+              <p class="text-sm text-neutral">আপনার অর্ডারটি আমরা রিসিভ করেছি এবং প্রসেসিং করছি।</p>
+            </div>
+          </div>
+          
+          <div class="flex items-start">
+            <div class="bg-gray-200 text-neutral rounded-full w-8 h-8 flex items-center justify-center mr-4 flex-shrink-0">
+              2
+            </div>
+            <div>
+              <h3 class="font-medium text-neutral mb-1">প্রসেসিং</h3>
+              <p class="text-sm text-neutral">আমাদের টিম আপনার অর্ডারটি প্রস্তুত করছে।</p>
+            </div>
+          </div>
+          
+          <div class="flex items-start">
+            <div class="bg-gray-200 text-neutral rounded-full w-8 h-8 flex items-center justify-center mr-4 flex-shrink-0">
+              3
+            </div>
+            <div>
+              <h3 class="font-medium text-neutral mb-1">ডেলিভারি</h3>
+              <p class="text-sm text-neutral">আপনার অর্ডারটি ডেলিভারির জন্য পাঠানো হবে।</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="mt-8 text-center">
+        <a href="products.html" class="inline-block bg-primary hover:bg-secondary text-white px-6 py-3 rounded font-medium">
+          আরো পণ্য দেখুন
+        </a>
+        <a href="index.html" class="inline-block bg-white text-primary border border-primary hover:bg-gray-50 px-6 py-3 rounded font-medium ml-4">
+          হোমপেজে ফিরে যান
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <!-- Scripts -->
+  <script src="scripts/main.js"></script>
+  <script src="scripts/navbar_footer.js"></script>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const orderData = JSON.parse(localStorage.getItem('lastOrder'));
+      
+      if (!orderData) {
+        window.location.href = 'products.html';
+        return;
+      }
+      
+      renderOrderDetails(orderData);
+    });
+    
+    function renderOrderDetails(order) {
+      const container = document.getElementById('order-details');
+      
+      // Format order date
+      const orderDate = new Date(order.order_date);
+      const formattedDate = orderDate.toLocaleDateString('bn-BD', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+      
+      container.innerHTML = `
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+          <div>
+            <h3 class="font-bold text-neutral mb-1">অর্ডার নম্বর</h3>
+            <p class="text-primary font-medium">${order.order_id}</p>
+          </div>
+          <div class="mt-4 md:mt-0">
+            <h3 class="font-bold text-neutral mb-1">অর্ডার তারিখ</h3>
+            <p>${formattedDate}</p>
+          </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+          <div>
+            <h3 class="font-bold text-neutral mb-2">গ্রাহক তথ্য</h3>
+            <p class="mb-1">${order.name}</p>
+            <p class="mb-1">${order.phone}</p>
+            <p class="mb-1">${order.email}</p>
+            <p class="mt-2 whitespace-pre-line">${order.address}</p>
+          </div>
+          
+          <div>
+            <h3 class="font-bold text-neutral mb-2">অর্ডার সামারি</h3>
+            <div class="flex justify-between mb-1">
+              <span>সাবটোটাল</span>
+              <span>৳${order.subtotal.toFixed(2)}</span>
+            </div>
+            <div class="flex justify-between mb-1">
+              <span>ডেলিভারি চার্জ</span>
+              <span>৳${order.delivery_charge.toFixed(2)}</span>
+            </div>
+            ${order.discount > 0 ? `
+              <div class="flex justify-between mb-1">
+                <span>ডিসকাউন্ট</span>
+                <span class="text-green-600">-৳${order.discount.toFixed(2)}</span>
+              </div>
+            ` : ''}
+            <div class="flex justify-between font-bold mt-2">
+              <span>মোট</span>
+              <span class="text-primary">৳${order.total.toFixed(2)}</span>
+            </div>
+            
+            <div class="mt-4">
+              <h3 class="font-bold text-neutral mb-1">পেমেন্ট মেথড</h3>
+              <p>${order.payment_method}</p>
+              ${order.bkash_number ? `
+                <p class="mt-1">বিকাশ নম্বর: ${order.bkash_number}</p>
+                <p>ট্রানজেকশন আইডি: ${order.bkash_transaction}</p>
+              ` : ''}
+              ${order.nagad_number ? `
+                <p class="mt-1">নগদ নম্বর: ${order.nagad_number}</p>
+                <p>ট্রানজেকশন আইডি: ${order.nagad_transaction}</p>
+              ` : ''}
+            </div>
+          </div>
+        </div>
+        
+        ${order.note ? `
+          <div class="mt-4">
+            <h3 class="font-bold text-neutral mb-1">গ্রাহক নোট</h3>
+            <p>${order.note}</p>
+          </div>
+        ` : ''}
+      `;
+    }
+  </script>
+</body>
+</html>
