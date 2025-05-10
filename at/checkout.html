@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finvora - চেকআউট</title>
+    <meta name="description" content="Finvora - আপনার অর্ডার সম্পন্ন করুন">
+    <!-- Preconnect to external resources -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    
+    <!-- Tailwind with custom config -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#1a365d',
+              secondary: '#2c5282',
+              accent: '#4299e1',
+              neutral: '#4a5568',
+              danger: '#e53e3e'
+            },
+            fontFamily: {
+              bangla: ['Hind Siliguri', 'Noto Sans Bengali', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;700&family=Noto+Sans+Bengali:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+      body { 
+        font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif;
+        background-color: #f7fafc;
+      }
+      .nav-blur {
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+      .delivery-info {
+        background-color: #f0f9ff;
+        border-left: 4px solid #4299e1;
+      }
+    </style>
+</head>
+<body class="bangla-font antialiased text-gray-800 pt-16">
+  <!-- Navigation -->
+  <div id="navbar"></div>
+
+  <!-- Checkout Section -->
+  <section class="py-12 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Customer Info -->
+        <div class="lg:col-span-2">
+          <h1 class="text-2xl font-bold text-primary mb-6">অর্ডার তথ্য</h1>
+          
+          <div class="delivery-info p-4 rounded mb-6">
+            <div class="flex items-start">
+              <i class="fas fa-truck text-accent mt-1 mr-2"></i>
+              <div>
+                <h3 class="font-bold text-neutral mb-1">ডেলিভারি তথ্য</h3>
+                <p class="text-sm text-neutral">
+                  রাজশাহী সিটি কর্পোরেশনের ভিতরে ডেলিভারি চার্জ ফ্রি।<br>
+                  রাজশাহী সিটি কর্পোরেশনের বাইরে বাংলাদেশের যে কোন জায়গায় ডেলিভারি চার্জ ১৬০৳।
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          <form id="checkout-form" class="space-y-4">
+            <div>
+              <label class="block text-neutral font-medium mb-1">আপনার নাম *</label>
+              <input type="text" name="name" required 
+                     class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-accent focus:border-accent">
+            </div>
+            
+            <div>
+              <label class="block text-neutral font-medium mb-1">মোবাইল নম্বর *</label>
+              <input type="tel" name="phone" required 
+                     class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-accent focus:border-accent">
+            </div>
+            
+            <div>
+              <label class="block text-neutral font-medium mb-1">ইমেইল *</label>
+              <input type="email" name="email" required 
+                     class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-accent focus:border-accent">
+            </div>
+            
+            <div>
+              <label class="block text-neutral font-medium mb-1">সম্পূর্ণ ঠিকানা *</label>
+              <textarea name="address" rows="3" required 
+                        class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-accent focus:border-accent"></textarea>
+              <p class="text-xs text-neutral mt-1">বাড়ি নম্বর, রোড নম্বর, এলাকা, জেলা - সবকিছু উল্লেখ করুন</p>
+            </div>
+            
+            <div>
+              <label class="block text-neutral font-medium mb-1">নোট (ঐচ্ছিক)</label>
+              <textarea name="note" rows="2" 
+                        class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-accent focus:border-accent"></textarea>
+            </div>
+            
+            <div>
+              <label class="block text-neutral font-medium mb-1">প্রোমো কোড</label>
+              <div class="flex">
+                <input type="text" name="promo_code" placeholder="প্রোমো কোড লিখুন" 
+                       class="flex-1 px-4 py-2 border border-gray-300 rounded-l focus:outline-none focus:ring-1 focus:ring-accent focus:border-accent">
+                <button type="button" id="apply-promo" class="bg-gray-200 hover:bg-gray-300 text-neutral px-4 py-2 rounded-r">
+                  প্রয়োগ করুন
+                </button>
+              </div>
+              <p id="promo-message" class="text-sm mt-1 hidden"></p>
+            </div>
+            
+            <div class="pt-4">
+              <h3 class="font-bold text-neutral mb-3">পেমেন্ট মেথড *</h3>
+              <div class="space-y-3">
+                <div class="flex items-center">
+                  <input type="radio" id="cod" name="payment_method" value="Cash on Delivery" class="mr-2" checked required>
+                  <label for="cod" class="flex items-center">
+                    <i class="fas fa-money-bill-wave mr-2 text-green-600"></i>
+                    ক্যাশ অন ডেলিভারি (COD)
+                  </label>
+                </div>
+                
+                <div class="flex items-center">
+                  <input type="radio" id="bkash" name="payment_method" value="Bkash" class="mr-2" required>
+                  <label for="bkash" class="flex items-center">
+                    <i class="fas fa-mobile-alt mr-2 text-purple-600"></i>
+                    বিকাশ
+                  </label>
+                </div>
+                
+                <div id="bkash-details" class="ml-6 mt-2 hidden">
+                  <div class="mb-2">
+                    <label class="block text-neutral font-medium mb-1">বিকাশ নম্বর *</label>
+                    <input type="text" name="bkash_number" 
+                           class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-accent focus:border-accent">
+                  </div>
+                  <div>
+                    <label class="block text-neutral font-medium mb-1">ট্রানজেকশন আইডি *</label>
+                    <input type="text" name="bkash_transaction" 
+                           class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-accent focus:border-accent">
+                  </div>
+                </div>
+                
+                <div class="flex items-center">
+                  <input type="radio" id="nagad" name="payment_method" value="Nagad" class="mr-2" required>
+                  <label for="nagad" class="flex items-center">
+                    <i class="fas fa-wallet mr-2 text-blue-600"></i>
+                    নগদ
+                  </label>
+                </div>
+                
+                <div id="nagad-details" class="ml-6 mt-2 hidden">
+                  <div class="mb-2">
+                    <label class="block text-neutral font-medium mb-1">নগদ নম্বর *</label>
+                    <input type="text" name="nagad_number" 
+                           class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-accent focus:border-accent">
+                  </div>
+                  <div>
+                    <label class="block text-neutral font-medium mb-1">ট্রানজেকশন আইডি *</label>
+                    <input type="text" name="nagad_transaction" 
+                           class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-accent focus:border-accent">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        
+        <!-- Order Summary -->
+        <div class="lg:col-span-1">
+          <div class="bg-gray-50 p-6 rounded-lg shadow-sm sticky top-4">
+            <h2 class="text-xl font-bold text-primary mb-4">অর্ডার সামারি</h2>
+            
+            <div id="order-items" class="space-y-4 mb-4">
+              <!-- Cart items will be loaded here -->
+            </div>
+            
+            <div class="space-y-2 border-t border-gray-200 pt-4">
+              <div class="flex justify-between">
+                <span class="text-neutral">সাবটোটাল</span>
+                <span id="subtotal" class="font-medium">৳0</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-neutral">ডেলিভারি চার্জ</span>
+                <span id="delivery" class="font-medium">৳0</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-neutral">ডিসকাউন্ট</span>
+                <span id="discount" class="font-medium text-green-600">-৳0</span>
+              </div>
+              <div class="flex justify-between font-bold text-lg mt-2">
+                <span class="text-neutral">মোট</span>
+                <span id="total" class="text-primary">৳0</span>
+              </div>
+            </div>
+            
+            <button type="submit" form="checkout-form" class="w-full bg-primary hover:bg-secondary text-white py-3 rounded font-medium mt-6">
+              অর্ডার কনফার্ম করুন
+            </button>
+            
+            <p class="text-xs text-neutral mt-2 text-center">
+              <i class="fas fa-lock mr-1"></i> আপনার তথ্য সুরক্ষিত থাকবে
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <!-- Scripts -->
+  <script src="scripts/main.js"></script>
+  <script src="scripts/navbar_footer.js"></script>
+  
+  <script>
+    // Global variables
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let appliedPromo = null;
+    let deliveryCharge = 0;
+    
+    // Initialize checkout page
+    document.addEventListener('DOMContentLoaded', () => {
+      if (cart.length === 0) {
+        window.location.href = 'products.html';
+        return;
+      }
+      
+      renderOrderItems();
+      updateOrderSummary();
+      loadPromoCodes();
+      
+      // Payment method toggle
+      document.querySelectorAll('input[name="payment_method"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+          document.getElementById('bkash-details').classList.add('hidden');
+          document.getElementById('nagad-details').classList.add('hidden');
+          
+          if (this.value === 'Bkash') {
+            document.getElementById('bkash-details').classList.remove('hidden');
+          } else if (this.value === 'Nagad') {
+            document.getElementById('nagad-details').classList.remove('hidden');
+          }
+        });
+      });
+      
+      // Apply promo code
+      document.getElementById('apply-promo').addEventListener('click', applyPromoCode);
+      
+      // Form submission
+      document.getElementById('checkout-form').addEventListener('submit', submitOrder);
+    });
+    
+    // Render order items
+    function renderOrderItems() {
+      const container = document.getElementById('order-items');
+      
+      container.innerHTML = cart.map(item => `
+        <div class="flex items-center">
+          <div class="w-16 h-16 rounded overflow-hidden mr-3">
+            <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover">
+          </div>
+          <div class="flex-1">
+            <h3 class="text-sm font-medium text-neutral">${item.name}</h3>
+            <p class="text-xs text-neutral">${item.quantity} x ৳${item.price}</p>
+          </div>
+          <div class="text-right">
+            <p class="text-sm font-medium">৳${item.price * item.quantity}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    // Update order summary
+    function updateOrderSummary() {
+      // Calculate delivery charge based on address
+      const address = document.querySelector('textarea[name="address"]')?.value || '';
+      const isInsideRajshahi = address.includes('রাজশাহী') && 
+                              !address.includes('জেলা') && 
+                              !address.includes('বাইরে');
+      
+      deliveryCharge = isInsideRajshahi ? 0 : 160;
+      
+      const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      const discount = appliedPromo ? subtotal * (appliedPromo.discount / 100) : 0;
+      const total = subtotal + deliveryCharge - discount;
+      
+      document.getElementById('subtotal').textContent = `৳${subtotal.toFixed(2)}`;
+      document.getElementById('delivery').textContent = `৳${deliveryCharge.toFixed(2)}`;
+      document.getElementById('discount').textContent = `-৳${discount.toFixed(2)}`;
+      document.getElementById('total').textContent = `৳${total.toFixed(2)}`;
+    }
+    
+    // Load promo codes from products
+    function loadPromoCodes() {
+      fetch('productData/products.json')
+        .then(response => response.json())
+        .then(data => {
+          const allPromos = data.products.flatMap(product => 
+            product.promoCodes ? product.promoCodes.map(promo => ({
+              ...promo,
+              productId: product.id
+            })) : []
+          );
+          
+          window.promoCodes = allPromos;
+        })
+        .catch(error => console.error('Error loading promo codes:', error));
+    }
+    
+    // Apply promo code
+    function applyPromoCode() {
+      const codeInput = document.querySelector('input[name="promo_code"]');
+      const code = codeInput.value.trim();
+      const messageEl = document.getElementById('promo-message');
+      
+      if (!code) {
+        messageEl.textContent = 'প্রোমো কোড লিখুন';
+        messageEl.className = 'text-sm mt-1 text-danger';
+        messageEl.classList.remove('hidden');
+        return;
+      }
+      
+      const promo = window.promoCodes.find(p => p.code === code);
+      
+      if (!promo) {
+        messageEl.textContent = 'অবৈধ প্রোমো কোড';
+        messageEl.className = 'text-sm mt-1 text-danger';
+        messageEl.classList.remove('hidden');
+        appliedPromo = null;
+        updateOrderSummary();
+        return;
+      }
+      
+      // Check if promo applies to any product in cart
+      const appliesToCart = cart.some(item => item.id === promo.productId);
+      
+      if (!appliesToCart) {
+        messageEl.textContent = 'এই প্রোমো কোড আপনার কার্টের পণ্যের জন্য প্রযোজ্য নয়';
+        messageEl.className = 'text-sm mt-1 text-danger';
+        messageEl.classList.remove('hidden');
+        appliedPromo = null;
+        updateOrderSummary();
+        return;
+      }
+      
+      appliedPromo = promo;
+      messageEl.textContent = `${promo.discount}% ছাড় প্রয়োগ করা হয়েছে!`;
+      messageEl.className = 'text-sm mt-1 text-green-600';
+      messageEl.classList.remove('hidden');
+      updateOrderSummary();
+    }
+    
+    // Submit order
+    function submitOrder(e) {
+      e.preventDefault();
+      
+      const form = e.target;
+      const formData = new FormData(form);
+      
+      // Validate address for Rajshahi
+      const address = formData.get('address');
+      if (!address) {
+        alert('সম্পূর্ণ ঠিকানা প্রদান করুন');
+        return;
+      }
+      
+      // Validate payment method details
+      const paymentMethod = formData.get('payment_method');
+      if (paymentMethod === 'Bkash') {
+        if (!formData.get('bkash_number') || !formData.get('bkash_transaction')) {
+          alert('বিকাশ নম্বর এবং ট্রানজেকশন আইডি প্রদান করুন');
+          return;
+        }
+      } else if (paymentMethod === 'Nagad') {
+        if (!formData.get('nagad_number') || !formData.get('nagad_transaction')) {
+          alert('নগদ নম্বর এবং ট্রানজেকশন আইডি প্রদান করুন');
+          return;
+        }
+      }
+      
+      // Prepare order data
+      const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      const discount = appliedPromo ? subtotal * (appliedPromo.discount / 100) : 0;
+      const total = subtotal + deliveryCharge - discount;
+      
+      const orderData = {
+        type: 'order',
+        name: formData.get('name'),
+        phone: formData.get('phone'),
+        email: formData.get('email'),
+        address: address,
+        note: formData.get('note'),
+        promo_code: formData.get('promo_code'),
+        payment_method: paymentMethod,
+        bkash_number: formData.get('bkash_number'),
+        bkash_transaction: formData.get('bkash_transaction'),
+        nagad_number: formData.get('nagad_number'),
+        nagad_transaction: formData.get('nagad_transaction'),
+        items: cart,
+        subtotal: subtotal,
+        delivery_charge: deliveryCharge,
+        discount: discount,
+        total: total,
+        status: 'Pending',
+        order_date: new Date().toISOString()
+      };
+      
+      // Generate unique order ID
+      const orderId = 'ORD-' + Date.now().toString().slice(-8);
+      orderData.order_id = orderId;
+      
+      // Send to Google Sheets (replace with your actual Apps Script URL)
+      const scriptUrl = 'YOUR_GOOGLE_APPS_SCRIPT_URL';
+      
+      fetch(scriptUrl, {
+        method: 'POST',
+        body: JSON.stringify(orderData),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => response.json())
+      .then(result => {
+        if (result.success) {
+          // Save order ID to localStorage for thank you page
+          localStorage.setItem('lastOrder', JSON.stringify(orderData));
+          
+          // Clear cart
+          localStorage.setItem('cart', JSON.stringify([]));
+          
+          // Redirect to thank you page
+          window.location.href = 'thank-you.html';
+        } else {
+          alert('অর্ডার জমা দেওয়ার সময় সমস্যা হয়েছে: ' + result.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('অর্ডার জমা দেওয়ার সময় সমস্যা হয়েছে');
+      });
+    }
+    
+    // Update delivery charge when address changes
+    document.querySelector('textarea[name="address"]')?.addEventListener('input', updateOrderSummary);
+  </script>
+</body>
+</html>
