@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finvora - আমার উইশলিস্ট</title>
+    <!-- Preconnect and Tailwind config -->
+    <link rel="preconnect" href="https://cdn.tailwindcss.com">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#1a365d',
+              accent: '#4299e1',
+              neutral: '#4a5568',
+              danger: '#e53e3e'
+            },
+            fontFamily: {
+              bangla: ['Hind Siliguri', 'Noto Sans Bengali', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+    <!-- Fonts and Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;700&family=Noto+Sans+Bengali:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+      [x-cloak] { display: none !important; }
+    </style>
+</head>
+<body class="bangla-font antialiased text-gray-800 pt-16" x-data="wishlistApp()" x-init="init()" x-cloak>
+  <!-- Navigation -->
+  <div id="navbar"></div>
+
+  <!-- Wishlist Section -->
+  <section class="py-8 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h1 class="text-2xl font-bold text-primary mb-6">আমার উইশলিস্ট</h1>
+      
+      <template x-if="isLoading">
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+          <template x-for="i in 4" :key="i">
+            <div class="bg-gray-100 rounded-lg animate-pulse h-64"></div>
+          </template>
+        </div>
+      </template>
+      
+      <template x-if="!isLoading">
+        <div>
+          <template x-if="wishlistItems.length > 0">
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+              <template x-for="product in wishlistItems" :key="product.id">
+                <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition">
+                  <a :href="'product_info.html?id=' + product.id">
+                    <div class="relative">
+                      <img :src="product.images[0]" :alt="product.name" class="w-full h-48 object-cover">
+                      <button @click.stop.prevent="removeFromWishlist(product.id)" 
+                              class="absolute top-2 right-2 bg-white p-2 rounded-full shadow-md text-danger hover:bg-danger hover:text-white">
+                        <i class="fas fa-times"></i>
+                      </button>
+                      <template x-if="product.discount">
+                        <span class="absolute top-2 left-2 bg-accent text-white text-xs font-bold px-2 py-1 rounded">
+                          <span x-text="product.discount + '% ছাড়'"></span>
+                        </span>
+                      </template>
+                    </div>
+                    <div class="p-3">
+                      <h3 class="font-medium text-neutral mb-1" x-text="product.name"></h3>
+                      <div class="flex items-center mb-1">
+                        <div class="flex text-yellow-400 text-xs">
+                          <template x-for="i in 5" :key="i">
+                            <i :class="i <= Math.round(product.rating) ? 'fas fa-star' : 'far fa-star'"></i>
+                          </template>
+                        </div>
+                        <span class="text-xs text-gray-500 ml-1" x-text="'(' + product.rating + ')'"></span>
+                      </div>
+                      <div class="flex justify-between items-center">
+                        <div>
+                          <template x-if="product.discount">
+                            <div>
+                              <span class="text-gray-400 line-through text-sm mr-1" x-text="'৳' + product.originalPrice"></span>
+                              <span class="font-bold text-accent" x-text="'৳' + product.price"></span>
+                            </div>
+                          </template>
+                          <template x-if="!product.discount">
+                            <span class="font-bold text-accent" x-text="'৳' + product.price"></span>
+                          </template>
+                        </div>
+                        <button @click.stop.prevent="addToCart(product.id)" 
+                                class="bg-primary hover:bg-secondary text-white p-2 rounded-full">
+                          <i class="fas fa-shopping-cart"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </template>
+            </div>
+          </template>
+          
+          <template x-if="wishlistItems.length === 0">
+            <div class="text-center py-12">
+              <i class="fas fa-heart text-4xl text-gray-300 mb-4"></i>
+              <h3 class="text-xl font-medium text-neutral mb-2">আপনার উইশলিস্ট খালি</h3>
+              <p class="text-neutral mb-4">আপনি এখনো কোন পণ্য উইশলিস্টে যোগ করেননি</p>
+              <a href="products.html" class="inline-block bg-primary hover:bg-secondary text-white px-6 py-2 rounded font-medium">
+                পণ্য ব্রাউজ করুন
+              </a>
+            </div>
+          </template>
+        </div>
+      </template>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <!-- Scripts -->
+  <script src="scripts/navbar_footer.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+  <script>
+    function wishlistApp() {
+      return {
+        isLoading: true,
+        wishlist: [],
+        wishlistItems: [],
+        allProducts: [],
+        
+        init() {
+          this.loadWishlist();
+          this.loadProducts();
+        },
+        
+        loadWishlist() {
+          this.wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+        },
+        
+        async loadProducts() {
+          try {
+            const response = await fetch('productData/products.json');
+            const data = await response.json();
+            this.allProducts = data.products;
+            this.updateWishlistItems();
+          } catch (error) {
+            console.error('Error loading products:', error);
+          } finally {
+            this.isLoading = false;
+          }
+        },
+        
+        updateWishlistItems() {
+          this.wishlistItems = this.allProducts.filter(p => this.wishlist.includes(p.id));
+        },
+        
+        removeFromWishlist(productId) {
+          const index = this.wishlist.indexOf(productId);
+          if (index !== -1) {
+            this.wishlist.splice(index, 1);
+            localStorage.setItem('wishlist', JSON.stringify(this.wishlist));
+            this.updateWishlistItems();
+            this.showToast('উইশলিস্ট থেকে সরানো হয়েছে');
+          }
+        },
+        
+        addToCart(productId) {
+          const product = this.allProducts.find(p => p.id === productId);
+          if (!product) return;
+          
+          let cart = JSON.parse(localStorage.getItem('cart')) || [];
+          const existingItem = cart.find(item => item.id === product.id);
+          
+          if (existingItem) {
+            existingItem.quantity += 1;
+          } else {
+            cart.push({
+              id: product.id,
+              name: product.name,
+              price: product.price,
+              image: product.images[0],
+              quantity: 1
+            });
+          }
+          
+          localStorage.setItem('cart', JSON.stringify(cart));
+          this.updateCartCount();
+          this.showToast('পণ্য কার্টে যোগ হয়েছে');
+        },
+        
+        updateCartCount() {
+          const cart = JSON.parse(localStorage.getItem('cart')) || [];
+          const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+          document.querySelectorAll('.cart-count').forEach(el => el.textContent = count);
+        },
+        
+        showToast(message) {
+          const toast = document.createElement('div');
+          toast.className = 'fixed bottom-4 right-4 bg-primary text-white px-4 py-2 rounded shadow-lg';
+          toast.textContent = message;
+          document.body.appendChild(toast);
+          
+          setTimeout(() => {
+            toast.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+            setTimeout(() => toast.remove(), 300);
+          }, 3000);
+        }
+      }
+    }
+  </script>
+</body>
+</html>
