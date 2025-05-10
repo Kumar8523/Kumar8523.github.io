@@ -4,12 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Finvora - পণ্য সমূহ</title>
-    <meta name="description" content="বাংলাদেশের সেরা অ্যাকুরিয়াম মাছ, মাছের খাবার এবং আনুষাঙ্গিক পণ্য ক্রয় করুন">
-    <!-- Preconnect to external resources -->
+    <!-- Preconnect and Tailwind config -->
     <link rel="preconnect" href="https://cdn.tailwindcss.com">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    
-    <!-- Tailwind with custom config -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -17,205 +13,181 @@
           extend: {
             colors: {
               primary: '#1a365d',
-              secondary: '#2c5282',
               accent: '#4299e1',
-              neutral: '#4a5568'
+              neutral: '#4a5568',
+              danger: '#e53e3e'
             },
             fontFamily: {
               bangla: ['Hind Siliguri', 'Noto Sans Bengali', 'sans-serif'],
-            },
-            boxShadow: {
-              card: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-              'card-hover': '0 10px 25px rgba(0, 0, 0, 0.1)'
             }
           }
         }
       }
     </script>
-    
-    <!-- Fonts -->
+    <!-- Fonts and Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;700&family=Noto+Sans+Bengali:wght@400;700&display=swap" rel="stylesheet">
-    
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <style>
-      body { 
-        font-family: 'Hind Siliguri', 'Noto Sans Bengali', sans-serif;
-        background-color: #f7fafc;
-      }
-      .product-card {
-        transition: all 0.3s ease;
-      }
-      .product-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-      }
-      .nav-blur {
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-      }
+      [x-cloak] { display: none !important; }
     </style>
 </head>
-<body class="bangla-font antialiased text-gray-800 pt-16">
+<body class="bangla-font antialiased text-gray-800 pt-16" x-data="productApp()" x-init="init()" x-cloak>
   <!-- Navigation -->
   <div id="navbar"></div>
 
-  <!-- Product Listing Section -->
-  <section class="py-12 bg-gray-50">
+  <!-- Products Section -->
+  <section class="py-8 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
-        <div>
-          <h1 class="text-3xl font-bold text-primary">আমাদের পণ্য সমূহ</h1>
-          <p class="text-neutral mt-2">প্রিমিয়াম কোয়ালিটির অ্যাকুরিয়াম পণ্য</p>
+      <!-- Search and Filter Bar -->
+      <div class="flex flex-col md:flex-row gap-4 mb-6">
+        <div class="relative flex-1">
+          <input x-model="searchQuery" @input="filterProducts" type="text" placeholder="পণ্য খুঁজুন..." 
+                 class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent">
+          <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
         </div>
         
-        <div class="mt-4 md:mt-0 flex items-center space-x-4">
+        <div class="flex gap-2">
           <div class="relative">
-            <select id="sort-by" class="appearance-none bg-white border border-gray-300 rounded-full pl-4 pr-8 py-2 focus:outline-none focus:ring-2 focus:ring-accent">
+            <select x-model="sortBy" @change="sortProducts" class="appearance-none pl-3 pr-8 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-accent focus:border-accent">
               <option value="default">সর্ট করুন</option>
               <option value="price-low">দাম: কম থেকে বেশি</option>
               <option value="price-high">দাম: বেশি থেকে কম</option>
-              <option value="rating">রেটিং</option>
+              <option value="rating">সর্বোচ্চ রেটিং</option>
               <option value="newest">নতুন পণ্য</option>
             </select>
             <i class="fas fa-chevron-down absolute right-3 top-3 text-gray-400 pointer-events-none"></i>
           </div>
+          
+          <button @click="showFilters = !showFilters" class="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+            <i class="fas fa-filter"></i>
+            <span>ফিল্টার</span>
+          </button>
         </div>
       </div>
       
-      <div class="flex flex-col md:flex-row gap-8">
-        <!-- Filters -->
-        <div class="w-full md:w-64 bg-white p-6 rounded-lg shadow-sm h-fit sticky top-24">
-          <h3 class="font-bold text-lg mb-4 text-primary">ফিল্টার</h3>
-          
-          <!-- Categories -->
-          <div class="mb-6">
-            <h4 class="font-medium mb-3 text-neutral">ক্যাটাগরি</h4>
-            <ul class="space-y-2">
-              <li>
-                <a href="products.html?category=all" class="flex items-center justify-between hover:text-accent">
-                  <span>সব পণ্য</span>
-                  <span class="bg-gray-100 text-xs px-2 py-1 rounded-full" id="all-count">0</span>
-                </a>
-              </li>
-              <li>
-                <a href="products.html?category=fish" class="flex items-center justify-between hover:text-accent">
-                  <span>মাছ</span>
-                  <span class="bg-gray-100 text-xs px-2 py-1 rounded-full" id="fish-count">0</span>
-                </a>
-              </li>
-              <li>
-                <a href="products.html?category=fish-food" class="flex items-center justify-between hover:text-accent">
-                  <span>মাছের খাবার</span>
-                  <span class="bg-gray-100 text-xs px-2 py-1 rounded-full" id="food-count">0</span>
-                </a>
-              </li>
-              <li>
-                <a href="products.html?category=aquarium-accessories" class="flex items-center justify-between hover:text-accent">
-                  <span>অ্যাকুরিয়াম আনুষাঙ্গিক</span>
-                  <span class="bg-gray-100 text-xs px-2 py-1 rounded-full" id="accessories-count">0</span>
-                </a>
-              </li>
-              <li>
-                <a href="products.html?category=plants" class="flex items-center justify-between hover:text-accent">
-                  <span>অ্যাকুরিয়াম প্লান্ট</span>
-                  <span class="bg-gray-100 text-xs px-2 py-1 rounded-full" id="plants-count">0</span>
-                </a>
-              </li>
-            </ul>
-          </div>
-          
-          <!-- Price Range -->
-          <div class="mb-6">
-            <h4 class="font-medium mb-3 text-neutral">দামের রেঞ্জ</h4>
-            <div class="space-y-2">
-              <div class="flex items-center">
-                <input type="radio" id="price-all" name="price-range" class="mr-2" checked>
-                <label for="price-all">সব</label>
-              </div>
-              <div class="flex items-center">
-                <input type="radio" id="price-1" name="price-range" class="mr-2">
-                <label for="price-1">৳০ - ৳৫০০</label>
-              </div>
-              <div class="flex items-center">
-                <input type="radio" id="price-2" name="price-range" class="mr-2">
-                <label for="price-2">৳৫০০ - ৳১০০০</label>
-              </div>
-              <div class="flex items-center">
-                <input type="radio" id="price-3" name="price-range" class="mr-2">
-                <label for="price-3">৳১০০০ - ৳৫০০০</label>
-              </div>
-              <div class="flex items-center">
-                <input type="radio" id="price-4" name="price-range" class="mr-2">
-                <label for="price-4">৳৫০০০+</label>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Stock Availability -->
+      <!-- Filter Panel -->
+      <div x-show="showFilters" x-transition class="bg-gray-50 p-4 rounded-lg mb-6 border border-gray-200">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div>
-            <h4 class="font-medium mb-3 text-neutral">স্টক অবস্থা</h4>
-            <div class="flex items-center">
-              <input type="checkbox" id="in-stock" class="mr-2">
-              <label for="in-stock">শুধু স্টকে আছে এমন পণ্য</label>
-            </div>
-          </div>
-        </div>
-        
-        <!-- Products Grid -->
-        <div class="flex-1">
-          <!-- Search Results Info -->
-          <div class="bg-white p-4 rounded-lg shadow-sm mb-6 flex justify-between items-center">
-            <p class="text-neutral" id="results-info">সব পণ্য দেখানো হচ্ছে</p>
-            <div class="flex items-center">
-              <span class="mr-2 text-neutral">প্রদর্শন:</span>
-              <select id="per-page" class="border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-accent">
-                <option value="12">১২</option>
-                <option value="24">২৪</option>
-                <option value="36">৩৬</option>
-              </select>
+            <h3 class="font-medium mb-3">ক্যাটাগরি</h3>
+            <div class="space-y-2">
+              <template x-for="category in allCategories" :key="category.value">
+                <label class="flex items-center">
+                  <input type="checkbox" x-model="selectedCategories" :value="category.value" @change="filterProducts" class="mr-2 rounded border-gray-300 text-accent focus:ring-accent">
+                  <span x-text="category.label"></span>
+                </label>
+              </template>
             </div>
           </div>
           
-          <!-- Products -->
-          <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Loading skeleton -->
-            <div class="space-y-6">
-              <div class="bg-gray-200 rounded-lg h-64 animate-pulse"></div>
-              <div class="h-4 bg-gray-200 rounded w-3/4 animate-pulse"></div>
-              <div class="h-4 bg-gray-200 rounded w-1/2 animate-pulse"></div>
-            </div>
-            <div class="space-y-6">
-              <div class="bg-gray-200 rounded-lg h-64 animate-pulse"></div>
-              <div class="h-4 bg-gray-200 rounded w-3/4 animate-pulse"></div>
-              <div class="h-4 bg-gray-200 rounded w-1/2 animate-pulse"></div>
-            </div>
-            <div class="space-y-6">
-              <div class="bg-gray-200 rounded-lg h-64 animate-pulse"></div>
-              <div class="h-4 bg-gray-200 rounded w-3/4 animate-pulse"></div>
-              <div class="h-4 bg-gray-200 rounded w-1/2 animate-pulse"></div>
+          <div>
+            <h3 class="font-medium mb-3">দামের রেঞ্জ</h3>
+            <div class="space-y-2">
+              <label class="flex items-center">
+                <input type="radio" x-model="priceRange" value="all" @change="filterProducts" class="mr-2">
+                <span>সব</span>
+              </label>
+              <label class="flex items-center">
+                <input type="radio" x-model="priceRange" value="0-500" @change="filterProducts" class="mr-2">
+                <span>৳০ - ৳৫০০</span>
+              </label>
+              <label class="flex items-center">
+                <input type="radio" x-model="priceRange" value="500-1000" @change="filterProducts" class="mr-2">
+                <span>৳৫০০ - ৳১০০০</span>
+              </label>
+              <label class="flex items-center">
+                <input type="radio" x-model="priceRange" value="1000+" @change="filterProducts" class="mr-2">
+                <span>৳১০০০+</span>
+              </label>
             </div>
           </div>
           
-          <!-- Pagination -->
-          <div class="mt-10 flex justify-center">
-            <nav class="flex items-center space-x-2">
-              <button class="px-3 py-1 rounded border text-neutral hover:bg-gray-100">
-                <i class="fas fa-chevron-left"></i>
-              </button>
-              <button class="px-3 py-1 rounded border bg-primary text-white">1</button>
-              <button class="px-3 py-1 rounded border text-neutral hover:bg-gray-100">2</button>
-              <button class="px-3 py-1 rounded border text-neutral hover:bg-gray-100">3</button>
-              <span class="px-2 text-neutral">...</span>
-              <button class="px-3 py-1 rounded border text-neutral hover:bg-gray-100">10</button>
-              <button class="px-3 py-1 rounded border text-neutral hover:bg-gray-100">
-                <i class="fas fa-chevron-right"></i>
-              </button>
-            </nav>
+          <div>
+            <h3 class="font-medium mb-3">স্টক অবস্থা</h3>
+            <div class="space-y-2">
+              <label class="flex items-center">
+                <input type="checkbox" x-model="inStockOnly" @change="filterProducts" class="mr-2 rounded border-gray-300 text-accent focus:ring-accent">
+                <span>শুধু স্টকে আছে এমন পণ্য</span>
+              </label>
+            </div>
           </div>
         </div>
       </div>
+      
+      <!-- Products Grid -->
+      <template x-if="isLoading">
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+          <template x-for="i in 8" :key="i">
+            <div class="bg-gray-100 rounded-lg animate-pulse h-64"></div>
+          </template>
+        </div>
+      </template>
+      
+      <template x-if="!isLoading">
+        <div>
+          <p class="text-neutral mb-4" x-text="`${filteredProducts.length} টি পণ্য পাওয়া গেছে`"></p>
+          
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            <template x-for="product in filteredProducts" :key="product.id">
+              <div class="bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-md transition">
+                <a :href="'product_info.html?id=' + product.id">
+                  <div class="relative">
+                    <img :src="product.images[0]" :alt="product.name" class="w-full h-48 object-cover">
+                    <template x-if="product.discount">
+                      <span class="absolute top-2 right-2 bg-accent text-white text-xs font-bold px-2 py-1 rounded">
+                        <span x-text="product.discount + '% ছাড়'"></span>
+                      </span>
+                    </template>
+                  </div>
+                  <div class="p-3">
+                    <h3 class="font-medium text-neutral mb-1" x-text="product.name"></h3>
+                    <div class="flex items-center mb-1">
+                      <div class="flex text-yellow-400 text-xs">
+                        <template x-for="i in 5" :key="i">
+                          <i :class="i <= Math.round(product.rating) ? 'fas fa-star' : 'far fa-star'"></i>
+                        </template>
+                      </div>
+                      <span class="text-xs text-gray-500 ml-1" x-text="'(' + product.rating + ')'"></span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                      <div>
+                        <template x-if="product.discount">
+                          <div>
+                            <span class="text-gray-400 line-through text-sm mr-1" x-text="'৳' + product.originalPrice"></span>
+                            <span class="font-bold text-accent" x-text="'৳' + product.price"></span>
+                          </div>
+                        </template>
+                        <template x-if="!product.discount">
+                          <span class="font-bold text-accent" x-text="'৳' + product.price"></span>
+                        </template>
+                      </div>
+                      <div class="flex gap-1">
+                        <button @click.stop.prevent="toggleWishlist(product.id)" class="p-2 text-gray-400 hover:text-danger">
+                          <i :class="isInWishlist(product.id) ? 'fas fa-heart text-danger' : 'far fa-heart'"></i>
+                        </button>
+                        <button @click.stop.prevent="addToCart(product.id)" class="p-2 text-gray-400 hover:text-accent">
+                          <i class="fas fa-shopping-cart"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </template>
+          </div>
+          
+          <template x-if="filteredProducts.length === 0">
+            <div class="text-center py-12">
+              <i class="fas fa-box-open text-4xl text-gray-300 mb-4"></i>
+              <h3 class="text-xl font-medium text-neutral mb-2">কোন পণ্য পাওয়া যায়নি</h3>
+              <p class="text-neutral mb-4">আপনার নির্বাচিত ফিল্টারের সাথে মিলছে এমন কোন পণ্য নেই</p>
+              <button @click="resetFilters" class="bg-primary hover:bg-secondary text-white px-6 py-2 rounded font-medium">
+                ফিল্টার রিসেট করুন
+              </button>
+            </div>
+          </template>
+        </div>
+      </template>
     </div>
   </section>
 
@@ -223,169 +195,192 @@
   <div id="footer"></div>
 
   <!-- Scripts -->
-  <script src="scripts/main.js"></script>
   <script src="scripts/navbar_footer.js"></script>
-  <script src="scripts/products.js"></script>
-  
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
   <script>
-    // Load products from JSON
-    document.addEventListener('DOMContentLoaded', async () => {
-      try {
-        const response = await fetch('productData/products.json');
-        const data = await response.json();
+    function productApp() {
+      return {
+        isLoading: true,
+        showFilters: false,
+        products: [],
+        filteredProducts: [],
+        searchQuery: '',
+        sortBy: 'default',
+        selectedCategories: [],
+        priceRange: 'all',
+        inStockOnly: false,
+        allCategories: [
+          { value: 'fish', label: 'মাছ' },
+          { value: 'fish-food', label: 'মাছের খাবার' },
+          { value: 'aquarium-accessories', label: 'অ্যাকুরিয়াম আনুষাঙ্গিক' },
+          { value: 'plants', label: 'অ্যাকুরিয়াম প্লান্ট' }
+        ],
         
-        // Update category counts
-        document.getElementById('all-count').textContent = data.products.length;
-        document.getElementById('fish-count').textContent = data.products.filter(p => p.category === 'fish').length;
-        document.getElementById('food-count').textContent = data.products.filter(p => p.category === 'fish-food').length;
-        document.getElementById('accessories-count').textContent = data.products.filter(p => p.category === 'aquarium-accessories').length;
-        document.getElementById('plants-count').textContent = data.products.filter(p => p.category === 'plants').length;
+        init() {
+          this.loadProducts();
+          this.loadWishlist();
+          
+          // Initialize from URL params
+          const urlParams = new URLSearchParams(window.location.search);
+          if (urlParams.has('category')) {
+            this.selectedCategories = [urlParams.get('category')];
+          }
+          if (urlParams.has('search')) {
+            this.searchQuery = urlParams.get('search');
+          }
+        },
         
-        // Get URL parameters
-        const urlParams = new URLSearchParams(window.location.search);
-        const category = urlParams.get('category') || 'all';
-        const search = urlParams.get('search') || '';
+        async loadProducts() {
+          try {
+            const response = await fetch('productData/products.json');
+            const data = await response.json();
+            this.products = data.products;
+            this.filterProducts();
+          } catch (error) {
+            console.error('Error loading products:', error);
+          } finally {
+            this.isLoading = false;
+          }
+        },
         
-        // Filter products
-        let filteredProducts = data.products;
+        filterProducts() {
+          let filtered = [...this.products];
+          
+          // Apply search filter
+          if (this.searchQuery) {
+            const query = this.searchQuery.toLowerCase();
+            filtered = filtered.filter(p => 
+              p.name.toLowerCase().includes(query) || 
+              (p.description && p.description.toLowerCase().includes(query))
+            );
+          }
+          
+          // Apply category filter
+          if (this.selectedCategories.length > 0) {
+            filtered = filtered.filter(p => this.selectedCategories.includes(p.category));
+          }
+          
+          // Apply price filter
+          if (this.priceRange !== 'all') {
+            const [min, max] = this.priceRange.split('-').map(Number);
+            filtered = filtered.filter(p => {
+              const price = p.price;
+              if (this.priceRange.endsWith('+')) {
+                return price >= min;
+              }
+              return price >= min && price <= max;
+            });
+          }
+          
+          // Apply stock filter
+          if (this.inStockOnly) {
+            filtered = filtered.filter(p => p.stock > 0);
+          }
+          
+          // Apply sorting
+          this.sortProducts(filtered);
+        },
         
-        if (category !== 'all') {
-          filteredProducts = filteredProducts.filter(p => p.category === category);
-        }
+        sortProducts(productsToSort = this.filteredProducts) {
+          let sorted = [...productsToSort];
+          
+          switch(this.sortBy) {
+            case 'price-low':
+              sorted.sort((a, b) => a.price - b.price);
+              break;
+            case 'price-high':
+              sorted.sort((a, b) => b.price - a.price);
+              break;
+            case 'rating':
+              sorted.sort((a, b) => b.rating - a.rating);
+              break;
+            case 'newest':
+              sorted.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+              break;
+            default:
+              // Default sorting (no change)
+              break;
+          }
+          
+          this.filteredProducts = sorted;
+        },
         
-        if (search) {
-          filteredProducts = filteredProducts.filter(p => 
-            p.name.toLowerCase().includes(search.toLowerCase()) || 
-            p.description.toLowerCase().includes(search.toLowerCase())
-          );
-        }
+        resetFilters() {
+          this.searchQuery = '';
+          this.selectedCategories = [];
+          this.priceRange = 'all';
+          this.inStockOnly = false;
+          this.sortBy = 'default';
+          this.filterProducts();
+        },
         
-        // Update results info
-        document.getElementById('results-info').textContent = 
-          `${filteredProducts.length} টি পণ্য পাওয়া গেছে ${category === 'all' ? '' : 'এই ক্যাটাগরিতে'}`;
+        addToCart(productId) {
+          const product = this.products.find(p => p.id === productId);
+          if (!product) return;
+          
+          let cart = JSON.parse(localStorage.getItem('cart')) || [];
+          const existingItem = cart.find(item => item.id === product.id);
+          
+          if (existingItem) {
+            existingItem.quantity += 1;
+          } else {
+            cart.push({
+              id: product.id,
+              name: product.name,
+              price: product.price,
+              image: product.images[0],
+              quantity: 1
+            });
+          }
+          
+          localStorage.setItem('cart', JSON.stringify(cart));
+          this.updateCartCount();
+          
+          // Show toast notification
+          this.showToast('পণ্য কার্টে যোগ হয়েছে');
+        },
         
-        // Render products
-        const container = document.getElementById('products-grid');
-        if (container) {
-          container.innerHTML = filteredProducts.map(product => `
-            <div class="product-card bg-white rounded-lg overflow-hidden shadow-sm">
-              <div class="relative">
-                <a href="product_info.html?id=${product.id}">
-                  <img src="${product.images[0]}" alt="${product.name}" class="w-full h-64 object-cover">
-                </a>
-                ${product.discount ? `
-                  <span class="absolute top-2 right-2 bg-accent text-white text-xs font-bold px-2 py-1 rounded">
-                    ${product.discount}% ছাড়
-                  </span>
-                ` : ''}
-                <button class="absolute bottom-2 right-2 bg-white/90 hover:bg-white text-primary p-2 rounded-full shadow-md">
-                  <i class="fas fa-heart"></i>
-                </button>
-              </div>
-              
-              <div class="p-4">
-                <div class="flex justify-between items-start mb-1">
-                  <a href="product_info.html?id=${product.id}" class="font-medium text-neutral hover:text-accent">
-                    ${product.name}
-                  </a>
-                  <div class="flex items-center text-yellow-400 text-xs">
-                    <i class="fas fa-star"></i>
-                    <span class="ml-1 text-gray-600">${product.rating}</span>
-                  </div>
-                </div>
-                
-                <p class="text-sm text-gray-500 mb-2">${product.shortDescription}</p>
-                
-                <div class="flex justify-between items-center">
-                  <div>
-                    ${product.discount ? `
-                      <span class="text-gray-400 line-through mr-2">৳${product.originalPrice}</span>
-                      <span class="font-bold text-accent">৳${product.price}</span>
-                    ` : `
-                      <span class="font-bold text-accent">৳${product.price}</span>
-                    `}
-                  </div>
-                  ${product.stock > 0 ? `
-                    <button class="add-to-cart bg-primary hover:bg-secondary text-white px-3 py-1 rounded-full text-sm" 
-                            data-id="${product.id}">
-                      <i class="fas fa-shopping-cart mr-1"></i> অর্ডার
-                    </button>
-                  ` : `
-                    <span class="text-red-500 text-sm">স্টকে নেই</span>
-                  `}
-                </div>
-                
-                ${product.stock > 0 && product.stock < 10 ? `
-                  <div class="mt-2 text-xs text-red-500">
-                    শেষ ${product.stock} টি পণ্য
-                  </div>
-                ` : ''}
-              </div>
-            </div>
-          `).join('');
-        }
+        updateCartCount() {
+          const cart = JSON.parse(localStorage.getItem('cart')) || [];
+          const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+          document.querySelectorAll('.cart-count').forEach(el => el.textContent = count);
+        },
         
-        // Add event listeners for add to cart buttons
-        document.querySelectorAll('.add-to-cart').forEach(button => {
-          button.addEventListener('click', function() {
-            const productId = this.getAttribute('data-id');
-            const product = data.products.find(p => p.id === productId);
-            
-            if (product) {
-              addToCart(product);
-              updateCartCount();
-              this.innerHTML = '<i class="fas fa-check mr-1"></i> যোগ হয়েছে';
-              this.classList.remove('bg-primary', 'hover:bg-secondary');
-              this.classList.add('bg-green-500', 'hover:bg-green-600');
-              
-              setTimeout(() => {
-                this.innerHTML = '<i class="fas fa-shopping-cart mr-1"></i> অর্ডার';
-                this.classList.remove('bg-green-500', 'hover:bg-green-600');
-                this.classList.add('bg-primary', 'hover:bg-secondary');
-              }, 2000);
-            }
-          });
-        });
+        loadWishlist() {
+          this.wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+        },
         
-      } catch (error) {
-        console.error('Error loading products:', error);
-        const container = document.getElementById('products-grid');
-        if (container) {
-          container.innerHTML = `
-            <div class="col-span-full text-center py-12 text-red-500">
-              <i class="fas fa-exclamation-triangle"></i> পণ্য লোড করতে সমস্যা হয়েছে
-            </div>`;
+        toggleWishlist(productId) {
+          this.loadWishlist();
+          const index = this.wishlist.indexOf(productId);
+          
+          if (index === -1) {
+            this.wishlist.push(productId);
+            this.showToast('উইশলিস্টে যোগ হয়েছে');
+          } else {
+            this.wishlist.splice(index, 1);
+            this.showToast('উইশলিস্ট থেকে সরানো হয়েছে');
+          }
+          
+          localStorage.setItem('wishlist', JSON.stringify(this.wishlist));
+        },
+        
+        isInWishlist(productId) {
+          return this.wishlist.includes(productId);
+        },
+        
+        showToast(message) {
+          const toast = document.createElement('div');
+          toast.className = 'fixed bottom-4 right-4 bg-primary text-white px-4 py-2 rounded shadow-lg';
+          toast.textContent = message;
+          document.body.appendChild(toast);
+          
+          setTimeout(() => {
+            toast.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+            setTimeout(() => toast.remove(), 300);
+          }, 3000);
         }
       }
-    });
-    
-    // Cart functions
-    function addToCart(product) {
-      let cart = JSON.parse(localStorage.getItem('cart')) || [];
-      const existingItem = cart.find(item => item.id === product.id);
-      
-      if (existingItem) {
-        existingItem.quantity += 1;
-      } else {
-        cart.push({
-          id: product.id,
-          name: product.name,
-          price: product.price,
-          image: product.images[0],
-          quantity: 1
-        });
-      }
-      
-      localStorage.setItem('cart', JSON.stringify(cart));
-    }
-    
-    function updateCartCount() {
-      const cart = JSON.parse(localStorage.getItem('cart')) || [];
-      const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-      
-      document.querySelectorAll('.cart-count').forEach(element => {
-        element.textContent = totalItems;
-      });
     }
   </script>
 </body>
