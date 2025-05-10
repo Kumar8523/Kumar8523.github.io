@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finvora - আমার অ্যাকাউন্ট</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#1a365d',
+              accent: '#4299e1'
+            },
+            fontFamily: {
+              bangla: ['Hind Siliguri', 'sans-serif']
+            }
+          }
+        }
+      }
+    </script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bangla-font bg-gray-50 pt-16">
+  <!-- Navigation -->
+  <div id="navbar"></div>
+
+  <!-- Account Dashboard -->
+  <section class="py-8">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row gap-8">
+        <!-- Sidebar -->
+        <div class="md:w-64 bg-white p-4 rounded-lg shadow-sm h-fit sticky top-24">
+          <div class="text-center mb-6">
+            <div class="w-20 h-20 bg-gray-200 rounded-full mx-auto mb-3 flex items-center justify-center">
+              <i class="fas fa-user text-3xl text-gray-500"></i>
+            </div>
+            <h3 class="font-bold" id="user-name">আপনার নাম</h3>
+            <p class="text-sm text-neutral" id="user-email">ইমেইল@example.com</p>
+          </div>
+          
+          <nav class="space-y-1">
+            <a href="account.html" class="block px-3 py-2 bg-primary text-white rounded font-medium">
+              <i class="fas fa-user-circle mr-2"></i> প্রোফাইল
+            </a>
+            <a href="orders.html" class="block px-3 py-2 hover:bg-gray-100 rounded">
+              <i class="fas fa-shopping-bag mr-2"></i> আমার অর্ডার
+            </a>
+            <a href="addresses.html" class="block px-3 py-2 hover:bg-gray-100 rounded">
+              <i class="fas fa-map-marker-alt mr-2"></i> ঠিকানা
+            </a>
+            <a href="wishlist.html" class="block px-3 py-2 hover:bg-gray-100 rounded">
+              <i class="fas fa-heart mr-2"></i> উইশলিস্ট
+            </a>
+            <a href="change-password.html" class="block px-3 py-2 hover:bg-gray-100 rounded">
+              <i class="fas fa-lock mr-2"></i> পাসওয়ার্ড পরিবর্তন
+            </a>
+            <a href="#" class="block px-3 py-2 hover:bg-gray-100 rounded text-red-500" id="logout-btn">
+              <i class="fas fa-sign-out-alt mr-2"></i> লগআউট
+            </a>
+          </nav>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="flex-1 bg-white p-6 rounded-lg shadow-sm">
+          <h2 class="text-xl font-bold text-primary mb-6">আমার প্রোফাইল</h2>
+          
+          <form id="profile-form" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <label class="block font-medium mb-1">পুরো নাম</label>
+              <input type="text" id="full-name" class="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-accent">
+            </div>
+            
+            <div>
+              <label class="block font-medium mb-1">ইমেইল</label>
+              <input type="email" id="email" class="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-accent" readonly>
+            </div>
+            
+            <div>
+              <label class="block font-medium mb-1">মোবাইল নম্বর</label>
+              <input type="tel" id="phone" class="w-full px-4 py-2 border rounded focus:ring-2 focus:ring-accent">
+            </div>
+            
+            <div class="md:col-span-2">
+              <button type="submit" class="bg-primary hover:bg-secondary text-white px-6 py-2 rounded font-medium">
+                আপডেট করুন
+              </button>
+            </div>
+          </form>
+          
+          <div class="border-t mt-8 pt-6">
+            <h3 class="font-bold text-lg mb-4">অ্যাকাউন্ট সেটিংস</h3>
+            <div class="space-y-4">
+              <div class="flex justify-between items-center p-3 bg-gray-50 rounded">
+                <div>
+                  <h4 class="font-medium">ইমেইল নোটিফিকেশন</h4>
+                  <p class="text-sm text-neutral">প্রচার এবং অফার সম্পর্কে ইমেইল পান</p>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" class="sr-only peer" checked>
+                  <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-accent"></div>
+                </label>
+              </div>
+              
+              <div class="flex justify-between items-center p-3 bg-gray-50 rounded">
+                <div>
+                  <h4 class="font-medium">এসএমএস নোটিফিকেশন</h4>
+                  <p class="text-sm text-neutral">অর্ডার স্ট্যাটাস সম্পর্কে এসএমএস পান</p>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" class="sr-only peer" checked>
+                  <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-accent"></div>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <div id="footer"></div>
+
+  <!-- Scripts -->
+  <script src="scripts/navbar_footer.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Load user data (in a real app, this would come from your backend)
+      const userData = {
+        name: "আরিফুল ইসলাম",
+        email: "arif@example.com",
+        phone: "01712345678"
+      };
+      
+      document.getElementById('user-name').textContent = userData.name;
+      document.getElementById('user-email').textContent = userData.email;
+      document.getElementById('full-name').value = userData.name;
+      document.getElementById('email').value = userData.email;
+      document.getElementById('phone').value = userData.phone;
+      
+      // Form submission
+      document.getElementById('profile-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        alert('প্রোফাইল সফলভাবে আপডেট করা হয়েছে!');
+      });
+      
+      // Logout button
+      document.getElementById('logout-btn').addEventListener('click', () => {
+        if(confirm('আপনি কি নিশ্চিত লগআউট করতে চান?')) {
+          // In a real app, you would clear the session and redirect
+          window.location.href = 'login.html';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
