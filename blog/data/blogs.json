@@ -1,0 +1,62 @@
+[
+    {
+        "id": 1,
+        "title": "Getting Started with React Hooks",
+        "excerpt": "Learn how to use React Hooks to simplify your functional components and manage state effectively.",
+        "date": "June 10, 2023",
+        "author": "Tonmoy",
+        "tags": ["programming", "web", "react"],
+        "image": "https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+        "contentFile": "blog1.txt"
+    },
+    {
+        "id": 2,
+        "title": "The Power of Tailwind CSS",
+        "excerpt": "Discover why Tailwind CSS is becoming the go-to utility-first CSS framework for modern web development.",
+        "date": "May 28, 2023",
+        "author": "Tonmoy",
+        "tags": ["web", "design", "css"],
+        "image": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+        "contentFile": "blog2.txt"
+    },
+    {
+        "id": 3,
+        "title": "JavaScript ES2023 Features",
+        "excerpt": "Explore the latest features coming to JavaScript in ES2023 and how they can improve your code.",
+        "date": "May 15, 2023",
+        "author": "Tonmoy",
+        "tags": ["programming", "javascript"],
+        "image": "https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+        "contentFile": "blog3.txt"
+    },
+    {
+        "id": 4,
+        "title": "Building REST APIs with Node.js",
+        "excerpt": "A comprehensive guide to creating robust RESTful APIs using Node.js and Express.",
+        "date": "April 30, 2023",
+        "author": "Tonmoy",
+        "tags": ["programming", "web", "node"],
+        "image": "https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+        "contentFile": "blog4.txt"
+    },
+    {
+        "id": 5,
+        "title": "Responsive Design Principles",
+        "excerpt": "Master the core principles of responsive web design to create websites that work on any device.",
+        "date": "April 18, 2023",
+        "author": "Tonmoy",
+        "tags": ["web", "design"],
+        "image": "https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+        "contentFile": "blog5.txt"
+    },
+    {
+        "id": 6,
+        "title": "Introduction to Python for Beginners",
+        "excerpt": "Start your programming journey with Python, one of the most beginner-friendly languages available.",
+        "date": "April 5, 2023",
+        "author": "Tonmoy",
+        "tags": ["programming", "python"],
+        "image": "https://images.unsplash.com/photo-1526379095098-d400fd0bf935?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+        "contentFile": "blog6.txt"
+    }
+]
