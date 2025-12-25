@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Active Workspace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons for nice UI elements -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* Custom Scrollbar for the dark theme */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #27272a; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #52525b; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #71717a; 
+        }
+        
+        .glass-panel {
+            background: rgba(39, 39, 42, 0.95);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Checkbox styling */
+        .custom-checkbox:checked + div {
+            text-decoration: line-through;
+            color: #71717a;
+        }
+    </style>
+</head>
+<body class="bg-zinc-950 text-zinc-200 font-sans h-screen flex overflow-hidden selection:bg-zinc-700 selection:text-white">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-zinc-900 border-r border-zinc-800 flex-col hidden md:flex">
+        <div class="h-16 flex items-center px-6 border-b border-zinc-800">
+            <i data-lucide="layout-grid" class="w-6 h-6 text-zinc-100 mr-2"></i>
+            <span class="font-bold text-lg tracking-wide text-zinc-100">NEXUS</span>
+        </div>
+        
+        <nav class="flex-1 px-4 py-6 space-y-1">
+            <button onclick="switchTab('dashboard')" id="nav-dashboard" class="w-full flex items-center px-4 py-3 text-sm font-medium rounded-lg bg-zinc-800 text-white transition-colors">
+                <i data-lucide="home" class="w-5 h-5 mr-3"></i>
+                Dashboard
+            </button>
+            <button onclick="switchTab('tasks')" id="nav-tasks" class="w-full flex items-center px-4 py-3 text-sm font-medium rounded-lg text-zinc-400 hover:bg-zinc-800 hover:text-white transition-colors">
+                <i data-lucide="check-square" class="w-5 h-5 mr-3"></i>
+                Tasks
+            </button>
+            <button onclick="switchTab('files')" id="nav-files" class="w-full flex items-center px-4 py-3 text-sm font-medium rounded-lg text-zinc-400 hover:bg-zinc-800 hover:text-white transition-colors">
+                <i data-lucide="folder" class="w-5 h-5 mr-3"></i>
+                Files
+            </button>
+            <button onclick="switchTab('settings')" id="nav-settings" class="w-full flex items-center px-4 py-3 text-sm font-medium rounded-lg text-zinc-400 hover:bg-zinc-800 hover:text-white transition-colors">
+                <i data-lucide="settings" class="w-5 h-5 mr-3"></i>
+                Settings
+            </button>
+        </nav>
+
+        <div class="p-4 border-t border-zinc-800">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-zinc-700 flex items-center justify-center text-zinc-300">
+                    <i data-lucide="user" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-medium text-white">User Admin</p>
+                    <p class="text-xs text-zinc-500">Pro Account</p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+        
+        <!-- Header (Mobile + Desktop) -->
+        <header class="h-16 bg-zinc-900 border-b border-zinc-800 flex items-center justify-between px-4 sm:px-6">
+            <div class="flex items-center md:hidden">
+                <button class="text-zinc-400 hover:text-white p-2">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+                <span class="font-bold text-lg ml-2">NEXUS</span>
+            </div>
+            
+            <div class="flex-1 flex justify-end md:justify-between items-center ml-4">
+                <div class="hidden md:block text-zinc-500 text-sm">
+                   Workspace / <span class="text-zinc-200">Dashboard</span>
+                </div>
+
+                <div class="flex items-center space-x-4">
+                    <div class="text-right hidden sm:block">
+                        <div id="clock-time" class="text-sm font-bold text-zinc-200">00:00:00</div>
+                        <div id="clock-date" class="text-xs text-zinc-500">Jan 01, 2024</div>
+                    </div>
+                    <button class="p-2 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-full transition relative">
+                        <i data-lucide="bell" class="w-5 h-5"></i>
+                        <span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Scrollable Content Area -->
+        <main class="flex-1 overflow-y-auto p-4 sm:p-6 bg-zinc-950 relative">
+            
+            <!-- Dashboard View -->
+            <div id="view-dashboard" class="space-y-6 max-w-6xl mx-auto">
+                
+                <!-- Welcome Section -->
+                <div class="flex justify-between items-end">
+                    <div>
+                        <h1 class="text-2xl font-bold text-white">Overview</h1>
+                        <p class="text-zinc-400 mt-1">Here's what's happening in your workspace today.</p>
+                    </div>
+                    <button class="hidden sm:flex bg-white text-zinc-900 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-zinc-200 transition items-center gap-2">
+                        <i data-lucide="plus" class="w-4 h-4"></i> New Project
+                    </button>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-zinc-900 p-5 rounded-xl border border-zinc-800 hover:border-zinc-700 transition">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-zinc-500 text-sm font-medium">Total Tasks</p>
+                                <h3 id="stat-total" class="text-3xl font-bold text-white mt-2">12</h3>
+                            </div>
+                            <div class="p-2 bg-zinc-800 rounded-lg text-zinc-400">
+                                <i data-lucide="list-todo" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-zinc-900 p-5 rounded-xl border border-zinc-800 hover:border-zinc-700 transition">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-zinc-500 text-sm font-medium">Pending</p>
+                                <h3 id="stat-pending" class="text-3xl font-bold text-white mt-2">5</h3>
+                            </div>
+                            <div class="p-2 bg-zinc-800 rounded-lg text-zinc-400">
+                                <i data-lucide="clock" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-zinc-900 p-5 rounded-xl border border-zinc-800 hover:border-zinc-700 transition">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="text-zinc-500 text-sm font-medium">Completed</p>
+                                <h3 id="stat-completed" class="text-3xl font-bold text-white mt-2">7</h3>
+                            </div>
+                            <div class="p-2 bg-zinc-800 rounded-lg text-zinc-400">
+                                <i data-lucide="check-circle" class="w-5 h-5"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    
+                    <!-- Task Widget -->
+                    <div class="lg:col-span-2 bg-zinc-900 rounded-xl border border-zinc-800 flex flex-col">
+                        <div class="p-4 border-b border-zinc-800 flex justify-between items-center">
+                            <h2 class="font-semibold text-zinc-100">Active Tasks</h2>
+                            <button onclick="clearCompleted()" class="text-xs text-zinc-500 hover:text-white">Clear Completed</button>
+                        </div>
+                        
+                        <!-- Add Task Input -->
+                        <div class="p-4 border-b border-zinc-800 bg-zinc-900/50">
+                            <form id="todo-form" class="flex gap-2">
+                                <input type="text" id="todo-input" placeholder="Add a new task..." 
+                                    class="flex-1 bg-zinc-950 border border-zinc-700 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-zinc-500 text-white placeholder-zinc-600">
+                                <button type="submit" class="bg-zinc-100 text-zinc-900 px-4 py-2 rounded-lg text-sm font-bold hover:bg-zinc-300 transition">
+                                    Add
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Task List -->
+                        <div id="todo-list" class="flex-1 overflow-y-auto max-h-[400px] p-2 space-y-1">
+                            <!-- Tasks injected here via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Quick Notes Widget -->
+                    <div class="bg-zinc-900 rounded-xl border border-zinc-800 flex flex-col h-full min-h-[300px]">
+                        <div class="p-4 border-b border-zinc-800 flex justify-between items-center">
+                            <h2 class="font-semibold text-zinc-100">Scratchpad</h2>
+                            <span id="save-status" class="text-xs text-green-500 opacity-0 transition-opacity">Saved</span>
+                        </div>
+                        <div class="flex-1 p-0">
+                            <textarea id="scratchpad" class="w-full h-full bg-zinc-900 p-4 text-zinc-300 resize-none focus:outline-none text-sm leading-relaxed" placeholder="Type quick notes here... they will save automatically."></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other views placeholders (hidden by default) -->
+            <div id="view-tasks" class="hidden">
+                <h2 class="text-2xl font-bold mb-4">All Tasks View</h2>
+                <div class="p-8 border border-dashed border-zinc-800 rounded-xl text-center text-zinc-500">
+                    Full task management interface would go here.
+                </div>
+            </div>
+
+            <div id="view-files" class="hidden">
+                <h2 class="text-2xl font-bold mb-4">File Manager</h2>
+                <div class="p-8 border border-dashed border-zinc-800 rounded-xl text-center text-zinc-500">
+                    File dropzone and tree view would go here.
+                </div>
+            </div>
+            
+            <div id="view-settings" class="hidden">
+                <h2 class="text-2xl font-bold mb-4">Settings</h2>
+                 <div class="bg-zinc-900 rounded-xl border border-zinc-800 p-6 max-w-2xl">
+                    <div class="flex items-center justify-between py-4 border-b border-zinc-800">
+                        <div>
+                            <p class="font-medium text-white">Notifications</p>
+                            <p class="text-sm text-zinc-500">Receive alerts for deadlines</p>
+                        </div>
+                        <div class="w-11 h-6 bg-green-600 rounded-full relative cursor-pointer">
+                            <div class="absolute right-1 top-1 bg-white w-4 h-4 rounded-full"></div>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-between py-4">
+                        <div>
+                            <p class="font-medium text-white">Compact Mode</p>
+                            <p class="text-sm text-zinc-500">Decrease spacing between items</p>
+                        </div>
+                        <div class="w-11 h-6 bg-zinc-700 rounded-full relative cursor-pointer">
+                            <div class="absolute left-1 top-1 bg-white w-4 h-4 rounded-full"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        // --- 1. Icons Init ---
+        lucide.createIcons();
+
+        // --- 2. Clock Logic ---
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', { hour12: false });
+            const dateString = now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+            
+            document.getElementById('clock-time').textContent = timeString;
+            document.getElementById('clock-date').textContent = dateString;
+        }
+        setInterval(updateTime, 1000);
+        updateTime();
+
+        // --- 3. Navigation Logic ---
+        function switchTab(tabId) {
+            // Hide all views
+            ['dashboard', 'tasks', 'files', 'settings'].forEach(id => {
+                document.getElementById(`view-${id}`).classList.add('hidden');
+                
+                // Reset Nav Button Styles
+                const btn = document.getElementById(`nav-${id}`);
+                if(btn) {
+                    btn.classList.remove('bg-zinc-800', 'text-white');
+                    btn.classList.add('text-zinc-400');
+                }
+            });
+
+            // Show selected view
+            document.getElementById(`view-${tabId}`).classList.remove('hidden');
+            
+            // Highlight Nav Button
+            const activeBtn = document.getElementById(`nav-${tabId}`);
+            if(activeBtn) {
+                activeBtn.classList.remove('text-zinc-400');
+                activeBtn.classList.add('bg-zinc-800', 'text-white');
+            }
+        }
+
+        // --- 4. Task Manager Logic ---
+        let tasks = [
+            { id: 1, text: "Review project proposal", completed: false },
+            { id: 2, text: "Email the design team", completed: true },
+            { id: 3, text: "Update system documentation", completed: false }
+        ];
+
+        function renderTasks() {
+            const list = document.getElementById('todo-list');
+            list.innerHTML = '';
+
+            // Calculate stats
+            const total = tasks.length;
+            const completed = tasks.filter(t => t.completed).length;
+            const pending = total - completed;
+
+            document.getElementById('stat-total').textContent = total;
+            document.getElementById('stat-pending').textContent = pending;
+            document.getElementById('stat-completed').textContent = completed;
+
+            tasks.forEach(task => {
+                const item = document.createElement('div');
+                item.className = `group flex items-center justify-between p-3 rounded-lg hover:bg-zinc-800/50 transition border border-transparent hover:border-zinc-800`;
+                item.innerHTML = `
+                    <label class="flex items-center cursor-pointer select-none flex-1">
+                        <input type="checkbox" class="custom-checkbox w-4 h-4 bg-zinc-800 border-zinc-600 rounded focus:ring-0 focus:ring-offset-0 text-zinc-500" 
+                            ${task.completed ? 'checked' : ''} 
+                            onchange="toggleTask(${task.id})">
+                        <div class="ml-3 text-sm text-zinc-300 transition-colors">${task.text}</div>
+                    </label>
+                    <button onclick="deleteTask(${task.id})" class="text-zinc-600 hover:text-red-400 opacity-0 group-hover:opacity-100 transition px-2">
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                `;
+                list.appendChild(item);
+            });
+            lucide.createIcons(); // Re-init icons for new elements
+        }
+
+        function addTask(text) {
+            const newTask = {
+                id: Date.now(),
+                text: text,
+                completed: false
+            };
+            tasks.unshift(newTask); // Add to top
+            renderTasks();
+        }
+
+        function toggleTask(id) {
+            const task = tasks.find(t => t.id === id);
+            if (task) {
+                task.completed = !task.completed;
+                renderTasks();
+            }
+        }
+
+        function deleteTask(id) {
+            tasks = tasks.filter(t => t.id !== id);
+            renderTasks();
+        }
+
+        function clearCompleted() {
+            tasks = tasks.filter(t => !t.completed);
+            renderTasks();
+        }
+
+        document.getElementById('todo-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const input = document.getElementById('todo-input');
+            const val = input.value.trim();
+            if (val) {
+                addTask(val);
+                input.value = '';
+            }
+        });
+
+        // --- 5. Scratchpad Logic ---
+        const scratchpad = document.getElementById('scratchpad');
+        const saveStatus = document.getElementById('save-status');
+        let typingTimer;
+
+        // Simulate auto-save
+        scratchpad.addEventListener('input', () => {
+            saveStatus.classList.remove('opacity-0');
+            saveStatus.textContent = "Typing...";
+            saveStatus.classList.remove('text-green-500');
+            saveStatus.classList.add('text-zinc-500');
+
+            clearTimeout(typingTimer);
+            typingTimer = setTimeout(() => {
+                // Here you would normally save to localStorage or backend
+                saveStatus.textContent = "Saved";
+                saveStatus.classList.remove('text-zinc-500');
+                saveStatus.classList.add('text-green-500');
+                
+                setTimeout(() => {
+                    saveStatus.classList.add('opacity-0');
+                }, 2000);
+            }, 1000);
+        });
+
+        // Initial render
+        renderTasks();
+
+    </script>
+</body>
+</html>
+
